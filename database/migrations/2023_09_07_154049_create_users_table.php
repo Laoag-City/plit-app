@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username', 25)->unique();
             $table->string('password');
+            $table->boolean('admin')->default(false);
             $table->timestamps();
 
             $table->foreign('office_id')
