@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('owner_id');
             $table->unsignedBigInteger('address_id');
             $table->unsignedBigInteger('classification_id');
+            $table->string('business_id_number')->unique();
             $table->string('establishment_name');
             $table->timestamps();
 
