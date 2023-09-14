@@ -1,5 +1,5 @@
 <x-layout>
     <x-slot:title>Welcome</x-slot>
 
-    Whatever floats your boat, mate.
+    <div>Content</div>
 </x-layout>

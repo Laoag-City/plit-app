@@ -33,12 +33,12 @@ class AuthenticationController extends Controller
 
         $validator->validate();
 
-        return redirect()->intended('/');
+        return redirect()->intended();
     }
 
     public function logOut() : RedirectResponse
     {
         Auth::logout();
-        return redirect('login');
+        return back();
     }
 }
