@@ -19,7 +19,6 @@
 				</x-displays.alert>
 			@endif
 
-			@method('POST')
 			@csrf
 
 			<x-forms.text-field

@@ -81,6 +81,73 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
+        DB::table('')->insert([
+            [
+                'office_id' => $pld->office_id,
+                'requirement' => "No Mayor's Permit to Operate Business presented during inspection"
+            ],
+
+            [
+                'office_id' => $cho->office_id,
+                'requirement' => "No Sanitary Permit presented during inspection"
+            ],
+
+            [
+                'office_id' => $cho->office_id,
+                'requirement' => "No Health Certificate of Employees/Foodhandlers presented during inspection"
+            ],
+
+            [
+                'office_id' => $cho->office_id,
+                'requirement' => "No Health Certificate of owner presented during inspection"
+            ],
+
+            [
+                'office_id' => $cho->office_id,
+                'requirement' => "Expired Health Certificate of owner"
+            ],
+
+            [
+                'office_id' => $cho->office_id,
+                'requirement' => "Expired Health Certificate of Employees/Foodhandlers"
+            ],
+
+            [
+                'office_id' => $bfp->office_id,
+                'requirement' => "No fire extinguisher/down-pressured fire extinguisher/Non-functioning emergency lights"
+            ],
+
+            [
+                'office_id' => $bfp->office_id,
+                'requirement' => "Obstructed Fire Exit"
+            ],
+
+            [
+                'office_id' => $bfp->office_id,
+                'requirement' => "Provide/No directional sign of Fire Exits"
+            ],
+
+            [
+                'office_id' => $bfp->office_id,
+                'requirement' => "Provide opening at window of sleeping rooms"
+            ],
+
+            [
+                'office_id' => $ceo->office_id,
+                'requirement' => "Improper electrical wiring installations"
+            ],
+
+            [
+                'office_id' => $ceo->office_id,
+                'requirement' => "Hanging electrical wires/uncovered junction boxes"
+            ],
+
+            [
+                'office_id' => $pld->office_id,
+                'requirement' => "No Individual Mayor's Permit (Working Permit) of employees"
+            ]
+        ]);
+
         //addresses seeds
 
         DB::table('addresses')->insert([

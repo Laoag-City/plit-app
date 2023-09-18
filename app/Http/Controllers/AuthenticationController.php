@@ -33,7 +33,7 @@ class AuthenticationController extends Controller
 
         $validator->validate();
 
-        return redirect()->intended();
+        return redirect('home');
     }
 
     public function logOut() : RedirectResponse

@@ -21,7 +21,8 @@ Route::middleware(['guest'])->controller((AuthenticationController::class))->gro
 });
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/', HomeController::class)->name('home');
+    Route::get('/', function(){return 'fucker';});
+    Route::get('/home', HomeController::class)->name('home');
 
     Route::post('/logout', [AuthenticationController::class, 'logOut']);
 });

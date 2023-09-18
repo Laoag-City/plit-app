@@ -19,39 +19,58 @@
                 <div class="drawer-content flex flex-col">
                     <!-- Navbar -->
                     <div class="w-full navbar bg-accent">
-                        <div class="flex-none lg:hidden">
-                            <label for="main-drawer" class="btn btn-square btn-ghost">
+                        <div class="navbar-start">
+                            <label for="main-drawer" class="btn btn-square btn-ghost lg:hidden">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             </label>
-                        </div> 
-                        
-                        <div class="flex-1 px-2 mx-2 text-xl font-semibold">PLIT - APP</div>
-            
-                        <div class="flex-none hidden lg:block">
+
+                            <div class="px-2 mx-2 text-xl font-semibold">PLIT - APP</div>
+                        </div>
+
+                        <div class="navbar-center hidden lg:flex">
                             <ul class="menu menu-horizontal">
-                                <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout_form').submit();">Log Out</a></li>
+                                <x-navigations.main-navigation-links></x-navigations.main-navigation-links>
+                            </ul>
+                        </div>
+
+                        <div class="navbar-end hidden lg:flex">
+                            <ul class="menu menu-horizontal">
+                                <li>
+                                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout_form').submit();">Log Out</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div> 
                 
-                <div class="drawer-side">
+                <div class="drawer-side z-10">
                     <label for="main-drawer" class="drawer-overlay"></label> 
                     <ul class="menu p-4 w-80 min-h-full bg-base-200">
-                        <!-- Sidebar content here -->
-                        <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout_form').submit();">Log Out</a></li>
+                        <x-navigations.main-navigation-links></x-navigations.main-navigation-links>
+                        <li>
+                            <a href="#" onclick="event.preventDefault(); document.getElementById('logout_form').submit();">Log Out</a>
+                        </li>
                     </ul>
                 </div>
 
                 <form id="logout_form" action="{{ url('/logout') }}" method="POST" class="hidden">
-        			@method('POST')
                     @csrf
     			</form>
             </div>
         @endauth
         
         <div class="container mx-auto">
-            {{ $slot }}
+            <div @class(['grid grid-cols-1 gap-3 p-3 my-2 bg-neutral-content rounded-lg shadow-lg min-h-screen' => auth()->check()])>
+                {{ $slot }}
+            </div>
         </div>
+
+        @auth
+            <footer class="footer footer-center p-5 bg-neutral text-base-content">
+                <aside>
+                    <p>Copyright © 2023 - All right reserved</p>
+                </aside>
+            </footer>
+        @endauth
     </body>
 </html>
