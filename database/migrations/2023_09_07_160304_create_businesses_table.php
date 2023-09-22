@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('address_id');
             $table->unsignedBigInteger('classification_id');
             $table->string('business_id_number')->unique();
-            $table->string('establishment_name');
+            $table->string('business_name');
+            $table->string('location_coordinates');
             $table->timestamps();
 
             $table->foreign('owner_id')

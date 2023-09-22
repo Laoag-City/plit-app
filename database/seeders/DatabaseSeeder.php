@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
-        DB::table('')->insert([
+        DB::table('requirements')->insert([
             [
                 'office_id' => $pld->office_id,
                 'requirement' => "No Mayor's Permit to Operate Business presented during inspection"

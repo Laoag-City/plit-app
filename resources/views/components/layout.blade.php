@@ -24,7 +24,9 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             </label>
 
-                            <div class="px-2 mx-2 text-xl font-semibold">PLIT - APP</div>
+                            <div class="px-2 mx-2 text-xl font-bold">
+                                <a class="transition ease-in-out delay-75 hover:text-secondary-focus duration-500" href="{{ route('home') }}">PLIT - APP</a>
+                            </div>
                         </div>
 
                         <div class="navbar-center hidden lg:flex">
@@ -60,7 +62,7 @@
         @endauth
         
         <div class="container mx-auto">
-            <div @class(['grid grid-cols-1 gap-3 p-3 my-2 bg-neutral-content rounded-lg shadow-lg min-h-screen' => auth()->check()])>
+            <div @class(['grid grid-cols-1 gap-3 p-6 my-2 bg-neutral-content rounded-lg shadow-lg' => auth()->check()])>
                 {{ $slot }}
             </div>
         </div>

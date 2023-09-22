@@ -13,10 +13,7 @@ return new class extends Migration
     {
         Schema::create('owners', function (Blueprint $table) {
             $table->id('owner_id');
-            $table->string('first_name', 40);
-            $table->string('middle_name', 30)->nullable();
-            $table->string('last_name', 30);
-            $table->string('suffix_name', 4)->nullable();
+            $table->string('owner_name');
             $table->timestamps();
         });
     }

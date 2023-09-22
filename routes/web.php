@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,9 @@ Route::middleware(['guest'])->controller((AuthenticationController::class))->gro
 });
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/', function(){return 'fucker';});
+    Route::get('/', [BusinessController::class, 'showAddNewBusiness']);
+    Route::post('/', [BusinessController::class, 'addNewBusiness']);
+
     Route::get('/home', HomeController::class)->name('home');
 
     Route::post('/logout', [AuthenticationController::class, 'logOut']);
