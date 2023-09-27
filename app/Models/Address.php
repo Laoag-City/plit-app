@@ -15,4 +15,15 @@ class Address extends Model
     {
         return $this->hasMany(Business::class, 'address_id', 'address_id');
     }
+
+    public function transformForSelectField() : array
+    {
+        return $this->all()
+                    ->transform(function($item, $key){
+                        return [
+                            'value' => $item->brgy,
+                            'name' => $item->brgy
+                        ];
+                    })->toArray();
+    }
 }

@@ -30,4 +30,9 @@ class Business extends Model
     {
         return $this->belongsTo(Classification::class, 'classification_id', 'classification_id');
     }
+
+    public function image_uploads()
+    {
+        return $this->hasMany(ImageUpload::class, 'business_id', 'business_id');
+    }
 }

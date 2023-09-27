@@ -18,6 +18,6 @@ class Requirement extends Model
 
     public function office()
     {
-        $this->belongsTo(Office::class, 'office_id', 'office_id');
+        return $this->belongsTo(Office::class, 'office_id', 'office_id');
     }
 }

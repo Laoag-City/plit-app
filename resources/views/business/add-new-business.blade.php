@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:title>Add New Business</x-slot>
 
-    <form action="" method="POST" class="max-w-none prose">
+    <form action="{{ url('/') }}" method="POST" class="max-w-none prose">
         <h2>Add New Business</h2>
         <div class="divider"></div>
 
@@ -38,13 +38,53 @@
                 :error="$errors->first('owner_name')"
             />
 
-            <x-forms.text-field
+            <x-forms.select-field
                 label="Barangay"
-                placeholder="Barangay"
                 name="barangay"
-                :value="old('barangay')"
+                :options="$addresses"
+                :selected="old('barangay')"
                 :error="$errors->first('barangay')"
             />
+            
+            <x-forms.text-field
+                label="Line of Business"
+                placeholder="Line of Business"
+                name="line_of_business"
+                :value="old('line_of_business')"
+                :error="$errors->first('line_of_business')"
+            />
+
+            <x-forms.checkbox-field
+                label="Specify another kind of Line of Business"
+                name="another_line_of_business"
+                :checked="(bool)old('another_line_of_business') ? true : false"
+                :error="$errors->first('another_line_of_business')"
+            />
+
+            <div class="lg:flex lg:col-span-2 lg:justify-center">
+                <x-forms.file-input-field 
+                    label="Supporting Image"
+                    name="supporting_image"
+                    file-types="image/png, image/jpeg"
+                    camera="environment"
+                    :error="$errors->first('supporting_image')"
+                />
+            </div>
+
+            <div class="lg:flex lg:col-span-2 lg:justify-center">
+                <x-actions.button
+                    type="button"
+                    text="Add another supporting image"
+                    class="btn-outline btn-accent"
+                />
+            </div>
+
+            <div class="lg:col-span-2 mt-14">
+                <x-actions.button
+                    text="Submit Form"
+                    class="btn-primary btn-outline btn-block"
+                />
+            </div>
         </div>
     </form>
 </x-layout>
