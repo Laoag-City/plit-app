@@ -151,86 +151,326 @@ class DatabaseSeeder extends Seeder
         //addresses seeds
 
         DB::table('addresses')->insert([
-            ['brgy' => 'Brgy. 1, San Lorenzo'],
-            ['brgy' => 'Brgy. 2, Santa Joaquina'],
-            ['brgy' => 'Brgy. 3, Nuestra Señora del Rosario'],
-            ['brgy' => 'Brgy. 4, San Guillermo'],
-            ['brgy' => 'Brgy. 5, San Pedro'],
-            ['brgy' => 'Brgy. 6, San Agustin'],
-            ['brgy' => 'Brgy. 7-A, Nuestra Señora del Natividad'],
-            ['brgy' => 'Brgy. 7-B, Nuestra Señora del Natividad'],
-            ['brgy' => 'Brgy. 8, San Vicente'],
-            ['brgy' => 'Brgy. 9, Santa Angela'],
-            ['brgy' => 'Brgy. 10, San Jose'],
-            ['brgy' => 'Brgy. 11, Santa Balbina'],
-            ['brgy' => 'Brgy. 12, San Isidro'],
-            ['brgy' => 'Brgy. 13, Nuestra Señora de Visitacion'],
-            ['brgy' => 'Brgy. 14, Santo Tomas'],
-            ['brgy' => 'Brgy. 15, San Guillermo'],
-            ['brgy' => 'Brgy. 16, San Jacinto'],
-            ['brgy' => 'Brgy. 17, San Francisco'],
-            ['brgy' => 'Brgy. 18, San Quirino'],
-            ['brgy' => 'Brgy. 19, Santa Marcela'],
-            ['brgy' => 'Brgy. 20, San Miguel'],
-            ['brgy' => 'Brgy. 21, San Pedro'],
-            ['brgy' => 'Brgy. 22, San Andres'],
-            ['brgy' => 'Brgy. 23, San Matias'],
-            ['brgy' => 'Brgy. 24, Nuestra Señora de Consolacion'],
-            ['brgy' => 'Brgy. 25, Santa Cayetana'],
-            ['brgy' => 'Brgy. 26, San Marcelino'],
-            ['brgy' => 'Brgy. 27, Nuestra Señora de Soledad'],
-            ['brgy' => 'Brgy. 28, San Bernardo'],
-            ['brgy' => 'Brgy. 29, Santo Tomas'],
-            ['brgy' => 'Brgy. 30-A, Suyo'],
-            ['brgy' => 'Brgy. 30-B, Santa Maria'],
-            ['brgy' => 'Brgy. 31, Talingaan'],
-            ['brgy' => 'Brgy. 32-A, La Paz East'],
-            ['brgy' => 'Brgy. 32-B, La Paz West'],
-            ['brgy' => 'Brgy. 32-C, La Paz East'],
-            ['brgy' => 'Brgy. 33-A, La Paz Proper'],
-            ['brgy' => 'Brgy. 33-B, La Paz Proper'],
-            ['brgy' => 'Brgy. 34-A, Gabu Norte West'],
-            ['brgy' => 'Brgy. 34-B, Gabu Norte East'],
-            ['brgy' => 'Brgy. 35, Gabu Sur'],
-            ['brgy' => 'Brgy. 36, Araniw'],
-            ['brgy' => 'Brgy. 37, Calayab'],
-            ['brgy' => 'Brgy. 38-A, Mangato East'],
-            ['brgy' => 'Brgy. 38-B, Mangato West'],
-            ['brgy' => 'Brgy. 39, Santa Rosa'],
-            ['brgy' => 'Brgy. 40, Balatong'],
-            ['brgy' => 'Brgy. 41, Balacad'],
-            ['brgy' => 'Brgy. 42, Apaya'],
-            ['brgy' => 'Brgy. 43, Cavit'],
-            ['brgy' => 'Brgy. 44, Zamboanga'],
-            ['brgy' => 'Brgy. 45, Tangid'],
-            ['brgy' => 'Brgy. 46, Nalbo'],
-            ['brgy' => 'Brgy. 47, Bengcag'],
-            ['brgy' => 'Brgy. 48-A, Cabungaan North'],
-            ['brgy' => 'Brgy. 48-B, Cabungaan South'],
-            ['brgy' => 'Brgy. 49-A, Darayday'],
-            ['brgy' => 'Brgy. 49-B, Raraburan'],
-            ['brgy' => 'Brgy. 50, Buttong'],
-            ['brgy' => 'Brgy. 51-A, Nangalisan East'],
-            ['brgy' => 'Brgy. 51-B, Nangalisan West'],
-            ['brgy' => 'Brgy. 52-A, San Mateo'],
-            ['brgy' => 'Brgy. 52-B, Lataag'],
-            ['brgy' => 'Brgy. 53, Rioeng'],
-            ['brgy' => 'Brgy. 54-A, Camangaan'],
-            ['brgy' => 'Brgy. 54-B, Lagui-Sail'],
-            ['brgy' => 'Brgy. 55-A, Barit-Pandan'],
-            ['brgy' => 'Brgy. 55-B, Salet-Bulangon'],
-            ['brgy' => 'Brgy. 55-C, Vira'],
-            ['brgy' => 'Brgy. 56-A, Bacsil North'],
-            ['brgy' => 'Brgy. 56-B, Bacsil South'],
-            ['brgy' => 'Brgy. 57, Pila'],
-            ['brgy' => 'Brgy. 58, Casili'],
-            ['brgy' => 'Brgy. 59-A, Dibua South'],
-            ['brgy' => 'Brgy. 59-B, Dibua North'],
-            ['brgy' => 'Brgy. 60-A, Caaoacan'],
-            ['brgy' => 'Brgy. 60-B, Madiladig'],
-            ['brgy' => 'Brgy. 61, Cataban'],
-            ['brgy' => 'Brgy. 62-A, Navotas North'],
-            ['brgy' => 'Brgy. 62-B, Navotas South'],
+            [
+                'brgy' => 'Brgy. 1, San Lorenzo',
+                'brgy_no' => '1'
+            ],
+            [
+                'brgy' => 'Brgy. 2, Santa Joaquina',
+                'brgy_no' => '2'
+            ],
+            [
+                'brgy' => 'Brgy. 3, Nuestra Señora del Rosario',
+                'brgy_no' => '3'
+            ],
+            [
+                'brgy' => 'Brgy. 4, San Guillermo',
+                'brgy_no' => '4'
+            ],
+            [
+                'brgy' => 'Brgy. 5, San Pedro',
+                'brgy_no' => '5'
+            ],
+            [
+                'brgy' => 'Brgy. 6, San Agustin',
+                'brgy_no' => '6'
+            ],
+            [
+                'brgy' => 'Brgy. 7-A, Nuestra Señora del Natividad',
+                'brgy_no' => '7-A'
+            ],
+            [
+                'brgy' => 'Brgy. 7-B, Nuestra Señora del Natividad',
+                'brgy_no' => '7-B'
+            ],
+            [
+                'brgy' => 'Brgy. 8, San Vicente',
+                'brgy_no' => '8'
+            ],
+            [
+                'brgy' => 'Brgy. 9, Santa Angela',
+                'brgy_no' => '9'
+            ],
+            [
+                'brgy' => 'Brgy. 10, San Jose',
+                'brgy_no' => '10'
+            ],
+            [
+                'brgy' => 'Brgy. 11, Santa Balbina',
+                'brgy_no' => '11'
+            ],
+            [
+                'brgy' => 'Brgy. 12, San Isidro',
+                'brgy_no' => '12'
+            ],
+            [
+                'brgy' => 'Brgy. 13, Nuestra Señora de Visitacion',
+                'brgy_no' => '13'
+            ],
+            [
+                'brgy' => 'Brgy. 14, Santo Tomas',
+                'brgy_no' => '14'
+            ],
+            [
+                'brgy' => 'Brgy. 15, San Guillermo',
+                'brgy_no' => '15'
+            ],
+            [
+                'brgy' => 'Brgy. 16, San Jacinto',
+                'brgy_no' => '16'
+            ],
+            [
+                'brgy' => 'Brgy. 17, San Francisco',
+                'brgy_no' => '17'
+            ],
+            [
+                'brgy' => 'Brgy. 18, San Quirino',
+                'brgy_no' => '18'
+            ],
+            [
+                'brgy' => 'Brgy. 19, Santa Marcela',
+                'brgy_no' => '19'
+            ],
+            [
+                'brgy' => 'Brgy. 20, San Miguel',
+                'brgy_no' => '20'
+            ],
+            [
+                'brgy' => 'Brgy. 21, San Pedro',
+                'brgy_no' => '21'
+            ],
+            [
+                'brgy' => 'Brgy. 22, San Andres',
+                'brgy_no' => '22'
+            ],
+            [
+                'brgy' => 'Brgy. 23, San Matias',
+                'brgy_no' => '23'
+            ],
+            [
+                'brgy' => 'Brgy. 24, Nuestra Señora de Consolacion',
+                'brgy_no' => '24'
+            ],
+            [
+                'brgy' => 'Brgy. 25, Santa Cayetana',
+                'brgy_no' => '25'
+            ],
+            [
+                'brgy' => 'Brgy. 26, San Marcelino',
+                'brgy_no' => '26'
+            ],
+            [
+                'brgy' => 'Brgy. 27, Nuestra Señora de Soledad',
+                'brgy_no' => '27'
+            ],
+            [
+                'brgy' => 'Brgy. 28, San Bernardo',
+                'brgy_no' => '28'
+            ],
+            [
+                'brgy' => 'Brgy. 29, Santo Tomas',
+                'brgy_no' => '29'
+            ],
+            [
+                'brgy' => 'Brgy. 30-A, Suyo',
+                'brgy_no' => '30-A'
+            ],
+            [
+                'brgy' => 'Brgy. 30-B, Santa Maria',
+                'brgy_no' => '30-B'
+            ],
+            [
+                'brgy' => 'Brgy. 31, Talingaan',
+                'brgy_no' => '31'
+            ],
+            [
+                'brgy' => 'Brgy. 32-A, La Paz East',
+                'brgy_no' => '32-A'
+            ],
+            [
+                'brgy' => 'Brgy. 32-B, La Paz West',
+                'brgy_no' => '32-B'
+            ],
+            [
+                'brgy' => 'Brgy. 32-C, La Paz East',
+                'brgy_no' => '32-C'
+            ],
+            [
+                'brgy' => 'Brgy. 33-A, La Paz Proper',
+                'brgy_no' => '33-A'
+            ],
+            [
+                'brgy' => 'Brgy. 33-B, La Paz Proper',
+                'brgy_no' => '33-B'
+            ],
+            [
+                'brgy' => 'Brgy. 34-A, Gabu Norte West',
+                'brgy_no' => '34-A'
+            ],
+            [
+                'brgy' => 'Brgy. 34-B, Gabu Norte East',
+                'brgy_no' => '34-B'
+            ],
+            [
+                'brgy' => 'Brgy. 35, Gabu Sur',
+                'brgy_no' => '35'
+            ],
+            [
+                'brgy' => 'Brgy. 36, Araniw',
+                'brgy_no' => '36'
+            ],
+            [
+                'brgy' => 'Brgy. 37, Calayab',
+                'brgy_no' => '37'
+            ],
+            [
+                'brgy' => 'Brgy. 38-A, Mangato East',
+                'brgy_no' => '38-A'
+            ],
+            [
+                'brgy' => 'Brgy. 38-B, Mangato West',
+                'brgy_no' => '38-B'
+            ],
+            [
+                'brgy' => 'Brgy. 39, Santa Rosa',
+                'brgy_no' => '39'
+            ],
+            [
+                'brgy' => 'Brgy. 40, Balatong',
+                'brgy_no' => '40'
+            ],
+            [
+                'brgy' => 'Brgy. 41, Balacad',
+                'brgy_no' => '41'
+            ],
+            [
+                'brgy' => 'Brgy. 42, Apaya',
+                'brgy_no' => '42'
+            ],
+            [
+                'brgy' => 'Brgy. 43, Cavit',
+                'brgy_no' => '43'
+            ],
+            [
+                'brgy' => 'Brgy. 44, Zamboanga',
+                'brgy_no' => '44'
+            ],
+            [
+                'brgy' => 'Brgy. 45, Tangid',
+                'brgy_no' => '45'
+            ],
+            [
+                'brgy' => 'Brgy. 46, Nalbo',
+                'brgy_no' => '46'
+            ],
+            [
+                'brgy' => 'Brgy. 47, Bengcag',
+                'brgy_no' => '47'
+            ],
+            [
+                'brgy' => 'Brgy. 48-A, Cabungaan North',
+                'brgy_no' => '48-A'
+            ],
+            [
+                'brgy' => 'Brgy. 48-B, Cabungaan South',
+                'brgy_no' => '48-B'
+            ],
+            [
+                'brgy' => 'Brgy. 49-A, Darayday',
+                'brgy_no' => '49-A'
+            ],
+            [
+                'brgy' => 'Brgy. 49-B, Raraburan',
+                'brgy_no' => '49-B'
+            ],
+            [
+                'brgy' => 'Brgy. 50, Buttong',
+                'brgy_no' => '50'
+            ],
+            [
+                'brgy' => 'Brgy. 51-A, Nangalisan East',
+                'brgy_no' => '51-A'
+            ],
+            [
+                'brgy' => 'Brgy. 51-B, Nangalisan West',
+                'brgy_no' => '51-B'
+            ],
+            [
+                'brgy' => 'Brgy. 52-A, San Mateo',
+                'brgy_no' => '52-A'
+            ],
+            [
+                'brgy' => 'Brgy. 52-B, Lataag',
+                'brgy_no' => '52-B'
+            ],
+            [
+                'brgy' => 'Brgy. 53, Rioeng',
+                'brgy_no' => '53'
+            ],
+            [
+                'brgy' => 'Brgy. 54-A, Camangaan',
+                'brgy_no' => '54-A'
+            ],
+            [
+                'brgy' => 'Brgy. 54-B, Lagui-Sail',
+                'brgy_no' => '54-B'
+            ],
+            [
+                'brgy' => 'Brgy. 55-A, Barit-Pandan',
+                'brgy_no' => '55-A'
+            ],
+            [
+                'brgy' => 'Brgy. 55-B, Salet-Bulangon',
+                'brgy_no' => '55-B'
+            ],
+            [
+                'brgy' => 'Brgy. 55-C, Vira',
+                'brgy_no' => '55-C'
+            ],
+            [
+                'brgy' => 'Brgy. 56-A, Bacsil North',
+                'brgy_no' => '56-A'
+            ],
+            [
+                'brgy' => 'Brgy. 56-B, Bacsil South',
+                'brgy_no' => '56-B'
+            ],
+            [
+                'brgy' => 'Brgy. 57, Pila',
+                'brgy_no' => '57'
+            ],
+            [
+                'brgy' => 'Brgy. 58, Casili',
+                'brgy_no' => '58'
+            ],
+            [
+                'brgy' => 'Brgy. 59-A, Dibua South',
+                'brgy_no' => '59-A'
+            ],
+            [
+                'brgy' => 'Brgy. 59-B, Dibua North',
+                'brgy_no' => '59-B'
+            ],
+            [
+                'brgy' => 'Brgy. 60-A, Caaoacan',
+                'brgy_no' => '60-A'
+            ],
+            [
+                'brgy' => 'Brgy. 60-B, Madiladig',
+                'brgy_no' => '60-B'
+            ],
+            [
+                'brgy' => 'Brgy. 61, Cataban',
+                'brgy_no' => '61'
+            ],
+            [
+                'brgy' => 'Brgy. 62-A, Navotas North',
+                'brgy_no' => '62-A'
+            ],
+            [
+                'brgy' => 'Brgy. 62-B, Navotas South',
+                'brgy_no' => '62-B'
+            ],
         ]);
     }
 }

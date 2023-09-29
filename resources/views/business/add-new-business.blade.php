@@ -1,7 +1,11 @@
 <x-layout>
     <x-slot:title>Add New Business</x-slot>
 
-    <form action="{{ url('/') }}" method="POST" class="max-w-none prose">
+    <x-slot:assets>
+        
+    </x-slot>
+
+    <form action="{{ url('/') }}" method="POST" class="max-w-none prose" enctype="multipart/form-data">
         <h2>Add New Business</h2>
         <div class="divider"></div>
 
@@ -44,21 +48,6 @@
                 :options="$addresses"
                 :selected="old('barangay')"
                 :error="$errors->first('barangay')"
-            />
-            
-            <x-forms.text-field
-                label="Line of Business"
-                placeholder="Line of Business"
-                name="line_of_business"
-                :value="old('line_of_business')"
-                :error="$errors->first('line_of_business')"
-            />
-
-            <x-forms.checkbox-field
-                label="Specify another kind of Line of Business"
-                name="another_line_of_business"
-                :checked="(bool)old('another_line_of_business') ? true : false"
-                :error="$errors->first('another_line_of_business')"
             />
 
             <div class="lg:flex lg:col-span-2 lg:justify-center">

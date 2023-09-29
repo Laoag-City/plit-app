@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id('business_id');
             $table->unsignedBigInteger('owner_id');
             $table->unsignedBigInteger('address_id');
-            $table->unsignedBigInteger('classification_id');
+            //$table->unsignedBigInteger('classification_id');
             $table->string('business_id_number')->unique();
             $table->string('business_name');
+            $table->string('location_specifics');
             $table->timestamps();
 
             $table->foreign('owner_id')
@@ -32,11 +33,13 @@ return new class extends Migration
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
+            /*
             $table->foreign('classification_id')
                     ->references('classification_id')
                     ->on('classifications')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
+            */
         });
     }
 

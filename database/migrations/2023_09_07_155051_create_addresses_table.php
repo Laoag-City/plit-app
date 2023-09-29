@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id('address_id');
             $table->string('brgy', 40)->unique();
+            $table->string('brgy_no', 4)->unique();
             $table->timestamps();
         });
     }

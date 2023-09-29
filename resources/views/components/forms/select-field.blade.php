@@ -12,7 +12,7 @@
 	</label>
 
 	<div {{ $attributes->class(['tooltip tooltip-error' => $error])->merge(['data-tip' => $error]) }}>
-		<select name="{{ $name }}" {{ $attributes->class(['select select-bordered w-full', 'select-error' => $error]) }}>
+		<select name="{{ $name }}" class="select select-bordered w-full {{ !$error ?: 'select-error' }}">
 			<option disabled selected>Choose a {{ Str::title($name) }}</option>
 			@foreach ($options as $option)
 				<option value="{{ $option['value'] }}" {{ $option['value'] != $selected ?: 'selected'}}>

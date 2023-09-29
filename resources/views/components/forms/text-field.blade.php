@@ -17,8 +17,8 @@
 			type="{{ $type }}" 
 			name="{{ $name }}" 
 			value="{{ $value }}" 
-			placeholder="{{ $placeholder }}" 
-			{{ $attributes->class(['input input-bordered w-full', 'input-error' => $error]) }}
+			placeholder="{{ $placeholder }}"
+			class="input input-bordered w-full {{ !$error ?: 'input-error' }}"
 		/>
 	</div>
 </div>

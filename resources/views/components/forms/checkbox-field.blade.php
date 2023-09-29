@@ -14,7 +14,7 @@
 				type="checkbox"
 				name="{{ $name }}"
 				value="{{ $value }}"
-				{{ $attributes->class(['checkbox lg:ml-5', 'checkbox-error' => $error]) }}
+				class="checkbox lg:ml-5 {{ !$error ?: 'checkbox-error'}}"
 				{{ !$checked ?: 'checked' }}
 			/>
 			<span class="label-text ml-5 lg:mr-5">{{ $label }}</span> 

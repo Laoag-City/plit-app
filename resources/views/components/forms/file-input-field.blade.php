@@ -18,7 +18,7 @@
 			value=""
 			accept="{{ $fileTypes }}"
 			capture="{{ $camera }}"
-			{{ $attributes->class(['file-input file-input-bordered w-full', 'file-input-error' => $error]) }}
+			class="file-input file-input-bordered w-full {{ !$error ?: 'file-input-error' }}"
 		/>
 	</div>
 </div>

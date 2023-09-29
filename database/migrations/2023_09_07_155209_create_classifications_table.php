@@ -10,12 +10,12 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
+    {/*
         Schema::create('classifications', function (Blueprint $table) {
             $table->id('classification_id');
             $table->string('line_of_business')->unique();
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('classifications');
+        //Schema::dropIfExists('classifications');
     }
 };

@@ -10,6 +10,8 @@
         @vite('resources/js/app.js')
         {{--@vite('resources/css/app.css')--}}
 
+        {{ $assets ?? "" }}
+
         <title>PLIT - APP | {{ $title ?? "" }}</title>
     </head>
     <body class="text-center antialiased">
