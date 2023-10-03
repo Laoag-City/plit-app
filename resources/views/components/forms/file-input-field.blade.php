@@ -3,7 +3,8 @@
 	'name',
 	'fileTypes',
 	'camera' => '',
-	'error' => ''
+	'error' => '',
+	'multiple' => false
 ])
 
 <div class="form-control">
@@ -18,6 +19,7 @@
 			value=""
 			accept="{{ $fileTypes }}"
 			capture="{{ $camera }}"
+			{{ $multiple ? 'multiple' : '' }}
 			class="file-input file-input-bordered w-full {{ !$error ?: 'file-input-error' }}"
 		/>
 	</div>

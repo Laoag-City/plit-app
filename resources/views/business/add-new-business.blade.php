@@ -2,7 +2,23 @@
     <x-slot:title>Add New Business</x-slot>
 
     <x-slot:assets>
-        
+        <script>
+            /*document.addEventListener("DOMContentLoaded", () => {
+                document.getElementById('foo').focus();
+            });*/
+            
+            function searchOwner(event)
+            {console.log(event);
+                axios.get('/owner-search', {
+                    params: {
+                        'owner': owner
+                    }
+                })
+                .then((response) => {
+                    owner_search_list = response.results;
+                });
+            }
+        </script>
     </x-slot>
 
     <form action="{{ url('/') }}" method="POST" class="max-w-none prose" enctype="multipart/form-data">
@@ -40,7 +56,13 @@
                 name="owner_name"
                 :value="old('owner_name')"
                 :error="$errors->first('owner_name')"
-            />
+            >
+                <div class="dropdown not-prose">
+                    <label tabindex="0" id="owner_results"></label>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full mt-1">
+                    </ul>
+                </div>
+            </x-forms.text-field>
 
             <x-forms.select-field
                 label="Barangay"
@@ -52,19 +74,12 @@
 
             <div class="lg:flex lg:col-span-2 lg:justify-center">
                 <x-forms.file-input-field 
-                    label="Supporting Image"
-                    name="supporting_image"
+                    label="Supporting Images"
+                    name="supporting_images[]"
                     file-types="image/png, image/jpeg"
                     camera="environment"
-                    :error="$errors->first('supporting_image')"
-                />
-            </div>
-
-            <div class="lg:flex lg:col-span-2 lg:justify-center">
-                <x-actions.button
-                    type="button"
-                    text="Add another supporting image"
-                    class="btn-outline btn-accent"
+                    :error="$errors->first('supporting_images[]')"
+                    :multiple="true"
                 />
             </div>
 

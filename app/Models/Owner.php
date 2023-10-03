@@ -15,4 +15,9 @@ class Owner extends Model
     {
         return $this->hasMany(Business::class, 'owner_id', 'owner_id');
     }
+
+    public function ownerSearch($search)
+    {
+        
+    }
 }

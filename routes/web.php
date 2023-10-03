@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OwnerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,7 @@ Route::middleware(['guest'])->controller((AuthenticationController::class))->gro
 Route::middleware(['auth'])->group(function(){
     Route::get('/', [BusinessController::class, 'showAddNewBusiness']);
     Route::post('/', [BusinessController::class, 'addNewBusiness']);
+    Route::get('/owner-search', [OwnerController::class, 'searchForOwner']);
 
     Route::get('/home', HomeController::class)->name('home');
 

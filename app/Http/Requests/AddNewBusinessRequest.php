@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class AddNewBusinessRequest extends FormRequest
 {
@@ -19,17 +20,15 @@ class AddNewBusinessRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules(): array
+    public function rules(Request $request): array
     {
         return [
             'business_id_number' => 'bail|required|string|unique:businesses,business_id_number',
             'business_name' => 'bail|required|string',
             'owner_name' => 'bail|required|string',
-            'barangay' => 'bail|required|exists:addresses,brgy',
-            'line_of_business' => 'bail|required',
-            'another_line_of_business' => 'bail|nullable|boolean',
-            'supporting_image' => 'bail|array',
-            'supporting_image.*' => 'bail|nullable|image'
+            'barangay' => 'bail|required|exists:addresses,brgy_no',
+            'supporting_images[]' => 'bail|array',
+            'supporting_images[].*' => 'bail|nullable|image|max:1280'
         ];
     }
 }

@@ -21,4 +21,6 @@
 			class="input input-bordered w-full {{ !$error ?: 'input-error' }}"
 		/>
 	</div>
+
+	{{ $slot }}
 </div>
