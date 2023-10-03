@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:title>Add New Business</x-slot>
 
-    <x-slot:assets>
+    <x-slot:js>
         <script>
             /*document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('foo').focus();

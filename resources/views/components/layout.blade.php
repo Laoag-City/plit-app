@@ -7,10 +7,8 @@
         <link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.4/dist/full.css" rel="stylesheet" type="text/css" />
         <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 
-        @vite('resources/js/app.js')
+        {{-- For production use, uncomment code below and remove link and script tag above --}}
         {{--@vite('resources/css/app.css')--}}
-
-        {{ $assets ?? "" }}
 
         <title>PLIT - APP | {{ $title ?? "" }}</title>
     </head>
@@ -76,5 +74,9 @@
                 </aside>
             </footer>
         @endauth
+
+        @vite('resources/js/app.js')
+        {{ $js ?? "" }}
+        @livewireScripts
     </body>
 </html>
