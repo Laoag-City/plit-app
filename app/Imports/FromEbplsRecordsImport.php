@@ -43,12 +43,12 @@ class FromEbplsRecordsImport implements ToCollection, WithHeadingRow
                 else
                     dd('Something went wrong. Check barangay column.');
 
-                $owner = Owner::where('owner_name', $row['name_of_owner'])->first();
+                $owner = Owner::where('name', $row['name_of_owner'])->first();
 
                 if($owner == null)
                 {
                     $owner =  new Owner;
-                    $owner->owner_name = $row['name_of_owner'];
+                    $owner->name = $row['name_of_owner'];
                     $owner->save();
                 }
 
@@ -67,8 +67,8 @@ class FromEbplsRecordsImport implements ToCollection, WithHeadingRow
                 $business->owner_id = $owner->owner_id;
                 $business->address_id = $address->address_id; 
                 //$business->classification_id = $classification->classification_id;
-                $business->business_id_number = $row['business_identification_no'];
-                $business->business_name = $row['business_name'];
+                $business->id_no = $row['business_identification_no'];
+                $business->name = $row['business_name'];
                 $business->location_specifics = $row['location_of_business'];
                 $business->save();
             }

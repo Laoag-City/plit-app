@@ -19,9 +19,9 @@
 			<x-slot:body>
 				@foreach ($businesses as $business)
 					<tr class="hover">
-						<td>{{ $business->business_id_number }}</td>
-						<td>{{ $business->business_name }}</td>
-						<td>{{ $business->owner->owner_name }}</td>
+						<td>{{ $business->id_no }}</td>
+						<td>{{ $business->name }}</td>
+						<td>{{ $business->owner->name }}</td>
 						<td>{{ $business->address->brgy }}</td>
 					</tr>
 				@endforeach

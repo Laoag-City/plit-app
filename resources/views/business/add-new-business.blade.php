@@ -6,18 +6,6 @@
             /*document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('foo').focus();
             });*/
-            
-            function searchOwner(event)
-            {console.log(event);
-                axios.get('/owner-search', {
-                    params: {
-                        'owner': owner
-                    }
-                })
-                .then((response) => {
-                    owner_search_list = response.results;
-                });
-            }
         </script>
     </x-slot>
 
@@ -50,19 +38,15 @@
                 :error="$errors->first('business_name')"
             />
 
-            <x-forms.text-field
+            <livewire:text-with-search-selection-field
                 label="Owner Name"
                 placeholder="Owner Name"
                 name="owner_name"
                 :value="old('owner_name')"
                 :error="$errors->first('owner_name')"
-            >
-                <div class="dropdown not-prose">
-                    <label tabindex="0" id="owner_results"></label>
-                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full mt-1">
-                    </ul>
-                </div>
-            </x-forms.text-field>
+                button-text="Change Selection"
+                dropdown-label-id="search_results"
+            />
 
             <x-forms.select-field
                 label="Barangay"

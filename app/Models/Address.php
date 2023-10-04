@@ -21,7 +21,7 @@ class Address extends Model
         return $this->all()
                     ->transform(function($item, $key){
                         return [
-                            'value' => $item->brgy_no,
+                            'value' => $item->address_id,
                             'name' => $item->brgy
                         ];
                     })->toArray();

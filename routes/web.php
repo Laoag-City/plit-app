@@ -25,7 +25,6 @@ Route::middleware(['guest'])->controller((AuthenticationController::class))->gro
 Route::middleware(['auth'])->group(function(){
     Route::get('/', [BusinessController::class, 'showAddNewBusiness']);
     Route::post('/', [BusinessController::class, 'addNewBusiness']);
-    Route::get('/owner-search', [OwnerController::class, 'searchForOwner']);
 
     Route::get('/home', HomeController::class)->name('home');
 

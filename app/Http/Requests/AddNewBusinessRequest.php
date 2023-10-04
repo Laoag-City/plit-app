@@ -26,7 +26,7 @@ class AddNewBusinessRequest extends FormRequest
             'business_id_number' => 'bail|required|string|unique:businesses,business_id_number',
             'business_name' => 'bail|required|string',
             'owner_name' => 'bail|required|string',
-            'barangay' => 'bail|required|exists:addresses,brgy_no',
+            'barangay' => 'bail|required|exists:addresses,address_id',
             'supporting_images[]' => 'bail|array',
             'supporting_images[].*' => 'bail|nullable|image|max:1280'
         ];

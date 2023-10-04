@@ -25,6 +25,7 @@ class BusinessController extends Controller
 
         $business = new Business;
 
+        $business->address_id = Address::find($validated['barangay'])->first()->address_id;
         $business->business_id_number = $validated['business_id_number'];
         $business->business_name = $validated['business_name'];
 

@@ -21,20 +21,20 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         DB::table('offices')->insert([
-            ['office_name' => 'CMO - Permits & Licenses Division'],
-            ['office_name' => 'City Health Office'],
-            ['office_name' => 'City Treasurer Office'],
-            ['office_name' => 'City Engineering Office'],
-            ['office_name' => 'Bureau of Fire Protection'],
-            ['office_name' => 'Information and Communications Technology Office']
+            ['name' => 'CMO - Permits & Licenses Division'],
+            ['name' => 'City Health Office'],
+            ['name' => 'City Treasurer Office'],
+            ['name' => 'City Engineering Office'],
+            ['name' => 'Bureau of Fire Protection'],
+            ['name' => 'Information and Communications Technology Office']
         ]);
         
-        $pld = Office::where('office_name', 'CMO - Permits & Licenses Division')->first();
-        $cho = Office::where('office_name', 'City Health Office')->first();
-        $cto = Office::where('office_name', 'City Treasurer Office')->first();
-        $ceo = Office::where('office_name', 'City Engineering Office')->first();
-        $bfp = Office::where('office_name', 'Bureau of Fire Protection')->first();
-        $icto = Office::where('office_name', 'Information and Communications Technology Office')->first();
+        $pld = Office::where('name', 'CMO - Permits & Licenses Division')->first();
+        $cho = Office::where('name', 'City Health Office')->first();
+        $cto = Office::where('name', 'City Treasurer Office')->first();
+        $ceo = Office::where('name', 'City Engineering Office')->first();
+        $bfp = Office::where('name', 'Bureau of Fire Protection')->first();
+        $icto = Office::where('name', 'Information and Communications Technology Office')->first();
         
         DB::table('users')->insert([
             [
