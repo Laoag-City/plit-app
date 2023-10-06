@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Owner extends Model
+class Owner extends Model implements Searchable
 {
     use HasFactory;
 
@@ -16,8 +18,8 @@ class Owner extends Model
         return $this->hasMany(Business::class, 'owner_id', 'owner_id');
     }
 
-    public function ownerSearch($search)
+    public function getSearchResult(): SearchResult
     {
-        
+        return new SearchResult($this, $this->name);
     }
 }

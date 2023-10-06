@@ -1,14 +1,6 @@
 <x-layout>
     <x-slot:title>Add New Business</x-slot>
 
-    <x-slot:js>
-        <script>
-            /*document.addEventListener("DOMContentLoaded", () => {
-                document.getElementById('foo').focus();
-            });*/
-        </script>
-    </x-slot>
-
     <form action="{{ url('/') }}" method="POST" class="max-w-none prose" enctype="multipart/form-data">
         <h2>Add New Business</h2>
         <div class="divider"></div>
@@ -43,9 +35,11 @@
                 placeholder="Owner Name"
                 name="owner_name"
                 :value="old('owner_name')"
+                :hidden-id-value="old('owner_name_selection_id')"
                 :error="$errors->first('owner_name')"
                 button-text="Change Selection"
                 dropdown-label-id="search_results"
+                :search="0"
             />
 
             <x-forms.select-field

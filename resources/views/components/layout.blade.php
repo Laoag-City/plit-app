@@ -76,7 +76,7 @@
         @endauth
 
         @vite('resources/js/app.js')
-        {{ $js ?? "" }}
+        @stack('scripts')
         @livewireScripts
     </body>
 </html>
