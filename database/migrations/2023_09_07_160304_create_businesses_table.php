@@ -18,7 +18,7 @@ return new class extends Migration
             //$table->unsignedBigInteger('classification_id');
             $table->string('id_no')->unique();
             $table->string('name');
-            $table->string('location_specifics');
+            $table->string('location_specifics')->nullable();
             $table->timestamps();
 
             $table->foreign('owner_id')

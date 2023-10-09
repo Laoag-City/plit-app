@@ -6,13 +6,14 @@
 
     	<div class="divider"></div>
 
-		<x-displays.table class="table-xs sm:table-md">
+		<x-displays.table class="table-xs sm:table-md mb-24">
 			<x-slot:head>
 				<tr>
 					<th>Business ID Number</th>
 					<th>Business Name</th>
 					<th>Owner Name</th>
 					<th>Barangay</th>
+					<th></th>
 				</tr>
 			</x-slot>
 
@@ -23,6 +24,14 @@
 						<td>{{ $business->name }}</td>
 						<td>{{ $business->owner->name }}</td>
 						<td>{{ $business->address->brgy }}</td>
+						<td>
+							<x-actions.dropdown-menu class="dropdown-bottom dropdown-end">
+								<x-slot:label>Options</x-slot>
+
+								<li><a href="">Business Info</a></li>
+								<li><a href="">Inspection Checklist</a></li>
+							</x-actions.dropdown-menu>
+						</td>
 					</tr>
 				@endforeach
 			</x-slot:body>

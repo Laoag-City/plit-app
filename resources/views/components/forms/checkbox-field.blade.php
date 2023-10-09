@@ -7,8 +7,8 @@
 	'labelJustifyClass' => "justify-start"
 ])
 
-<div class="form-control self-center">
-	<div {{ $attributes->class(['tooltip tooltip-error' => $error])->merge(['data-tip' => $error]) }}>
+<div {{ $attributes->class('form-control self-center') }}>
+	<div class="{{ !$error ?: 'tooltip tooltip-error' }}" data-tip="{{ $error }}">
 		<label class="label cursor-pointer {{ $labelJustifyClass }}">
 			<input
 				type="checkbox"

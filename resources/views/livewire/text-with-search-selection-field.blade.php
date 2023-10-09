@@ -16,6 +16,7 @@
 				wire:model="value"
 				placeholder="{{ $placeholder }}"
 				{{ $readOnly ? 'readonly' : '' }}
+				autocomplete="off"
 				class="input input-bordered w-full {{ !$error ?: 'input-error' }}"
                 x-on:keyUp.debounce="($event.target.value.length >= {{ $minSearchChars }} && !$wire.readOnly) ? callSearch($wire, $event.target.value) : ''"
 			/>

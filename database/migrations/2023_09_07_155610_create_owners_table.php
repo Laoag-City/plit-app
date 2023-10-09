@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id('owner_id');
             $table->string('name');
             $table->timestamps();
+
+            $table->index('name');
         });
     }
 

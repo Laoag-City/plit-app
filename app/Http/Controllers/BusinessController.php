@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddNewBusinessRequest;
 use App\Models\Address;
 use App\Models\Business;
+use App\Models\Owner;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -23,13 +24,23 @@ class BusinessController extends Controller
     {
         $validated = $request->validated();
 
+        if($validated['owner_name_selection_id'] == null)
+        {
+            $owner = new Owner;
+            $owner->name = $validated['owner_name'];
+            $owner->save();
+        }
+
         $business = new Business;
 
+        $business->owner_id = $validated['owner_name_selection_id'] ? $validated['owner_name_selection_id'] : $owner->owner_id;
         $business->address_id = Address::find($validated['barangay'])->first()->address_id;
-        $business->business_id_number = $validated['business_id_number'];
-        $business->business_name = $validated['business_name'];
+        $business->id_no = $validated['business_id_number'];
+        $business->name = $validated['business_name'];
 
         $business->save();
+
+        //do file upload logic
 
         return back();
     }

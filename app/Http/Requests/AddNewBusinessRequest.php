@@ -30,8 +30,8 @@ class AddNewBusinessRequest extends FormRequest
             'owner_name' => 'bail|required|string',
             'owner_name_selection_id' => 'bail|nullable|exists:owners,owner_id',
             'barangay' => 'bail|required|exists:addresses,address_id',
-            'supporting_images[]' => 'bail|array',
-            'supporting_images[].*' => 'bail|nullable|image|max:1280'
+            'supporting_images' => 'bail|array',
+            'supporting_images.*' => 'bail|nullable|image|max:1280'
         ];
     }
 

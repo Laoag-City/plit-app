@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:title>Add New Business</x-slot>
 
-    <form action="{{ url('/') }}" method="POST" class="max-w-none prose" enctype="multipart/form-data">
+    <form action="{{ url()->current() }}" method="POST" class="max-w-none prose" enctype="multipart/form-data">
         <h2>Add New Business</h2>
         <div class="divider"></div>
 
@@ -50,18 +50,24 @@
                 :error="$errors->first('barangay')"
             />
 
-            <div class="lg:flex lg:col-span-2 lg:justify-center">
-                <x-forms.file-input-field 
-                    label="Supporting Images"
-                    name="supporting_images[]"
-                    file-types="image/png, image/jpeg"
-                    camera="environment"
-                    :error="$errors->first('supporting_images[]')"
-                    :multiple="true"
-                />
-            </div>
+            <x-forms.text-field
+                label="Other Location Info"
+                placeholder="Other Location Info"
+                name="Other_location_info"
+                :value="old('Other_location_info')"
+                :error="$errors->first('Other_location_info')"
+            />
 
-            <div class="lg:col-span-2 mt-14">
+            <x-forms.file-input-field 
+                label="Supporting Images"
+                name="supporting_images[]"
+                file-types="image/png, image/jpeg"
+                camera="environment"
+                :error="collect([$errors->first('supporting_images'), $errors->first('supporting_images.*')])->first(fn($val, $key) => $val != '')"
+                :multiple="true"
+            />
+
+            <div class="lg:col-span-2 mt-5">
                 <x-actions.button
                     text="Submit Form"
                     class="btn-primary btn-outline btn-block"
