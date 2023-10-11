@@ -84,67 +84,80 @@ class DatabaseSeeder extends Seeder
         DB::table('requirements')->insert([
             [
                 'office_id' => $pld->office_id,
-                'requirement' => "No Mayor's Permit to Operate Business presented during inspection"
+                'requirement' => "No Mayor's Permit to Operate Business presented during inspection",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $cho->office_id,
-                'requirement' => "No Sanitary Permit presented during inspection"
+                'requirement' => "No Sanitary Permit presented during inspection",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $cho->office_id,
-                'requirement' => "No Health Certificate of Employees/Foodhandlers presented during inspection"
+                'requirement' => "No Health Certificate of {0} Employees/Foodhandlers presented during inspection",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $cho->office_id,
-                'requirement' => "No Health Certificate of owner presented during inspection"
+                'requirement' => "No Health Certificate of owner presented during inspection",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $cho->office_id,
-                'requirement' => "Expired Health Certificate of owner"
+                'requirement' => "Expired Health Certificate of owner",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $cho->office_id,
-                'requirement' => "Expired Health Certificate of Employees/Foodhandlers"
+                'requirement' => "Expired Health Certificate of {0} Employees/Foodhandlers",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $bfp->office_id,
-                'requirement' => "No fire extinguisher/down-pressured fire extinguisher/Non-functioning emergency lights"
+                'requirement' => "No fire extinguisher/down-pressured fire extinguisher/Non-functioning emergency lights",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $bfp->office_id,
-                'requirement' => "Obstructed Fire Exit"
+                'requirement' => "Obstructed Fire Exit",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $bfp->office_id,
-                'requirement' => "Provide/No directional sign of Fire Exits"
+                'requirement' => "Provide/No directional sign of Fire Exits",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $bfp->office_id,
-                'requirement' => "Provide opening at window of sleeping rooms"
+                'requirement' => "Provide opening at window of {0} sleeping rooms",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $ceo->office_id,
-                'requirement' => "Improper electrical wiring installations"
+                'requirement' => "Improper electrical wiring installations",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $ceo->office_id,
-                'requirement' => "Hanging electrical wires/uncovered junction boxes"
+                'requirement' => "Hanging electrical wires/uncovered junction boxes",
+                'mandatory' => true
             ],
 
             [
                 'office_id' => $pld->office_id,
-                'requirement' => "No Individual Mayor's Permit (Working Permit) of employees"
+                'requirement' => "No Individual Mayor's Permit (Working Permit) of {} employees",
+                'mandatory' => true
             ]
         ]);
 

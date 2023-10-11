@@ -25,13 +25,14 @@ class AddNewBusinessRequest extends FormRequest
     public function rules(Request $request): array
     {
         return [
-            'business_id_number' => 'bail|required|string|unique:businesses,business_id_number',
-            'business_name' => 'bail|required|string',
-            'owner_name' => 'bail|required|string',
+            'business_id_number' => 'bail|required|string|unique:businesses,id_no|min:14|max:20',
+            'business_name' => 'bail|required|string|max:250',
+            'owner_name' => 'bail|required|string|max:200',
             'owner_name_selection_id' => 'bail|nullable|exists:owners,owner_id',
             'barangay' => 'bail|required|exists:addresses,address_id',
-            'supporting_images' => 'bail|array',
-            'supporting_images.*' => 'bail|nullable|image|max:1280'
+            'other_location_info' => 'bail|nullable|string:max:200',
+            'supporting_images' => 'bail|nullable|array|max:20',
+            'supporting_images.*' => 'bail|image|max:1280'
         ];
     }
 

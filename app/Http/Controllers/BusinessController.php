@@ -6,10 +6,12 @@ use App\Http\Requests\AddNewBusinessRequest;
 use App\Models\Address;
 use App\Models\Business;
 use App\Models\Owner;
+use App\Models\ImageUpload;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class BusinessController extends Controller
 {
@@ -37,12 +39,28 @@ class BusinessController extends Controller
         $business->address_id = Address::find($validated['barangay'])->first()->address_id;
         $business->id_no = $validated['business_id_number'];
         $business->name = $validated['business_name'];
+        $business->location_specifics = $validated['other_location_info'];
 
         $business->save();
 
-        //do file upload logic
+        foreach($validated['supporting_images'] as $image)
+        {
+            $image_upload = new ImageUpload;
+            //save the image
 
-        return back();
+            $path = Storage::putFile($image_upload->getImageUploadDirectory($business->business_id), $image);
+
+            //save the image path to database
+            $image_upload->user_id = request()->user()->user_id;
+            $image_upload->business_id = $business->business_id;
+            $image_upload->image_path = $path;
+
+            $image_upload->save();
+
+            //to-do: accessing image metadata to extract gps location
+        }
+
+        return redirect(route('checklist'));
     }
 
     public function getBusinesses(Request $request) : View
@@ -59,6 +77,23 @@ class BusinessController extends Controller
 
         return view('business.get-businesses', [
             'businesses' => $businesses->paginate(100)
+        ]);
+    }
+
+    public function getChecklist(Request $request) : View
+    {
+        $business = null;
+        $requirements = null;
+
+        if($request->bin)
+        {
+            $business = Business::where('id_no', $request->bin)
+                                ->with(['business_requirements', 'business_requirements.requirement'])
+                                ->first();
+        }
+
+        return view('business.inspection-checklist', [
+            'business' => $business
         ]);
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('business_id');
             $table->string('image_path');
-            $table->string('coordinates');
+            $table->string('coordinates')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

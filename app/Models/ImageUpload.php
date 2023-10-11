@@ -20,4 +20,9 @@ class ImageUpload extends Model
     {
         return $this->belongsTo(Business::class, 'business_id', 'business_id');
     }
+
+    public function getImageUploadDirectory($business_id)
+    {
+        return "businesses/$business_id";
+    }
 }

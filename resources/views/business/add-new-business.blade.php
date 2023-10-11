@@ -53,9 +53,9 @@
             <x-forms.text-field
                 label="Other Location Info"
                 placeholder="Other Location Info"
-                name="Other_location_info"
-                :value="old('Other_location_info')"
-                :error="$errors->first('Other_location_info')"
+                name="other_location_info"
+                :value="old('other_location_info')"
+                :error="$errors->first('other_location_info')"
             />
 
             <x-forms.file-input-field 
