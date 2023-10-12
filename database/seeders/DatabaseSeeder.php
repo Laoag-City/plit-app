@@ -85,79 +85,92 @@ class DatabaseSeeder extends Seeder
             [
                 'office_id' => $pld->office_id,
                 'requirement' => "No Mayor's Permit to Operate Business presented during inspection",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => false
             ],
 
             [
                 'office_id' => $cho->office_id,
                 'requirement' => "No Sanitary Permit presented during inspection",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => false
             ],
 
             [
                 'office_id' => $cho->office_id,
                 'requirement' => "No Health Certificate of {0} Employees/Foodhandlers presented during inspection",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => true
             ],
 
             [
                 'office_id' => $cho->office_id,
                 'requirement' => "No Health Certificate of owner presented during inspection",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => false
             ],
 
             [
                 'office_id' => $cho->office_id,
                 'requirement' => "Expired Health Certificate of owner",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => false
             ],
 
             [
                 'office_id' => $cho->office_id,
                 'requirement' => "Expired Health Certificate of {0} Employees/Foodhandlers",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => true
             ],
 
             [
                 'office_id' => $bfp->office_id,
                 'requirement' => "No fire extinguisher/down-pressured fire extinguisher/Non-functioning emergency lights",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => false
             ],
 
             [
                 'office_id' => $bfp->office_id,
                 'requirement' => "Obstructed Fire Exit",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => false
             ],
 
             [
                 'office_id' => $bfp->office_id,
                 'requirement' => "Provide/No directional sign of Fire Exits",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => false
             ],
 
             [
                 'office_id' => $bfp->office_id,
                 'requirement' => "Provide opening at window of {0} sleeping rooms",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => true
             ],
 
             [
                 'office_id' => $ceo->office_id,
                 'requirement' => "Improper electrical wiring installations",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => false
             ],
 
             [
                 'office_id' => $ceo->office_id,
                 'requirement' => "Hanging electrical wires/uncovered junction boxes",
-                'mandatory' => true
+                'mandatory' => true,
+                'has_dynamic_params' => false
             ],
 
             [
                 'office_id' => $pld->office_id,
-                'requirement' => "No Individual Mayor's Permit (Working Permit) of {} employees",
-                'mandatory' => true
+                'requirement' => "No Individual Mayor's Permit (Working Permit) of {0} employees",
+                'mandatory' => true,
+                'has_dynamic_params' => true
             ]
         ]);
 

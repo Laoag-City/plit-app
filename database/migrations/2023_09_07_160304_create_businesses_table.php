@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('id_no')->unique();
             $table->string('name');
             $table->string('location_specifics')->nullable();
+            $table->smallInteger('inspection_count')->default(0);
             $table->timestamps();
 
             $table->foreign('owner_id')

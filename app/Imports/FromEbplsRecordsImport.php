@@ -5,6 +5,8 @@ namespace App\Imports;
 use App\Models\Address;
 use App\Models\Business;
 use App\Models\Owner;
+use App\Models\Requirement;
+use App\Models\BusinessRequirement;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -25,6 +27,8 @@ class FromEbplsRecordsImport implements ToCollection, WithHeadingRow
     */
     public function collection(Collection $rows)
     {
+        $requirements = Requirement::where('mandatory', true)->get();
+        
         foreach($rows as $row)
         {
             //skip rows that has a 0 or 2 cell content in exclusion column
@@ -71,6 +75,17 @@ class FromEbplsRecordsImport implements ToCollection, WithHeadingRow
                 $business->name = $row['business_name'];
                 $business->location_specifics = $row['location_of_business'];
                 $business->save();
+
+                foreach($requirements as $requirement)
+                {
+                    $business_requirement = new BusinessRequirement;
+
+                    $business_requirement->business_id = $business->business_id;
+                    $business_requirement->requirement_id = $requirement->requirement_id;
+                    $business_requirement->complied = false;
+
+                    $business_requirement->save();
+                }
             }
         }
     }

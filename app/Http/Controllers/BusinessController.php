@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddNewBusinessRequest;
 use App\Models\Address;
 use App\Models\Business;
+use App\Models\BusinessRequirement;
 use App\Models\Owner;
 use App\Models\ImageUpload;
+use App\Models\Requirement;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -25,6 +27,7 @@ class BusinessController extends Controller
     public function addNewBusiness(AddNewBusinessRequest $request) : RedirectResponse
     {
         $validated = $request->validated();
+        $requirements = Requirement::where('mandatory', true)->get();
 
         if($validated['owner_name_selection_id'] == null)
         {
@@ -43,6 +46,17 @@ class BusinessController extends Controller
 
         $business->save();
 
+        foreach($requirements as $requirement)
+        {
+            $business_requirement = new BusinessRequirement;
+
+            $business_requirement->business_id = $business->business_id;
+            $business_requirement->requirement_id = $requirement->requirement_id;
+            $business_requirement->complied = false;
+
+            $business_requirement->save();
+        }
+
         foreach($validated['supporting_images'] as $image)
         {
             $image_upload = new ImageUpload;
@@ -60,7 +74,7 @@ class BusinessController extends Controller
             //to-do: accessing image metadata to extract gps location
         }
 
-        return redirect(route('checklist'));
+        return redirect()->route('checklist', ['bin' => $business->id_no]);
     }
 
     public function getBusinesses(Request $request) : View
@@ -95,5 +109,10 @@ class BusinessController extends Controller
         return view('business.inspection-checklist', [
             'business' => $business
         ]);
+    }
+
+    public function submitChecklist()
+    {
+        
     }
 }

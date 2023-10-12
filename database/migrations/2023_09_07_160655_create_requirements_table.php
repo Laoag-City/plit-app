@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('office_id');
             $table->string('requirement');
             $table->boolean('mandatory')->default(false);
+            $table->boolean('has_dynamic_params')->default(false);
             $table->timestamps();
 
             $table->foreign('office_id')
