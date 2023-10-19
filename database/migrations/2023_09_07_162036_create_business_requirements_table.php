@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('business_requirement_id');
             $table->unsignedBigInteger('business_id');
             $table->unsignedBigInteger('requirement_id');
-            $table->string('requirement_params')->nullable();
+            $table->string('requirement_params_value')->nullable();
             $table->boolean('complied');
             $table->timestamps();
 

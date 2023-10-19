@@ -1,5 +1,5 @@
 @props([
-	'label',
+	'label' => '',
 	'type' => 'text',
 	'name',
 	'value',
@@ -8,9 +8,11 @@
 ])
 
 <div {{ $attributes->class('form-control') }}>
-	<label class="label">
-		<span class="label-text font-bold">{{ $label }}</span>
-	</label>
+	@if($label)
+		<label class="label">
+			<span class="label-text font-bold">{{ $label }}</span>
+		</label>
+	@endif
 	
 	<div class="{{ !$error ?: 'tooltip tooltip-error' }}" data-tip="{{ $error }}">
 		<input 

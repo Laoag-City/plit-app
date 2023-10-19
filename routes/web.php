@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/businesses', [BusinessController::class, 'getBusinesses'])->name('businesses');
 
     Route::get('/checklist', [BusinessController::class, 'getChecklist'])->name('checklist');
+    Route::post('/checklist', [BusinessController::class, 'saveChecklist'])->name('save-checklist');
 
     Route::post('/logout', [AuthenticationController::class, 'logOut']);
 });

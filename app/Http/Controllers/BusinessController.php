@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddNewBusinessRequest;
+use App\Http\Requests\SaveInspectionChecklistRequest;
 use App\Models\Address;
 use App\Models\Business;
 use App\Models\BusinessRequirement;
 use App\Models\Owner;
 use App\Models\ImageUpload;
 use App\Models\Requirement;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -97,22 +99,34 @@ class BusinessController extends Controller
     public function getChecklist(Request $request) : View
     {
         $business = null;
-        $requirements = null;
+        $mandatory_business_requirements = null;
+        $other_requirement = null;
 
         if($request->bin)
         {
-            $business = Business::where('id_no', $request->bin)
-                                ->with(['business_requirements', 'business_requirements.requirement'])
-                                ->first();
+            $business = Business::where('id_no', $request->bin)->first();
+
+            $mandatory_business_requirements = BusinessRequirement::where('business_id', '=', $business->business_id)
+                                                                    ->orderBy('requirement_id', 'asc')
+                                                                    ->with(['requirement' => function(Builder $query){
+                                                                        $query->where('mandatory', '=', true);
+                                                                    }])->get();
+
+            $other_requirement = BusinessRequirement::where('business_id', '=', $business->business_id)
+                                                    ->withWhereHas('requirement', function(Builder $query){
+                                                        $query->where('mandatory', '=', false);
+                                                    })->first();
         }
 
         return view('business.inspection-checklist', [
-            'business' => $business
+            'business' => $business,
+            'mandatory_business_requirements' => $mandatory_business_requirements,
+            'other_requirement' => $other_requirement
         ]);
     }
 
-    public function submitChecklist()
+    public function saveChecklist(SaveInspectionChecklistRequest $request)
     {
-        
+        $validated = $request->validated();
     }
 }
