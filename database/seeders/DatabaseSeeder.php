@@ -41,7 +41,8 @@ class DatabaseSeeder extends Seeder
                 'office_id' => $pld->office_id,
                 'name' => 'CMO - PLD user',
                 'username' => 'pld',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'admin' => false
 
             ],
             
@@ -49,35 +50,40 @@ class DatabaseSeeder extends Seeder
                 'office_id' => $cho->office_id,
                 'name' => 'CHO user',
                 'username' => 'cho',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'admin' => false
             ],
             
             [
                 'office_id' => $cto->office_id,
                 'name' => 'CTO user',
                 'username' => 'cto',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'admin' => false
             ],
             
             [
                 'office_id' => $ceo->office_id,
                 'name' => 'CEO user',
                 'username' => 'ceo',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'admin' => false
             ],
             
             [
                 'office_id' => $bfp->office_id,
                 'name' => 'BFP user',
                 'username' => 'bfp',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'admin' => false
             ],
             
             [
                 'office_id' => $icto->office_id,
                 'name' => 'Admin',
                 'username' => 'admin',
-                'password' => bcrypt('Admin1234')
+                'password' => bcrypt('Admin1234'),
+                'admin' => true
             ]
         ]);
 

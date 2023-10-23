@@ -25,6 +25,12 @@ class SaveInspectionChecklistRequest extends FormRequest
             'requirement' => 'bail|nullable|array',
             'requirement.*.complied' => 'bail|nullable|accepted',
             'requirement.*.parameter' => 'bail|nullable|integer|min:1|max:9999',
+            'other_requirement' => '',
+            'other_requirement_complied' => '',
+            'days_to_comply' => '',
+            'remarks' => '',
+            'supporting_images' => 'bail|nullable|array|max:20',
+            'supporting_images.*' => 'bail|image|max:1280'
         ];
     }
 }

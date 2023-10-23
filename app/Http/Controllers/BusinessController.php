@@ -14,6 +14,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
@@ -100,27 +101,43 @@ class BusinessController extends Controller
     {
         $business = null;
         $mandatory_business_requirements = null;
+        $other_offices_other_requirements = null;
         $other_requirement = null;
 
         if($request->bin)
         {
             $business = Business::where('id_no', $request->bin)->first();
 
-            $mandatory_business_requirements = BusinessRequirement::where('business_id', '=', $business->business_id)
-                                                                    ->orderBy('requirement_id', 'asc')
-                                                                    ->with(['requirement' => function(Builder $query){
-                                                                        $query->where('mandatory', '=', true);
-                                                                    }])->get();
+            if($business != null)
+            {
+                $mandatory_business_requirements = BusinessRequirement::where('business_id', '=', $business->business_id)
+                                                                        ->orderBy('requirement_id', 'asc')
+                                                                        ->with(['requirement' => function(Builder $query){
+                                                                            $query->where('mandatory', '=', true);
+                                                                        }, 'requirement.office'])->get();
 
-            $other_requirement = BusinessRequirement::where('business_id', '=', $business->business_id)
-                                                    ->withWhereHas('requirement', function(Builder $query){
-                                                        $query->where('mandatory', '=', false);
-                                                    })->first();
+                $other_offices_other_requirements = BusinessRequirement::where('business_id', '=', $business->business_id)
+                                                                        ->withWhereHas('requirement', function(Builder $query){
+                                                                            $query->where([
+                                                                                ['mandatory', '=', false],
+                                                                                ['office_id', '<>', Auth::user()->office_id]
+                                                                            ]);
+                                                                        })->get();
+
+                $other_requirement = BusinessRequirement::where('business_id', '=', $business->business_id)
+                                                        ->withWhereHas('requirement', function(Builder $query){
+                                                            $query->where([
+                                                                ['mandatory', '=', false],
+                                                                ['office_id', '=', Auth::user()->office_id]
+                                                            ]);
+                                                        })->first();
+            }
         }
 
         return view('business.inspection-checklist', [
             'business' => $business,
             'mandatory_business_requirements' => $mandatory_business_requirements,
+            'other_offices_other_requirements' => $other_offices_other_requirements,
             'other_requirement' => $other_requirement
         ]);
     }

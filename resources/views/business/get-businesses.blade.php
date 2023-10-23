@@ -29,7 +29,7 @@
 								<x-slot:label>Options</x-slot>
 
 								<li><a href="">Business Info</a></li>
-								<li><a href="">Inspection Checklist</a></li>
+								<li><a href="{{ route('checklist', ['bin' => $business->id_no]) }}">Inspection Checklist</a></li>
 							</x-actions.dropdown-menu>
 						</td>
 					</tr>

@@ -35,4 +35,16 @@ class Business extends Model
     {
         return $this->hasMany(ImageUpload::class, 'business_id', 'business_id');
     }
+
+    public function getInspectionStatus()
+    {
+        if($this->inspection_count == 0)
+            return 'No inspection records yet.';
+        elseif($this->inspection_count == 1)
+            return 'Initial Inspection conducted. With deficiencies.';
+        elseif($this->inspection_count == 2)
+            return 'Re-inspection conducted. For closure.';
+        elseif($this->inspection_count == 3)
+            return 'All inspection conducted. No deficiencies.';
+    }
 }
