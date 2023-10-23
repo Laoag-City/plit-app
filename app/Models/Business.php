@@ -45,6 +45,6 @@ class Business extends Model
         elseif($this->inspection_count == 2)
             return 'Re-inspection conducted. For closure.';
         elseif($this->inspection_count == 3)
-            return 'All inspection conducted. No deficiencies.';
+            return 'All inspection conducted. Business has complied to all requirements.';
     }
 }

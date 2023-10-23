@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('image_uploads', function (Blueprint $table) {
-            $table->id('image_upload_id');
+        Schema::create('remarks', function (Blueprint $table) {
+            $table->id('remark_id');
             $table->unsignedBigInteger('office_id');
             $table->unsignedBigInteger('business_id');
-            $table->string('image_path');
-            $table->string('coordinates')->nullable();
+            $table->string('remarks');
+            $table->unsignedTinyInteger('inspection_count');
             $table->timestamps();
 
             $table->foreign('office_id')
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('image_uploads');
+        Schema::dropIfExists('remarks');
     }
 };

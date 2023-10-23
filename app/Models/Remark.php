@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ImageUpload extends Model
+class Remark extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'image_upload_id';
-    protected $max_uploads = 20;
+    protected $primaryKey = 'remark_id';
 
     public function office()
     {
@@ -20,10 +19,5 @@ class ImageUpload extends Model
     public function business()
     {
         return $this->belongsTo(Business::class, 'business_id', 'business_id');
-    }
-
-    public function getImageUploadDirectory($business_id)
-    {
-        return "businesses/$business_id";
     }
 }

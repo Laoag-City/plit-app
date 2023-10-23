@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('id_no')->unique();
             $table->string('name');
             $table->string('location_specifics')->nullable();
-            $table->smallInteger('inspection_count')->default(0);
-            $table->smallInteger('due_date_days')->nullable();
-            $table->string('inspection_remarks')->nullable();
+            $table->unsignedTinyInteger('inspection_count')->default(0);
+            $table->date('due_date')->nullable();
             $table->timestamps();
 
             $table->foreign('owner_id')
