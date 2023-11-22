@@ -4,7 +4,8 @@
 	'value' => 1,
 	'checked' => false,
 	'error' => '',
-	'labelJustifyClass' => "justify-start"
+	'labelJustifyClass' => "justify-start",
+	'disabled' => false
 ])
 
 <div {{ $attributes->class('form-control self-center') }}>
@@ -16,8 +17,9 @@
 				value="{{ $value }}"
 				class="checkbox lg:ml-5 {{ !$error ?: 'checkbox-error'}}"
 				{{ !$checked ?: 'checked' }}
+				{{ !$disabled ?: 'disabled' }}
 			/>
-			<span class="label-text ml-5 lg:mr-5">{{ $label }}</span> 
+			<span class="label-text ml-5 lg:mr-5 font-bold">{{ $label }}</span> 
 		</label>
 	</div>
 </div>

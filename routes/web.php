@@ -23,8 +23,12 @@ Route::middleware(['guest'])->controller((AuthenticationController::class))->gro
 });
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/', [BusinessController::class, 'showAddNewBusiness']);
-    Route::post('/', [BusinessController::class, 'addNewBusiness']);
+    Route::get('/', HomeController::class);
+
+    Route::get('/new-business', [BusinessController::class, 'showAddNewBusiness'])
+            ->name('new-business')
+            ->middleware('can:pld-personnel-action-only');
+    Route::post('/new-business', [BusinessController::class, 'addNewBusiness'])->middleware('can:pld-personnel-action-only');
 
     Route::get('/home', HomeController::class)->name('home');
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ImageUpload;
 use App\Models\Owner;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class AddNewBusinessRequest extends FormRequest
             'owner_name_selection_id' => 'bail|nullable|exists:owners,owner_id',
             'barangay' => 'bail|required|exists:addresses,address_id',
             'other_location_info' => 'bail|nullable|string:max:200',
-            'supporting_images' => 'bail|nullable|array|max:20',
+            'supporting_images' => 'bail|nullable|array|max:' . ImageUpload::MAX_UPLOADS,
             'supporting_images.*' => 'bail|image|max:1280'
         ];
     }

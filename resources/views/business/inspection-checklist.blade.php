@@ -27,7 +27,6 @@
                     class="btn-secondary btn-outline join-item"
                 />
 			</form>
-		
 
 			@if($business)
 				<div class="col-span-1 lg:col-span-2 text-justify">
@@ -42,8 +41,9 @@
 					<h4>Status: {{ $business->getInspectionStatus() }}</h4>
 				</div>
 
-				<form action="{{ url()->current() }}" method="POST" class="col-span-1 lg:col-span-3" enctype="multipart/form-data">
+				<form action="{{ url()->current() }}" method="POST" class="col-span-1 lg:col-span-3" enctype="multipart/form-data" x-data="checklist">
 					@csrf
+					<input type="hidden" name="bin" value="{{ request()->bin }}" />
 
 					<div class="divider"></div>
 
@@ -97,7 +97,7 @@
 												value="{{ $param_value }}"
 												min="1"
 												max="9999"
-												{{ $editable ?: 'readonly' }}
+												{{ $editable ?: 'disabled' }}
 											> 
 											
 											{{ Str::after($bus_req->requirement->requirement, $param['param']) }} 
@@ -198,14 +198,74 @@
 					</x-displays.table>
 
 					<div class="grid grod-cols-1 lg:grid-cols-5 gap-4">
+						@php
+							$status = $business->getInspectionStatus();
+
+							if(old('inspection_status'))
+								$inspection_status_value = old('inspection_status');
+
+							elseif($status == 1)
+								$inspection_status_value = 'initial_inspection';
+
+							elseif($status == 2)
+								$inspection_status_value = 're-inspection';
+
+							else
+								$inspection_status_value = null;
+						@endphp
+
+						<x-forms.select-field
+							label="Inspection Status"
+							name="inspection_status"
+							:options="[['value' => 'initial_inspection', 'name' => 'Initial Inspection'], ['value' => 're-inspection', 'name' => 'Re-Inspection']]"
+							:selected="$inspection_status_value"
+							:error="$errors->first('inspection_status')"
+							class="lg:col-span-2"
+							:disabled="!Gate::allows('pld-personnel-action-only')"
+						/>
+
 						<x-forms.text-field
-							label="Days To Comply"
-							placeholder="Days To Comply"
-							name="days_to_comply"
-							type="number"
-							:value="old('days_to_comply')"
-							:error="$errors->first('days_to_comply')"
-							:readonly="!Gate::allows('edits-days-to-comply')"
+							label="Initial Inspection Date"
+							placeholder="Initial Inspection Date"
+							name="initial_inspection_date"
+							type="date"
+							:value="old('initial_inspection_date') ? old('initial_inspection_date') : $business->inspection_date"
+							:error="$errors->first('initial_inspection_date')"
+							:readonly="!Gate::allows('pld-personnel-action-only')"
+						/>
+
+						<x-forms.text-field
+							label="Re-inspection Date"
+							placeholder="Re-inspection Date"
+							name="reinspection_date"
+							type="date"
+							:value="old('reinspection_date') ? old('reinspection_date') : $business->re_inspection_date"
+							:error="$errors->first('reinspection_date')"
+							:readonly="!Gate::allows('pld-personnel-action-only')"
+						/>
+
+						@if($status == 2 || $status == 3)
+							<x-forms.checkbox-field
+								label="Tag business for closure"
+								name="business_for_closure"
+								:checked="$status == 3"
+								:error="$errors->first('business_for_closure')"
+								:disabled="!Gate::allows('pld-personnel-action-only')"
+							/>
+						@else
+							<div class="min-[1px]:max-lg:hidden"></div>
+						@endif
+
+						{{-- next row --}}
+
+						<x-forms.text-field
+							label="Due Date"
+							placeholder="Due Date"
+							name="due_date"
+							type="date"
+							:value="old('due_date') ? old('due_date') : $business->due_date"
+							:error="$errors->first('due_date')"
+							:readonly="!Gate::allows('pld-personnel-action-only')"
 						/>
 						
 						<x-forms.text-field
@@ -213,19 +273,22 @@
 							placeholder="Remarks"
 							name="remarks"
 							class="lg:col-span-2"
-							:value="old('remarks')"
+							:value="old('remarks') ? old('remarks') : $user_office_remarks"
 							:error="$errors->first('remarks')"
 						/>
 
-						<x-forms.file-input-field 
-							label="Supporting Images"
-							name="supporting_images[]"
-							file-types="image/png, image/jpeg"
-							camera="environment"
-							class="lg:col-span-2"
-							:error="collect([$errors->first('supporting_images'), $errors->first('supporting_images.*')])->first(fn($val, $key) => $val != '')"
-							:multiple="true"
-						/>
+						@can('pld-personnel-action-only')
+							<x-forms.file-input-field 
+								:label="'Supporting Images (' . $user_office_remaining_image_uploads . ' / ' . App\Models\ImageUpload::MAX_UPLOADS . ')'"
+								name="supporting_images[]"
+								file-types="image/png, image/jpeg"
+								camera="environment"
+								class="lg:col-span-2"
+								:error="collect([$errors->first('supporting_images'), $errors->first('supporting_images.*')])->first(fn($val, $key) => $val != '')"
+								:multiple="true"
+								:disabled="$uploads_disabled"
+							/>
+						@endcan
 					</div>
 
 					<div class="mt-12">
@@ -235,9 +298,87 @@
 						/>
 					</div>
 				</form>
+
+				<div class="col-span-1 lg:col-span-3 mt-6 px-12 text-left">
+					<h3 class="">Other Info:</h3>
+
+					<x-displays.collapse>
+						Remarks from other offices
+
+						<x-slot:content>
+							@if($remarks->isNotEmpty())
+								@php
+									$remarks_initial = $remarks->where('inspection_count', '<', 2);
+									$remarks_reinspect = $remarks->where('inspection_count', '==', 2);
+								@endphp
+
+								@if($remarks_initial->isNotEmpty())
+									<p>Initial Inspection Remarks</p>
+									<ul>
+										@foreach($remarks_initial as $remark)
+											<li><b>{{ $remarks->office->name }}</b> - {{ $remarks->name }}</li>
+										@endforeach
+									</ul>
+								@endif
+
+								@if($remarks_reinspect->isNotEmpty())
+									<p>Re-inspection Remarks</p>
+									<ul>
+										@foreach($remarks_initial as $remark)
+											<li><b>{{ $remarks->office->name }}</b> - {{ $remarks->name }}</li>
+										@endforeach
+									</ul>
+								@endif
+							@else
+								No remarks yet.
+							@endif
+						</x-slot>
+					</x-displays.collapse>
+
+					<x-displays.collapse>
+						Uploaded Images
+
+						<x-slot:content>
+							@if($image_uploads->isNotEmpty())
+								<x-displays.carousel :images="$images"/>
+							@else
+								No images yet.
+							@endif
+						</x-slot>
+					</x-displays.collapse>
+				</div>
 			@elseif(request()->bin)
 				<h3 class="col-span-1 lg:col-span-3">No results found.</h3>
 			@endif
 		</div>
 	</div>
+
+	@php
+		if($business)
+		{
+			//for alpineJS
+			$mandatory_req = collect($mandatory_business_requirements->toArray())
+								->keyBy('requirement.requirement_id')
+								->map(function($item, $key){
+									return [
+										'requirement_field_val' => $item['requirement_params_value'],
+										'is_checked' => $item['complied'],
+										'is_mandatory' => $item['requirement']['mandatory'],
+										'has_requirement_field' => $item['requirement']['has_dynamic_params']
+									];
+								});
+		}
+	@endphp
+
+	@pushOnce('scripts')
+		<script>
+			document.addEventListener('alpine:init', () => {
+				Alpine.data('checklist', () => ({
+					mandatory_requirements: {!! $mandatory_req->toJson() !!}
+
+					continue here
+				}));
+			});
+		</script>
+	@endPushOnce
 </x-layout>

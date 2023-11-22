@@ -3,7 +3,9 @@
 		<summary>Permits and Licenses</summary>
 
 		<ul>
-			<li><a href="{{ url('/') }}">Add New Business</a></li>
+			@can('pld-personnel-action-only')
+				<li><a href="{{ route('new-business') }}">Add New Business</a></li>
+			@endcan
 			<li><a href="{{ route('checklist') }}">Inspection Checklist</a></li>
 			<li><a href="{{ route('businesses') }}">Businesses</a></li>
 		</ul>

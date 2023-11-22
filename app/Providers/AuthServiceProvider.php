@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->office_id == $requirement->office_id;
         });
 
-        Gate::define('edits-days-to-comply', function(User $user){
+        Gate::define('pld-personnel-action-only', function(User $user){
             $pld = Office::where('name', 'CMO - Permits & Licenses Division')->first();
 
             return $user->office_id == $pld->office_id;

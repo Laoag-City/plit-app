@@ -40,11 +40,17 @@ class Business extends Model
     {
         if($this->inspection_count == 0)
             return 'No inspection records yet.';
+        
         elseif($this->inspection_count == 1)
-            return 'Initial Inspection conducted. With deficiencies.';
+            return 'Under initial inspection.';
+        
         elseif($this->inspection_count == 2)
-            return 'Re-inspection conducted. For closure.';
+            return 'Under re-inspection.';
+        
         elseif($this->inspection_count == 3)
-            return 'All inspection conducted. Business has complied to all requirements.';
+            return 'Business for closure.';//when PLD personnel checks the Business for closure checkbox
+        
+        elseif($this->inspection_count == 4)
+            return 'Business has complied to all requirements.'; //all requirements must be complied
     }
 }

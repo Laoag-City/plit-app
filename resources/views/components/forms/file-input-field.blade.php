@@ -4,7 +4,8 @@
 	'fileTypes',
 	'camera' => '',
 	'error' => '',
-	'multiple' => false
+	'multiple' => false,
+	'disabled' => false
 ])
 
 <div {{ $attributes->class('form-control') }}>
@@ -20,6 +21,7 @@
 			accept="{{ $fileTypes }}"
 			capture="{{ $camera }}"
 			{{ $multiple ? 'multiple' : '' }}
+			{{ $disabled ? 'disabled' : '' }}
 			class="file-input file-input-bordered w-full {{ !$error ?: 'file-input-error' }}"
 		/>
 	</div>

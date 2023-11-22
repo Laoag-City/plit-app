@@ -9,6 +9,7 @@ use App\Models\Business;
 use App\Models\BusinessRequirement;
 use App\Models\Owner;
 use App\Models\ImageUpload;
+use App\Models\Remark;
 use App\Models\Requirement;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -17,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 
 class BusinessController extends Controller
 {
@@ -68,7 +70,7 @@ class BusinessController extends Controller
             $path = Storage::putFile($image_upload->getImageUploadDirectory($business->business_id), $image);
 
             //save the image path to database
-            $image_upload->user_id = request()->user()->user_id;
+            $image_upload->office_id = request()->user()->office_id;
             $image_upload->business_id = $business->business_id;
             $image_upload->image_path = $path;
 
@@ -100,9 +102,16 @@ class BusinessController extends Controller
     public function getChecklist(Request $request) : View
     {
         $business = null;
+
         $mandatory_business_requirements = null;
         $other_offices_other_requirements = null;
         $other_requirement = null;
+
+        $remarks = null;
+        $user_office_remarks = null;
+
+        $image_uploads = null;
+        $user_office_remaining_image_uploads = null;
 
         if($request->bin)
         {
@@ -131,14 +140,47 @@ class BusinessController extends Controller
                                                                 ['office_id', '=', Auth::user()->office_id]
                                                             ]);
                                                         })->first();
+
+                ////////////////////
+                $remarks = Remark::where('business_id', '=', $business->business_id)
+                                ->with(['office'])
+                                ->get();
+
+                //get the remarks of the user's office...
+                if($business->inspection_count == 0 || $business->inspection_count == 1)
+                    $operation = '<';
+                else
+                    $operation = '==';
+
+                $user_office_remarks = $remarks->where('inspection_count', $operation, 2)
+                                                ->where('office_id', '==', Auth::user()->office->office_id)
+                                                ->first()
+                                                ->remarks ?? null;
+
+                //then, the remarks of other offices
+                $remarks = $remarks->where('office_id', '!=', Auth::user()->office->office_id);
+
+                ////////////////////
+                $image_uploads = ImageUpload::where('business_id', '=', $business->business_id)->get();
+
+                if(Gate::allows('pld-personnel-action-only'))
+                    $user_office_remaining_image_uploads = $image_uploads->where('office_id', '=', Auth::user()->office->office_id)->count();
             }
         }
 
         return view('business.inspection-checklist', [
             'business' => $business,
+
             'mandatory_business_requirements' => $mandatory_business_requirements,
             'other_offices_other_requirements' => $other_offices_other_requirements,
-            'other_requirement' => $other_requirement
+            'other_requirement' => $other_requirement,
+
+            'remarks' => $remarks,
+            'user_office_remarks' => $user_office_remarks,
+            
+            'image_uploads' => $image_uploads,
+            'user_office_remaining_image_uploads' => $user_office_remaining_image_uploads,
+            'uploads_disabled' => ImageUpload::MAX_UPLOADS <= $user_office_remaining_image_uploads
         ]);
     }
 

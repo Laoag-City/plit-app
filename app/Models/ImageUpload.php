@@ -10,7 +10,7 @@ class ImageUpload extends Model
     use HasFactory;
 
     protected $primaryKey = 'image_upload_id';
-    protected $max_uploads = 20;
+    const MAX_UPLOADS = 5;
 
     public function office()
     {

@@ -59,7 +59,7 @@
             />
 
             <x-forms.file-input-field 
-                label="Supporting Images"
+                :label="'Supporting Images (maximum of ' . App\Models\ImageUpload::MAX_UPLOADS . ' images)'"
                 name="supporting_images[]"
                 file-types="image/png, image/jpeg"
                 camera="environment"
