@@ -119,6 +119,7 @@ class BusinessController extends Controller
 
             if($business != null)
             {
+                //requirements
                 $mandatory_business_requirements = BusinessRequirement::where('business_id', '=', $business->business_id)
                                                                         ->orderBy('requirement_id', 'asc')
                                                                         ->with(['requirement' => function(Builder $query){
@@ -141,7 +142,8 @@ class BusinessController extends Controller
                                                             ]);
                                                         })->first();
 
-                ////////////////////
+
+                //remarks
                 $remarks = Remark::where('business_id', '=', $business->business_id)
                                 ->with(['office'])
                                 ->get();
@@ -160,11 +162,82 @@ class BusinessController extends Controller
                 //then, the remarks of other offices
                 $remarks = $remarks->where('office_id', '!=', Auth::user()->office->office_id);
 
-                ////////////////////
+
+                //images
                 $image_uploads = ImageUpload::where('business_id', '=', $business->business_id)->get();
 
                 if(Gate::allows('pld-personnel-action-only'))
                     $user_office_remaining_image_uploads = $image_uploads->where('office_id', '=', Auth::user()->office->office_id)->count();
+
+
+                //variables for alpineJS reactivity
+                $mandatory_req_for_js = [];
+
+                foreach($mandatory_business_requirements as $val)
+                {
+                    $mandatory_req_for_js[$val['requirement_id']] = [
+                                                                        'requirement_field_val' => $val['requirement_params_value'],
+                                                                        'is_checked' => (bool)$val['complied'],
+                                                                        'is_mandatory' => (bool)$val['requirement']['mandatory'],
+                                                                        'has_requirement_field' => (bool)$val['requirement']['has_dynamic_params']
+                                                                    ];
+                }
+                
+                $other_offices_other_req_for_js = [];
+
+                foreach($other_offices_other_requirements as $val)
+                {
+                    $other_offices_other_req_for_js[$val['requirement_id']] = [
+                                                                        'requirement_field_val' => $val['requirement']['requirement'],
+                                                                        'is_checked' => (bool)$val['complied'],
+                                                                        'is_mandatory' => (bool)$val['requirement']['mandatory'],
+                                                                        'has_requirement_field' => (bool)$val['requirement']['has_dynamic_params']
+                                                                    ];
+                }
+
+                $other_req_for_js = $other_requirement == null ? [
+                                        'requirement_field_val' => '',
+                                        'is_checked' => false,
+                                        'is_mandatory' => false,
+                                        'has_requirement_field' => false
+                                    ]
+                                    : [
+                                        'requirement_field_val' => $other_requirement->requirement->requirement,
+                                        'is_checked' => (bool)$other_requirement->complied,
+                                        'is_mandatory' => (bool)$other_requirement->requirement->mandatory,
+                                        'has_requirement_field' => (bool)$other_requirement->requirement->has_dynamic_params
+                                    ];
+
+                /* alternate way of the above code for AlpineJS
+                $mandatory_req_for_js = collect($mandatory_business_requirements->toArray())
+                                                ->keyBy('requirement_id')
+                                                ->map(function($item, $key){
+                                                    return [
+                                                        'requirement_field_val' => $item['requirement_params_value'],
+                                                        'is_checked' => (bool)$item['complied'],
+                                                        'is_mandatory' => $item['requirement']['mandatory'],
+                                                        'has_requirement_field' => $item['requirement']['has_dynamic_params']
+                                                    ];
+                                                });
+
+                $other_offices_other_req_for_js = collect($other_offices_other_requirements->toArray())
+                                                    ->keyBy('requirement_id')
+                                                    ->map(function($item, $key){
+                                                        return [
+                                                            'requirement_field_val' => $item['requirement']['requirement'],
+                                                            'is_checked' => (bool)$item['complied'],
+                                                            'is_mandatory' => $item['requirement']['mandatory'],
+                                                            'has_requirement_field' => $item['requirement']['has_dynamic_params']
+                                                        ];
+                                                    })->toJson();
+
+                $other_req_for_js = $other_requirement == null ? collect([])->toJson()
+                                    : collect([
+                                                'requirement_field_val' => $other_requirement->requirement->requirement,
+                                                'is_checked' => (bool)$other_requirement->complied,
+                                                'is_mandatory' => $other_requirement->requirement->mandatory,
+                                                'has_requirement_field' => $other_requirement->requirement->has_dynamic_params
+                                            ])->toJson();*/
             }
         }
 
@@ -180,7 +253,11 @@ class BusinessController extends Controller
             
             'image_uploads' => $image_uploads,
             'user_office_remaining_image_uploads' => $user_office_remaining_image_uploads,
-            'uploads_disabled' => ImageUpload::MAX_UPLOADS <= $user_office_remaining_image_uploads
+            'uploads_disabled' => ImageUpload::MAX_UPLOADS <= $user_office_remaining_image_uploads,
+
+            'mandatory_req_for_js' => $mandatory_req_for_js,
+            'other_offices_other_req_for_js' => $other_offices_other_req_for_js,
+            'other_req_for_js' => $other_req_for_js
         ]);
     }
 

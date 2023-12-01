@@ -65,6 +65,9 @@
 											$editable = true;
 										else
 											$editable = false;
+
+										//saved the id to a different variable to avoid long object property access syntax
+										$req_id = $bus_req->requirement_id;
 									@endphp
 
 									<td class="align-middle">
@@ -81,23 +84,21 @@
 												//get the requirement's parameter info
 												$param = $bus_req->requirement->getParams();
 
-												//check where to get requirement parameter value
-												if(old('requirement.' . $bus_req->requirement->requirement_id . 'parameter'))
-													$param_value = old('requirement.' . $bus_req->requirement->requirement_id . 'parameter');
-												else
-													$param_value = $bus_req->requirement_params_value;
+												//check if there's old user input for the requirement parameter value and store it in the variable for AlpineJS
+												if(old('requirement.' . $req_id . 'parameter'))
+													$mandatory_req_for_js[$req_id]['requirement_field_val'] = old('requirement.' . $req_id . 'parameter');
 											@endphp
 
 											{{ Str::before($bus_req->requirement->requirement, $param['param']) }} 
 											
 											<input 
 												type="number" 
-												name="requirement[{{ $bus_req->requirement->requirement_id }}][parameter]" 
+												name="requirement[{{ $req_id }}][parameter]" 
 												class="w-12 mx-1" 
-												value="{{ $param_value }}"
 												min="1"
 												max="9999"
 												{{ $editable ?: 'disabled' }}
+												x-model="mandatory_requirements[{!! $req_id !!}]['requirement_field_val']"
 											> 
 											
 											{{ Str::after($bus_req->requirement->requirement, $param['param']) }} 
@@ -110,21 +111,17 @@
 
 									<td class="align-middle">
 										@php
-											$checked = '';
-
-											//check where to get the complied status value
-											if(old('requirement.' . $bus_req->requirement->requirement_id . 'complied'))
-												$checked = 'checked';
-											elseif($bus_req->complied)
-												$checked = 'checked';
+											//check if there's old user input for the complied status value
+											if(old('requirement.' . $req_id . 'complied'))
+												$mandatory_req_for_js[$req_id]['is_checked'] = true;
 										@endphp
 
 										<input 
 											type="checkbox" 
-											name="requirement[{{ $bus_req->requirement->requirement_id }}][complied]" 
+											name="requirement[{{ $req_id }}][complied]" 
 											class="checkbox checkbox-lg" 
-											{{ $checked }}
 											{{ $editable ?: 'disabled' }}
+											x-model="mandatory_requirements[{!! $req_id !!}]['is_checked']"
 										/>
 									</td>
 								</tr>
@@ -146,8 +143,8 @@
 										<input 
 											type="checkbox" 
 											class="checkbox checkbox-lg" 
-											{{ !$bus_req->complied ?: 'checked' }}
 											disabled
+											x-model="other_office_other_requirements[{!! $bus_req->requirement_id !!}]['is_checked']"
 										/>
 									</td>
 								</tr>
@@ -156,20 +153,13 @@
 							{{-- other requirement of USER's office --}}
 							<tr class="hover">
 								@php
-									$checked = '';
-									$other_requirement_value = '';
-
-									//check where to get the other requirement value
+									//check if there's old user input for the other requirement value
 									if(old('other_requirement'))
-										$other_requirement_value = old('other_requirement');
-									elseif($other_requirement != null)
-										$other_requirement_value = $other_requirement->requirement->requirement;
+										$other_req_for_js['requirement_field_val'] = old('other_requirement');
 
-									//check where to get the other requirement complied status value
+									//check if there's old user input for the other requirement complied status value
 									if(old('other_requirement_complied'))
-										$checked = 'checked';
-									elseif($other_requirement != null && $other_requirement->complied)
-										$checked = 'checked';
+										$other_req_for_js['is_checked'] = true;
 								@endphp
 
 								<td class="align-middle">
@@ -181,8 +171,9 @@
 									<input 
 										type="text" 
 										name="other_requirement" 
-										value="{{ $other_requirement_value }}" 
-										class="w-1/2">
+										class="w-1/2"
+										x-model="other_requirements['requirement_field_val']"
+									>
 								</td>
 
 								<td class="align-middle">
@@ -190,7 +181,7 @@
 										type="checkbox" 
 										name="other_requirement_complied" 
 										class="checkbox checkbox-lg" 
-										{{ $checked }}
+										x-model="other_requirements['is_checked']"
 									/>
 								</td>
 							</tr>
@@ -353,30 +344,19 @@
 		</div>
 	</div>
 
-	@php
-		if($business)
-		{
-			//for alpineJS
-			$mandatory_req = collect($mandatory_business_requirements->toArray())
-								->keyBy('requirement.requirement_id')
-								->map(function($item, $key){
-									return [
-										'requirement_field_val' => $item['requirement_params_value'],
-										'is_checked' => $item['complied'],
-										'is_mandatory' => $item['requirement']['mandatory'],
-										'has_requirement_field' => $item['requirement']['has_dynamic_params']
-									];
-								});
-		}
-	@endphp
-
 	@pushOnce('scripts')
 		<script>
 			document.addEventListener('alpine:init', () => {
 				Alpine.data('checklist', () => ({
-					mandatory_requirements: {!! $mandatory_req->toJson() !!}
+					mandatory_requirements: {!! collect($mandatory_req_for_js)->toJson() !!},
+					other_office_other_requirements: {!! collect($other_offices_other_req_for_js)->toJson() !!},
+					other_requirements: {!! collect($other_req_for_js)->toJson() !!},
 
-					continue here
+					init(){
+						console.log('mandatory', this.mandatory_requirements);
+						console.log('other office', this.other_office_other_requirements);
+						console.log('other', this.other_requirements);
+					}
 				}));
 			});
 		</script>
