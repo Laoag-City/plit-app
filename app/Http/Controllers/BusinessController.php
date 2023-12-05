@@ -113,6 +113,10 @@ class BusinessController extends Controller
         $image_uploads = null;
         $user_office_remaining_image_uploads = null;
 
+        $mandatory_req_for_js = [];
+        $other_offices_other_req_for_js = [];
+        $other_req_for_js = [];
+
         if($request->bin)
         {
             $business = Business::where('id_no', $request->bin)->first();
@@ -170,9 +174,7 @@ class BusinessController extends Controller
                     $user_office_remaining_image_uploads = $image_uploads->where('office_id', '=', Auth::user()->office->office_id)->count();
 
 
-                //variables for alpineJS reactivity
-                $mandatory_req_for_js = [];
-
+                //for alpineJS reactivity
                 foreach($mandatory_business_requirements as $val)
                 {
                     $mandatory_req_for_js[$val['requirement_id']] = [
@@ -182,8 +184,6 @@ class BusinessController extends Controller
                                                                         'has_requirement_field' => (bool)$val['requirement']['has_dynamic_params']
                                                                     ];
                 }
-                
-                $other_offices_other_req_for_js = [];
 
                 foreach($other_offices_other_requirements as $val)
                 {

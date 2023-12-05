@@ -122,6 +122,7 @@
 											class="checkbox checkbox-lg" 
 											{{ $editable ?: 'disabled' }}
 											x-model="mandatory_requirements[{!! $req_id !!}]['is_checked']"
+											@change="checkIfAllComplied"
 										/>
 									</td>
 								</tr>
@@ -182,6 +183,7 @@
 										name="other_requirement_complied" 
 										class="checkbox checkbox-lg" 
 										x-model="other_requirements['is_checked']"
+										@click="checkIfAllComplied"
 									/>
 								</td>
 							</tr>
@@ -189,32 +191,54 @@
 					</x-displays.table>
 
 					<div class="grid grod-cols-1 lg:grid-cols-5 gap-4">
-						@php
-							$status = $business->getInspectionStatus();
+						@can('pld-personnel-action-only')
+							@php
+								$status = $business->getInspectionStatus();
 
-							if(old('inspection_status'))
-								$inspection_status_value = old('inspection_status');
+								if(old('inspection_status'))
+									$inspection_status_value = old('inspection_status');
 
-							elseif($status == 1)
-								$inspection_status_value = 'initial_inspection';
+								elseif($status == 1)
+									$inspection_status_value = 'initial_inspection';
 
-							elseif($status == 2)
-								$inspection_status_value = 're-inspection';
+								elseif($status == 2)
+									$inspection_status_value = 're-inspection';
 
-							else
-								$inspection_status_value = null;
-						@endphp
+								else
+									$inspection_status_value = null;
+							@endphp
 
-						<x-forms.select-field
-							label="Inspection Status"
-							name="inspection_status"
-							:options="[['value' => 'initial_inspection', 'name' => 'Initial Inspection'], ['value' => 're-inspection', 'name' => 'Re-Inspection']]"
-							:selected="$inspection_status_value"
-							:error="$errors->first('inspection_status')"
-							class="lg:col-span-2"
-							:disabled="!Gate::allows('pld-personnel-action-only')"
-						/>
+							<x-forms.select-field
+								label="Inspection Status"
+								name="inspection_status"
+								:options="[['value' => 'initial_inspection', 'name' => 'Initial Inspection'], ['value' => 're-inspection', 'name' => 'Re-Inspection']]"
+								:error="$errors->first('inspection_status')"
+								js-bind="inspection_status_bind"
+							/>
+							
+							<x-forms.checkbox-field
+								label="Tag business for closure"
+								name="business_for_closure"
+								:checked="true"
+								:error="$errors->first('business_for_closure')"
+								class="lg:col-span-2"
+								label-justify-class="justify-center"
+								js-bind="business_closure_bind"
+							/>
 
+							<x-forms.file-input-field 
+								:label="'Supporting Images (' . $user_office_remaining_image_uploads . ' / ' . App\Models\ImageUpload::MAX_UPLOADS . ')'"
+								name="supporting_images[]"
+								file-types="image/png, image/jpeg"
+								camera="environment"
+								class="lg:col-span-2"
+								:error="collect([$errors->first('supporting_images'), $errors->first('supporting_images.*')])->first(fn($val, $key) => $val != '')"
+								:multiple="true"
+								:disabled="$uploads_disabled"
+							/>
+						@endcan
+
+						{{-- next row --}}
 						<x-forms.text-field
 							label="Initial Inspection Date"
 							placeholder="Initial Inspection Date"
@@ -235,20 +259,6 @@
 							:readonly="!Gate::allows('pld-personnel-action-only')"
 						/>
 
-						@if($status == 2 || $status == 3)
-							<x-forms.checkbox-field
-								label="Tag business for closure"
-								name="business_for_closure"
-								:checked="$status == 3"
-								:error="$errors->first('business_for_closure')"
-								:disabled="!Gate::allows('pld-personnel-action-only')"
-							/>
-						@else
-							<div class="min-[1px]:max-lg:hidden"></div>
-						@endif
-
-						{{-- next row --}}
-
 						<x-forms.text-field
 							label="Due Date"
 							placeholder="Due Date"
@@ -267,19 +277,6 @@
 							:value="old('remarks') ? old('remarks') : $user_office_remarks"
 							:error="$errors->first('remarks')"
 						/>
-
-						@can('pld-personnel-action-only')
-							<x-forms.file-input-field 
-								:label="'Supporting Images (' . $user_office_remaining_image_uploads . ' / ' . App\Models\ImageUpload::MAX_UPLOADS . ')'"
-								name="supporting_images[]"
-								file-types="image/png, image/jpeg"
-								camera="environment"
-								class="lg:col-span-2"
-								:error="collect([$errors->first('supporting_images'), $errors->first('supporting_images.*')])->first(fn($val, $key) => $val != '')"
-								:multiple="true"
-								:disabled="$uploads_disabled"
-							/>
-						@endcan
 					</div>
 
 					<div class="mt-12">
@@ -349,13 +346,56 @@
 			document.addEventListener('alpine:init', () => {
 				Alpine.data('checklist', () => ({
 					mandatory_requirements: {!! collect($mandatory_req_for_js)->toJson() !!},
+
 					other_office_other_requirements: {!! collect($other_offices_other_req_for_js)->toJson() !!},
+
 					other_requirements: {!! collect($other_req_for_js)->toJson() !!},
 
+					has_pld_privileges: {!! Gate::allows('pld-personnel-action-only') ? 'true' : 'false' !!},
+
+					all_complied: false,
+
+					inspection_status: '',
+					business_closure: '',
+
+					inspection_status_bind: {
+						['x-model']: 'inspection_status',
+						['x-on:change'](){
+							console.log(this.inspection_status);
+						}
+					},
+
+					business_closure_bind: {
+						['x-model']: 'business_closure',
+						['x-on:change'](){
+							console.log(this.business_closure);
+						}
+					},
+
+					checkIfAllComplied(){
+						let mandatory_complied = _.every(this.mandatory_requirements, {'is_checked': true});
+
+						let other_office_complied = this.other_office_other_requirements.length == 0 
+													? true 
+													: _.every(this.other_office_other_requirements, {'is_checked': true});
+						
+						let other_req_complied = true;
+
+						if(this.other_requirements.requirement_field_val != '')
+							if(!this.other_requirements.is_checked)
+								other_req_complied = false;
+
+						this.all_complied = (mandatory_complied && other_office_complied && other_req_complied);
+					},
+
 					init(){
+						this.checkIfAllComplied();
+						
 						console.log('mandatory', this.mandatory_requirements);
 						console.log('other office', this.other_office_other_requirements);
 						console.log('other', this.other_requirements);
+
+						console.log('closure', this.business_closure);
 					}
 				}));
 			});

@@ -5,7 +5,8 @@
 	'checked' => false,
 	'error' => '',
 	'labelJustifyClass' => "justify-start",
-	'disabled' => false
+	'disabled' => false,
+	'jsBind' => '{}'
 ])
 
 <div {{ $attributes->class('form-control self-center') }}>
@@ -18,6 +19,7 @@
 				class="checkbox lg:ml-5 {{ !$error ?: 'checkbox-error'}}"
 				{{ !$checked ?: 'checked' }}
 				{{ !$disabled ?: 'disabled' }}
+				x-bind="{!! $jsBind !!}"
 			/>
 			<span class="label-text ml-5 lg:mr-5 font-bold">{{ $label }}</span> 
 		</label>
