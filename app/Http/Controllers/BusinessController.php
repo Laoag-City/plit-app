@@ -181,7 +181,8 @@ class BusinessController extends Controller
                                                                         'requirement_field_val' => $val['requirement_params_value'],
                                                                         'is_checked' => (bool)$val['complied'],
                                                                         'is_mandatory' => (bool)$val['requirement']['mandatory'],
-                                                                        'has_requirement_field' => (bool)$val['requirement']['has_dynamic_params']
+                                                                        'has_requirement_field' => (bool)$val['requirement']['has_dynamic_params'],
+                                                                        'cannot_comply' => true
                                                                     ];
                 }
 

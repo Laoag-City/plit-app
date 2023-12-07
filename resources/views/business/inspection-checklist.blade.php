@@ -87,6 +87,11 @@
 												//check if there's old user input for the requirement parameter value and store it in the variable for AlpineJS
 												if(old('requirement.' . $req_id . 'parameter'))
 													$mandatory_req_for_js[$req_id]['requirement_field_val'] = old('requirement.' . $req_id . 'parameter');
+
+												//The complied checkbox of a requirement with parameter can only be enabled if its parameter has a value (with consideration if it is editable)
+												//so check its value before enabling it.
+												if($mandatory_req_for_js[$req_id]['requirement_field_val'] != null && $editable)
+													$mandatory_req_for_js[$req_id]['cannot_comply'] = false;
 											@endphp
 
 											{{ Str::before($bus_req->requirement->requirement, $param['param']) }} 
@@ -98,11 +103,17 @@
 												min="1"
 												max="9999"
 												{{ $editable ?: 'disabled' }}
-												x-model="mandatory_requirements[{!! $req_id !!}]['requirement_field_val']"
+												x-model="mandatory_requirements[{{ $req_id }}]['requirement_field_val']"
+												@change="toggleComply({{ $req_id }}, $event.target.value)"
 											> 
 											
 											{{ Str::after($bus_req->requirement->requirement, $param['param']) }} 
 										@else
+											@php
+												//if no params but still owns the requirement
+												if($editable)
+													$mandatory_req_for_js[$req_id]['cannot_comply'] = false;
+											@endphp
 											{{ $bus_req->requirement->requirement }} 
 										@endif
 
@@ -120,8 +131,8 @@
 											type="checkbox" 
 											name="requirement[{{ $req_id }}][complied]" 
 											class="checkbox checkbox-lg" 
-											{{ $editable ?: 'disabled' }}
-											x-model="mandatory_requirements[{!! $req_id !!}]['is_checked']"
+											x-model="mandatory_requirements[{{ $req_id }}]['is_checked']"
+											x-bind:disabled="mandatory_requirements[{{ $req_id }}]['cannot_comply']"
 											@change="checkIfAllComplied"
 										/>
 									</td>
@@ -145,7 +156,7 @@
 											type="checkbox" 
 											class="checkbox checkbox-lg" 
 											disabled
-											x-model="other_office_other_requirements[{!! $bus_req->requirement_id !!}]['is_checked']"
+											x-model="other_office_other_requirements[{{ $bus_req->requirement_id }}]['is_checked']"
 										/>
 									</td>
 								</tr>
@@ -184,6 +195,7 @@
 										class="checkbox checkbox-lg" 
 										x-model="other_requirements['is_checked']"
 										@click="checkIfAllComplied"
+										x-bind:disabled="other_requirements['requirement_field_val'] == ''" LAST HERE
 									/>
 								</td>
 							</tr>
@@ -193,37 +205,29 @@
 					<div class="grid grod-cols-1 lg:grid-cols-5 gap-4">
 						@can('pld-personnel-action-only')
 							@php
-								$status = $business->getInspectionStatus();
-
 								if(old('inspection_status'))
 									$inspection_status_value = old('inspection_status');
 
-								elseif($status == 1)
-									$inspection_status_value = 'initial_inspection';
+								elseif($business->inspection_count == 1)
+									$inspection_status_value = 1;
 
-								elseif($status == 2)
-									$inspection_status_value = 're-inspection';
+								elseif($business->inspection_count == 2)
+									$inspection_status_value = 2;
+
+								elseif($business->inspection_count == 3)
+									$inspection_status_value = 3;
 
 								else
-									$inspection_status_value = null;
+									$inspection_status_value = '';
 							@endphp
 
 							<x-forms.select-field
 								label="Inspection Status"
 								name="inspection_status"
-								:options="[['value' => 'initial_inspection', 'name' => 'Initial Inspection'], ['value' => 're-inspection', 'name' => 'Re-Inspection']]"
+								:options="[['value' => 1, 'name' => 'Initial Inspection'], ['value' => 2, 'name' => 'Re-Inspection'], ['value' => 3, 'name' => 'For Closure']]"
 								:error="$errors->first('inspection_status')"
-								js-bind="inspection_status_bind"
-							/>
-							
-							<x-forms.checkbox-field
-								label="Tag business for closure"
-								name="business_for_closure"
-								:checked="true"
-								:error="$errors->first('business_for_closure')"
 								class="lg:col-span-2"
-								label-justify-class="justify-center"
-								js-bind="business_closure_bind"
+								js-bind="inspection_status_bind"
 							/>
 
 							<x-forms.file-input-field 
@@ -231,7 +235,7 @@
 								name="supporting_images[]"
 								file-types="image/png, image/jpeg"
 								camera="environment"
-								class="lg:col-span-2"
+								class="lg:col-start-4 lg:col-span-2"
 								:error="collect([$errors->first('supporting_images'), $errors->first('supporting_images.*')])->first(fn($val, $key) => $val != '')"
 								:multiple="true"
 								:disabled="$uploads_disabled"
@@ -345,30 +349,22 @@
 		<script>
 			document.addEventListener('alpine:init', () => {
 				Alpine.data('checklist', () => ({
-					mandatory_requirements: {!! collect($mandatory_req_for_js)->toJson() !!},
+					mandatory_requirements: {{ Js::from(collect($mandatory_req_for_js)) }},
 
-					other_office_other_requirements: {!! collect($other_offices_other_req_for_js)->toJson() !!},
+					other_office_other_requirements: {{ Js::from(collect($other_offices_other_req_for_js)) }},
 
-					other_requirements: {!! collect($other_req_for_js)->toJson() !!},
+					other_requirements: {{ Js::from(collect($other_req_for_js)) }},
 
-					has_pld_privileges: {!! Gate::allows('pld-personnel-action-only') ? 'true' : 'false' !!},
+					has_pld_privileges: {{ Gate::allows('pld-personnel-action-only') ? Js::from(true) : Js::from(false) }},
 
 					all_complied: false,
 
-					inspection_status: '',
-					business_closure: '',
+					inspection_status: {{ Js::from($inspection_status_value ?? '') }},
 
 					inspection_status_bind: {
 						['x-model']: 'inspection_status',
 						['x-on:change'](){
 							console.log(this.inspection_status);
-						}
-					},
-
-					business_closure_bind: {
-						['x-model']: 'business_closure',
-						['x-on:change'](){
-							console.log(this.business_closure);
 						}
 					},
 
@@ -388,14 +384,22 @@
 						this.all_complied = (mandatory_complied && other_office_complied && other_req_complied);
 					},
 
+					toggleComply(index, value){
+						if(value != '')
+							this.mandatory_requirements[index]['cannot_comply'] = false;
+						else
+						{
+							this.mandatory_requirements[index]['cannot_comply'] = true;
+							this.mandatory_requirements[index]['is_checked'] = false;	//LAST HERE
+						}
+					},
+
 					init(){
 						this.checkIfAllComplied();
 						
 						console.log('mandatory', this.mandatory_requirements);
 						console.log('other office', this.other_office_other_requirements);
 						console.log('other', this.other_requirements);
-
-						console.log('closure', this.business_closure);
 					}
 				}));
 			});

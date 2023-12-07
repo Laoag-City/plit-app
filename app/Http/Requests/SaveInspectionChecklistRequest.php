@@ -32,7 +32,6 @@ class SaveInspectionChecklistRequest extends FormRequest
         $inspection_status_rules = '';
         $initial_inspection_date_rules = '';
         $reinspection_date_rules = '';
-        $business_for_closure_rules = '';
         $due_date_rules = '';
         
         $current_image_uploaded = ImageUpload::where([
@@ -45,13 +44,11 @@ class SaveInspectionChecklistRequest extends FormRequest
         //fields with authorization checks
         if(Gate::allows('pld-personnel-action-only'))
         {
-            $inspection_status_rules = 'bail|nullable|in:initial_inspection,re-inspection';
+            $inspection_status_rules = 'bail|nullable|in:1,2,3';
 
             $initial_inspection_date_rules = 'bail|nullable|date|before:reinspection_date';
 
             $reinspection_date_rules = 'bail|nullable|date|after:initial_inspection_date';
-
-            $business_for_closure_rules = 'bail|nullable|boolean';
             
             $due_date_rules = 'bail|required|date';
         }
@@ -68,8 +65,6 @@ class SaveInspectionChecklistRequest extends FormRequest
 
             'initial_inspection_date' => $initial_inspection_date_rules,
             'reinspection_date' => $reinspection_date_rules,
-
-            'business_for_closure' => $business_for_closure_rules,
 
             'due_date' => $due_date_rules,
             
