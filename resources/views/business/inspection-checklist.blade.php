@@ -100,7 +100,7 @@
 												type="number" 
 												name="requirement[{{ $req_id }}][parameter]" 
 												class="w-12 mx-1" 
-												min="1"
+												min="0"
 												max="9999"
 												{{ $editable ?: 'disabled' }}
 												x-model="mandatory_requirements[{{ $req_id }}]['requirement_field_val']"
@@ -195,7 +195,7 @@
 										class="checkbox checkbox-lg" 
 										x-model="other_requirements['is_checked']"
 										@click="checkIfAllComplied"
-										x-bind:disabled="other_requirements['requirement_field_val'] == ''" LAST HERE
+										x-bind:disabled="other_requirements['requirement_field_val'] == ''"
 									/>
 								</td>
 							</tr>
@@ -221,14 +221,16 @@
 									$inspection_status_value = '';
 							@endphp
 
-							<x-forms.select-field
-								label="Inspection Status"
-								name="inspection_status"
-								:options="[['value' => 1, 'name' => 'Initial Inspection'], ['value' => 2, 'name' => 'Re-Inspection'], ['value' => 3, 'name' => 'For Closure']]"
-								:error="$errors->first('inspection_status')"
-								class="lg:col-span-2"
-								js-bind="inspection_status_bind"
-							/>
+							<template x-if="all_complied == false">
+								<x-forms.select-field
+									label="Inspection Status"
+									name="inspection_status"
+									:options="[['value' => 1, 'name' => 'Initial Inspection'], ['value' => 2, 'name' => 'Re-Inspection'], ['value' => 3, 'name' => 'For Closure']]"
+									:error="$errors->first('inspection_status')"
+									class="lg:col-span-2"
+									js-bind="inspection_status_bind"
+								/>
+							</template>
 
 							<x-forms.file-input-field 
 								:label="'Supporting Images (' . $user_office_remaining_image_uploads . ' / ' . App\Models\ImageUpload::MAX_UPLOADS . ')'"
@@ -364,7 +366,7 @@
 					inspection_status_bind: {
 						['x-model']: 'inspection_status',
 						['x-on:change'](){
-							console.log(this.inspection_status);
+							//console.log(this.inspection_status);
 						}
 					},
 
@@ -390,16 +392,16 @@
 						else
 						{
 							this.mandatory_requirements[index]['cannot_comply'] = true;
-							this.mandatory_requirements[index]['is_checked'] = false;	//LAST HERE
+							this.mandatory_requirements[index]['is_checked'] = false;
 						}
 					},
 
 					init(){
 						this.checkIfAllComplied();
 						
-						console.log('mandatory', this.mandatory_requirements);
-						console.log('other office', this.other_office_other_requirements);
-						console.log('other', this.other_requirements);
+						//console.log('mandatory', this.mandatory_requirements);
+						//console.log('other office', this.other_office_other_requirements);
+						//console.log('other', this.other_requirements);
 					}
 				}));
 			});
