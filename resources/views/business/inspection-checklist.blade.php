@@ -104,7 +104,7 @@
 												max="9999"
 												{{ $editable ?: 'disabled' }}
 												x-model="mandatory_requirements[{{ $req_id }}]['requirement_field_val']"
-												@change="toggleComply({{ $req_id }}, $event.target.value)"
+												@change="toggleComply($event.target.value, {{ $req_id }})"
 											> 
 											
 											{{ Str::after($bus_req->requirement->requirement, $param['param']) }} 
@@ -156,7 +156,7 @@
 											type="checkbox" 
 											class="checkbox checkbox-lg" 
 											disabled
-											x-model="other_office_other_requirements[{{ $bus_req->requirement_id }}]['is_checked']"
+											x-model="other_offices_other_requirements[{{ $bus_req->requirement_id }}]['is_checked']"
 										/>
 									</td>
 								</tr>
@@ -172,6 +172,11 @@
 									//check if there's old user input for the other requirement complied status value
 									if(old('other_requirement_complied'))
 										$other_req_for_js['is_checked'] = true;
+
+									//The complied checkbox of an other requirement can only be enabled if it has a value
+									//so check its value before enabling it.
+									if($other_req_for_js['requirement_field_val'] != null)
+										$other_req_for_js['cannot_comply'] = false;
 								@endphp
 
 								<td class="align-middle">
@@ -184,7 +189,8 @@
 										type="text" 
 										name="other_requirement" 
 										class="w-1/2"
-										x-model="other_requirements['requirement_field_val']"
+										x-model="other_requirement['requirement_field_val']"
+										@change="toggleComply($event.target.value)"
 									>
 								</td>
 
@@ -193,9 +199,9 @@
 										type="checkbox" 
 										name="other_requirement_complied" 
 										class="checkbox checkbox-lg" 
-										x-model="other_requirements['is_checked']"
-										@click="checkIfAllComplied"
-										x-bind:disabled="other_requirements['requirement_field_val'] == ''"
+										x-model="other_requirement['is_checked']"
+										x-bind:disabled="other_requirement['cannot_comply']"
+										@change="checkIfAllComplied"
 									/>
 								</td>
 							</tr>
@@ -353,9 +359,9 @@
 				Alpine.data('checklist', () => ({
 					mandatory_requirements: {{ Js::from(collect($mandatory_req_for_js)) }},
 
-					other_office_other_requirements: {{ Js::from(collect($other_offices_other_req_for_js)) }},
+					other_offices_other_requirements: {{ Js::from(collect($other_offices_other_req_for_js)) }},
 
-					other_requirements: {{ Js::from(collect($other_req_for_js)) }},
+					other_requirement: {{ Js::from(collect($other_req_for_js)) }},
 
 					has_pld_privileges: {{ Gate::allows('pld-personnel-action-only') ? Js::from(true) : Js::from(false) }},
 
@@ -373,26 +379,42 @@
 					checkIfAllComplied(){
 						let mandatory_complied = _.every(this.mandatory_requirements, {'is_checked': true});
 
-						let other_office_complied = this.other_office_other_requirements.length == 0 
+						let other_office_complied = this.other_offices_other_requirements.length == 0 
 													? true 
-													: _.every(this.other_office_other_requirements, {'is_checked': true});
+													: _.every(this.other_offices_other_requirements, {'is_checked': true});
 						
 						let other_req_complied = true;
 
-						if(this.other_requirements.requirement_field_val != '')
-							if(!this.other_requirements.is_checked)
+						if(this.other_requirement.requirement_field_val != '')
+							if(!this.other_requirement.is_checked)
 								other_req_complied = false;
 
 						this.all_complied = (mandatory_complied && other_office_complied && other_req_complied);
 					},
 
-					toggleComply(index, value){
-						if(value != '')
-							this.mandatory_requirements[index]['cannot_comply'] = false;
+					toggleComply(value, index = null){
+						if(index != null)
+						{
+							if(value != '')
+								this.mandatory_requirements[index]['cannot_comply'] = false;
+							else
+							{
+								this.mandatory_requirements[index]['cannot_comply'] = true;
+								this.mandatory_requirements[index]['is_checked'] = false;
+							}
+						}
+
 						else
 						{
-							this.mandatory_requirements[index]['cannot_comply'] = true;
-							this.mandatory_requirements[index]['is_checked'] = false;
+							if(value != '')
+								this.other_requirement['cannot_comply'] = false;
+							else
+							{
+								this.other_requirement['cannot_comply'] = true;
+								this.other_requirement['is_checked'] = false;
+							}
+
+							this.checkIfAllComplied();
 						}
 					},
 
@@ -400,8 +422,8 @@
 						this.checkIfAllComplied();
 						
 						//console.log('mandatory', this.mandatory_requirements);
-						//console.log('other office', this.other_office_other_requirements);
-						//console.log('other', this.other_requirements);
+						//console.log('other office', this.other_offices_other_requirements);
+						//console.log('other', this.other_requirement);
 					}
 				}));
 			});

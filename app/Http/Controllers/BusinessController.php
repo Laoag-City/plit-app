@@ -200,13 +200,15 @@ class BusinessController extends Controller
                                         'requirement_field_val' => '',
                                         'is_checked' => false,
                                         'is_mandatory' => false,
-                                        'has_requirement_field' => false
+                                        'has_requirement_field' => false,
+                                        'cannot_comply' => true
                                     ]
                                     : [
                                         'requirement_field_val' => $other_requirement->requirement->requirement,
                                         'is_checked' => (bool)$other_requirement->complied,
                                         'is_mandatory' => (bool)$other_requirement->requirement->mandatory,
-                                        'has_requirement_field' => (bool)$other_requirement->requirement->has_dynamic_params
+                                        'has_requirement_field' => (bool)$other_requirement->requirement->has_dynamic_params,
+                                        'cannot_comply' => true
                                     ];
 
                 /* alternate way of the above code for AlpineJS
