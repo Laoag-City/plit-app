@@ -26,7 +26,10 @@ class SaveInspectionChecklistRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
     public function rules(Request $request): array
-    {dd($request->all());
+    {
+        if(!$request->bin)
+            return ['bin' => 'required|exists:business,id_no'];
+
         $business = Business::where('id_no', $request->bin)->first();
 
         $inspection_status_rules = '';
