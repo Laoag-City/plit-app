@@ -7,23 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $primaryKey = 'address_id';
+	protected $primaryKey = 'address_id';
 
-    public function businesses()
-    {
-        return $this->hasMany(Business::class, 'address_id', 'address_id');
-    }
+	public function businesses()
+	{
+		return $this->hasMany(Business::class, 'address_id', 'address_id');
+	}
 
-    public function transformForSelectField() : array
-    {
-        return $this->all()
-                    ->transform(function($item, $key){
-                        return [
-                            'value' => $item->address_id,
-                            'name' => $item->brgy
-                        ];
-                    })->toArray();
-    }
+	public function transformForSelectField() : array
+	{
+		return $this->all()
+					->transform(function($item, $key){
+						return [
+							'value' => $item->address_id,
+							'name' => $item->brgy
+						];
+					})->toArray();
+	}
 }

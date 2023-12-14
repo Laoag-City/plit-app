@@ -10,35 +10,35 @@ use Illuminate\View\View;
 
 class AuthenticationController extends Controller
 {
-    public function showLogin() : View
-    {
-        return view('login');
-    }
+	public function showLogin() : View
+	{
+		return view('login');
+	}
 
-    public function authenticate(Request $request) : RedirectResponse
-    {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            'password' => 'required'
-        ]);
+	public function authenticate(Request $request) : RedirectResponse
+	{
+		$validator = Validator::make($request->all(), [
+			'username' => 'required',
+			'password' => 'required'
+		]);
 
-        $validator->validate();
+		$validator->validate();
 
-        $validator->after(function($validator) use ($request){
-            if(!Auth::attempt(['username' => $request->username, 'password' => $request->password]))
-                    //Since the following error is owned by username and password field and we don't want individual error messages for both fields, 
-                    //just put a non-existing field name named compound_error.
-                    $validator->errors()->add('compound_error', 'You entered an invalid login credential.');
-        });
+		$validator->after(function($validator) use ($request){
+			if(!Auth::attempt(['username' => $request->username, 'password' => $request->password]))
+					//Since the following error is owned by username and password field and we don't want individual error messages for both fields, 
+					//just put a non-existing field name named compound_error.
+					$validator->errors()->add('compound_error', 'You entered an invalid login credential.');
+		});
 
-        $validator->validate();
+		$validator->validate();
 
-        return redirect()->intended('home');
-    }
+		return redirect()->intended('home');
+	}
 
-    public function logOut() : RedirectResponse
-    {
-        Auth::logout();
-        return back();
-    }
+	public function logOut() : RedirectResponse
+	{
+		Auth::logout();
+		return back();
+	}
 }

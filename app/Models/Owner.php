@@ -9,17 +9,17 @@ use Spatie\Searchable\SearchResult;
 
 class Owner extends Model implements Searchable
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $primaryKey = 'owner_id';
+	protected $primaryKey = 'owner_id';
 
-    public function businesses()
-    {
-        return $this->hasMany(Business::class, 'owner_id', 'owner_id');
-    }
+	public function businesses()
+	{
+		return $this->hasMany(Business::class, 'owner_id', 'owner_id');
+	}
 
-    public function getSearchResult(): SearchResult
-    {
-        return new SearchResult($this, $this->name);
-    }
+	public function getSearchResult(): SearchResult
+	{
+		return new SearchResult($this, $this->name);
+	}
 }

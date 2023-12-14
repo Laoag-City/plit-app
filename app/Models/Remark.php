@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Remark extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $primaryKey = 'remark_id';
+	protected $primaryKey = 'remark_id';
 
-    public function office()
-    {
-        return $this->belongsTo(Office::class, 'office_id', 'office_id');
-    }
+	public function office()
+	{
+		return $this->belongsTo(Office::class, 'office_id', 'office_id');
+	}
 
-    public function business()
-    {
-        return $this->belongsTo(Business::class, 'business_id', 'business_id');
-    }
+	public function business()
+	{
+		return $this->belongsTo(Business::class, 'business_id', 'business_id');
+	}
 }
