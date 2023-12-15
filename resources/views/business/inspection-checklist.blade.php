@@ -85,8 +85,8 @@
 												$param = $bus_req->requirement->getParams();
 
 												//check if there's old user input for the requirement parameter value and store it in the variable for AlpineJS
-												if(old('requirement.' . $req_id . 'parameter'))
-													$mandatory_req_for_js[$req_id]['requirement_field_val'] = old('requirement.' . $req_id . 'parameter');
+												if(old('requirement.' . $req_id . '.parameter'))
+													$mandatory_req_for_js[$req_id]['requirement_field_val'] = old('requirement.' . $req_id . '.parameter');
 
 												//The complied checkbox of a requirement with parameter can only be enabled if its parameter has a value (with consideration if it is editable)
 												//so check its value before enabling it.
@@ -123,7 +123,7 @@
 									<td class="align-middle">
 										@php
 											//check if there's old user input for the complied status value
-											if(old('requirement.' . $req_id . 'complied'))
+											if(old('requirement.' . $req_id . '.complied'))
 												$mandatory_req_for_js[$req_id]['is_checked'] = true;
 										@endphp
 

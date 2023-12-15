@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddNewBusinessRequest;
+use App\Http\Requests\ValidateBinRequest;
 use App\Http\Requests\SaveInspectionChecklistRequest;
 use App\Models\Address;
 use App\Models\Business;
@@ -264,8 +265,13 @@ class BusinessController extends Controller
 		]);
 	}
 
-	public function saveChecklist(SaveInspectionChecklistRequest $request)
+	public function saveChecklist()
 	{
+		//validate BIN first...
+		app(ValidateBinRequest::class);
+		//then validate the inspection checklist
+		$request = app(SaveInspectionChecklistRequest::class);
+		
 		$validated = $request->validated();
 	}
 }

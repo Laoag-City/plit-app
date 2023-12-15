@@ -11,7 +11,7 @@ class ValidateBinRequest extends FormRequest
 	 */
 	public function authorize(): bool
 	{
-		return false;
+		return true;
 	}
 
 	/**
@@ -22,7 +22,7 @@ class ValidateBinRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			//
+			'bin' => 'required|exists:businesses,id_no'
 		];
 	}
 }

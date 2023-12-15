@@ -27,9 +27,6 @@ class SaveInspectionChecklistRequest extends FormRequest
 	 */
 	public function rules(Request $request): array
 	{
-		if(!$request->bin)
-			return ['bin' => 'required|exists:business,id_no'];
-
 		$business = Business::where('id_no', $request->bin)->first();
 
 		$inspection_status_rules = '';
@@ -58,11 +55,11 @@ class SaveInspectionChecklistRequest extends FormRequest
 
 		return [
 			'requirement' => 'bail|nullable|array',
-			'requirement.*.parameter' => 'bail|required_if_accepted:requirement.*.complied|integer|min:1|max:9999',
-			'requirement.*.complied' => 'bail|nullable|accepted',
+			'requirement.*.parameter' => 'bail|nullable|integer|min:1|max:9999',
+			'requirement.*.complied' => 'sometimes|bail|accepted',
 
 			'other_requirement' => 'bail|nullable|string|max:150',
-			'other_requirement_complied' => 'bail|nullable|accepted',
+			'other_requirement_complied' => 'sometimes|bail|accepted',
 
 			'inspection_status' => $inspection_status_rules,
 
@@ -83,17 +80,20 @@ class SaveInspectionChecklistRequest extends FormRequest
 		return [
 			function (Validator $validator) use($request) {
 				//check each requirements if user is authorized to it
-				foreach($request->requirement as $key => $value)
-				{
-					$requirement = Requirement::find($key);
+				if(is_array($request->requirement))
+					foreach($request->requirement as $key => $value)
+					{
+						$requirement = Requirement::find($key);
 
-					if($requirement != null)
-						if(Gate::denies('owns-requirement', $requirement))
-							$validator->errors()->add("requirement.{$key}", ':attribute is not applicable for current user.');
+						if($requirement != null)
+						{
+							if(Gate::denies('owns-requirement', $requirement))
+								$validator->errors()->add("requirement.{$key}", ':attribute is not applicable for current user.');
+						}
 
-					else
-						$validator->errors()->add("requirement.{$key}", ':attribute is not a valid requirement.');
-				}
+						else
+							$validator->errors()->add("requirement.{$key}", ':attribute is not a valid requirement.');
+					}
 			}
 		];
 	}
