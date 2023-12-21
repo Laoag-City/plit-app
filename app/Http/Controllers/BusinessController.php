@@ -273,5 +273,7 @@ class BusinessController extends Controller
 		$request = app(SaveInspectionChecklistRequest::class);
 		
 		$validated = $request->validated();
+
+		//NEXT: save the checklist. use service classes
 	}
 }

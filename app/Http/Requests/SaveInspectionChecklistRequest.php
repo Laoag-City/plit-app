@@ -33,13 +33,7 @@ class SaveInspectionChecklistRequest extends FormRequest
 		$initial_inspection_date_rules = '';
 		$reinspection_date_rules = '';
 		$due_date_rules = '';
-		
-		$current_image_uploaded = ImageUpload::where([
-											['business_id', '=', $business->business_id],
-											['office_id', '=', $request->user()->office->office_id]
-										])->count();
-
-		$remaining_image_uploads = ImageUpload::MAX_UPLOADS - $current_image_uploaded;
+		$remaining_image_uploads = 0;
 
 		//fields with authorization checks
 		if(Gate::allows('pld-personnel-action-only'))
@@ -51,6 +45,13 @@ class SaveInspectionChecklistRequest extends FormRequest
 			$reinspection_date_rules = 'bail|nullable|date|after:initial_inspection_date';
 			
 			$due_date_rules = 'bail|required|date';
+
+			$current_image_uploaded = ImageUpload::where([
+										['business_id', '=', $business->business_id],
+										['office_id', '=', $request->user()->office->office_id]
+									])->count();
+
+			$remaining_image_uploads = ImageUpload::MAX_UPLOADS - $current_image_uploaded;
 		}
 
 		return [
@@ -88,11 +89,11 @@ class SaveInspectionChecklistRequest extends FormRequest
 						if($requirement != null)
 						{
 							if(Gate::denies('owns-requirement', $requirement))
-								$validator->errors()->add("requirement.{$key}", ':attribute is not applicable for current user.');
+								$validator->errors()->add("requirement.{$key}", "Requirement {$key} is not applicable for current user.");
 						}
 
 						else
-							$validator->errors()->add("requirement.{$key}", ':attribute is not a valid requirement.');
+							$validator->errors()->add("requirement.{$key}", "Requirement {$key} is not a valid requirement.");
 					}
 			}
 		];
