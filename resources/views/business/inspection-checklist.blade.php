@@ -340,7 +340,7 @@
 
 						<x-slot:content>
 							@if($image_uploads->isNotEmpty())
-								<x-displays.carousel :images="$images"/>
+								<x-displays.carousel :images="$image_uploads"/>
 							@else
 								No images yet.
 							@endif
