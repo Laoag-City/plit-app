@@ -5,8 +5,11 @@
 
 <div class="carousel w-full">
 	@foreach($images as $image)
-		<div id="{{ $carouselContentPrefix . $loop->iteration }}" class="carousel-item relative w-full">
-			<img src="{{ route('image', ['business' => $image->business_id, 'image_upload' => $image->image_upload_id]) }}" class="w-full" />
+		<div id="{{ $carouselContentPrefix . $loop->iteration }}" class="carousel-item relative w-full justify-center">
+			<div class="flex justify-center h-screen">
+				<img src="{{ route('image', ['business' => $image->business_id, 'image_upload' => $image->image_upload_id]) }}" class="object-scale-down max-h-full drop-shadow-lg rounded-lg m-auto" />
+			</div>
+			
 			<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
 				@php
 					if($loop->first)

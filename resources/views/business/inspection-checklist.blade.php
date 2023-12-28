@@ -299,7 +299,7 @@
 					</div>
 				</form>
 
-				<div class="col-span-1 lg:col-span-3 mt-6 px-12 text-left">
+				<div class="col-span-1 lg:col-span-3 mt-6 lg:px-12 text-left">
 					<h3 class="">Other Info:</h3>
 
 					<x-displays.collapse>
