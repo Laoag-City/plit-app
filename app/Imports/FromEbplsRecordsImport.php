@@ -19,7 +19,7 @@ class FromEbplsRecordsImport implements ToCollection, WithHeadingRow
 
 	/*
 		To execute this class, run the following code below through Artisan's Tinker CLI:
-		Maatwebsite\Excel\Facades\Excel::import(new App\Imports\FromEbplsRecordsImport, storage_path('app/BusinessMasterlist-09-18-2023.xlsx'));
+		Maatwebsite\Excel\Facades\Excel::import(new App\Imports\FromEbplsRecordsImport, base_path('BusinessMasterlist-09-18-2023.xlsx'));
 	*/
 
 	/**
