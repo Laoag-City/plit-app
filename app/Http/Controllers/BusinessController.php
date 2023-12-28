@@ -56,13 +56,16 @@ class BusinessController extends Controller
 		return view('business.inspection-checklist', $this->business_service->retrieveInfoForChecklist());
 	}
 
-	public function saveChecklist()
+	public function saveChecklist(Request $request)
 	{
 		//validate BIN first...
 		app(ValidateBinRequest::class);
+
+		$business = Business::where('id_no', $request->bin)->first();
+
 		//then validate the inspection checklist
-		$request = app(SaveInspectionChecklistRequest::class);
+		$request = app(SaveInspectionChecklistRequest::class, ['business' => $business]);
 		
-		$this->business_service->saveBusinessInspectionChecklist($request->validated());
+		$this->business_service->saveBusinessInspectionChecklist($request->validated(), $business);
 	}
 }

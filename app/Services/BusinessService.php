@@ -214,9 +214,9 @@ class BusinessService
 		];
 	}
 
-	public function saveBusinessInspectionChecklist($validated)
+	public function saveBusinessInspectionChecklist($validated, Business $business)
 	{
-		
+		dd($validated, $business);
 	}
 }
 

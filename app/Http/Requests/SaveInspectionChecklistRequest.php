@@ -12,6 +12,12 @@ use Illuminate\Validation\Validator;
 
 class SaveInspectionChecklistRequest extends FormRequest
 {
+	protected $business;
+
+	public function __construct(Business $business)
+	{
+		$this->business = $business;
+	}
 	/**
 	 * Determine if the user is authorized to make this request.
 	 */
@@ -27,8 +33,6 @@ class SaveInspectionChecklistRequest extends FormRequest
 	 */
 	public function rules(Request $request): array
 	{
-		$business = Business::where('id_no', $request->bin)->first();
-
 		$inspection_status_rules = '';
 		$initial_inspection_date_rules = '';
 		$reinspection_date_rules = '';
@@ -40,14 +44,17 @@ class SaveInspectionChecklistRequest extends FormRequest
 		{
 			$inspection_status_rules = 'bail|nullable|in:1,2,3';
 
-			$initial_inspection_date_rules = 'bail|nullable|date|before:reinspection_date';
+			$initial_inspection_date_rules = 'bail|nullable|date';
+
+			if($request->reinspection_date != null)
+				$initial_inspection_date_rules .= '|before:reinspection_date';
 
 			$reinspection_date_rules = 'bail|nullable|date|after:initial_inspection_date';
 			
 			$due_date_rules = 'bail|required|date';
 
 			$current_image_uploaded = ImageUpload::where([
-										['business_id', '=', $business->business_id],
+										['business_id', '=', $this->business->business_id],
 										['office_id', '=', $request->user()->office->office_id]
 									])->count();
 
@@ -95,6 +102,10 @@ class SaveInspectionChecklistRequest extends FormRequest
 						else
 							$validator->errors()->add("requirement.{$key}", "Requirement {$key} is not a valid requirement.");
 					}
+
+				if(Gate::allows('pld-personnel-action-only'))
+					if($request->reinspection_date != null && $request->initial_inspection_date == null)
+						$validator->errors()->add('reinspection_date', 'Reinspection Date field requires the Initial Inspection Date field to be present.');
 			}
 		];
 	}
