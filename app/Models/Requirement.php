@@ -12,7 +12,7 @@ class Requirement extends Model
 	protected $primaryKey = 'requirement_id';
 	protected $non_mandatory_prefix = 'Others - ';
 
-	public function business_requirements()
+	public function businessRequirements()
 	{
 		return $this->hasMany(BusinessRequirement::class, 'requirement_id', 'requirement_id');
 	}

@@ -49,9 +49,4 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo(Office::class, 'office_id', 'office_id');
 	}
-
-	public function image_uploads()
-	{
-		return $this->hasMany(ImageUpload::class, 'user_id', 'user_id');
-	}
 }

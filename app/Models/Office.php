@@ -20,4 +20,14 @@ class Office extends Model
 	{
 		return $this->hasMany(Requirement::class, 'office_id', 'office_id');
 	}
+
+	public function imageUploads()
+	{
+		return $this->hasMany(ImageUpload::class, 'office_id', 'office_id');
+	}
+
+	public function remarks()
+	{
+		return $this->hasMany(Remark::class, 'office_id', 'office_id');
+	}
 }

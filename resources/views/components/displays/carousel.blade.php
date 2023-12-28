@@ -6,7 +6,7 @@
 <div class="carousel w-full">
 	@foreach($images as $image)
 		<div id="{{ $carouselContentPrefix . $loop->iteration }}" class="carousel-item relative w-full">
-			<img src="{{--link to image--}}" class="w-full" />
+			<img src="{{ route('image', ['business' => $image->business_id, 'image_upload' => $image->image_upload_id]) }}" class="w-full" />
 			<div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
 				@php
 					if($loop->first)

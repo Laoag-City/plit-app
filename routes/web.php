@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\OwnerController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/home', HomeController::class)->name('home');
 
     Route::get('/businesses', [BusinessController::class, 'getBusinesses'])->name('businesses');
+    Route::get('/businesses/{business}/images/{image_upload}', [ImageUploadController::class, 'showImage'])
+            ->name('image')
+            ->scopeBindings();
 
     Route::get('/checklist', [BusinessController::class, 'getChecklist'])->name('checklist');
     Route::post('/checklist', [BusinessController::class, 'saveChecklist'])->name('save-checklist');

@@ -11,7 +11,7 @@ class Business extends Model
 
 	protected $primaryKey = 'business_id';
 
-	public function business_requirements()
+	public function businessRequirements()
 	{
 		return $this->hasMany(BusinessRequirement::class, 'business_id', 'business_id');
 	}
@@ -26,14 +26,19 @@ class Business extends Model
 		return $this->belongsTo(Address::class, 'address_id', 'address_id');
 	}
 
-	public function classification()
+	/*public function classification()
 	{
 		return $this->belongsTo(Classification::class, 'classification_id', 'classification_id');
-	}
+	}*/
 
-	public function image_uploads()
+	public function imageUploads()
 	{
 		return $this->hasMany(ImageUpload::class, 'business_id', 'business_id');
+	}
+
+	public function remarks()
+	{
+		return $this->hasMany(Remark::class, 'business_id', 'business_id');
 	}
 
 	public function getInspectionStatus()
