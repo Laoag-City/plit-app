@@ -1,4 +1,6 @@
-<div class="collapse bg-base-200 my-3">
+@props(['bgColor' => 'bg-base-300'])
+
+<div {{ $attributes->merge(['class' => 'collapse my-3 '. $bgColor]) }}>
 	<input type="checkbox" /> 
 	<div class="collapse-title text-lg font-medium">
 		{{ $slot }}

@@ -57,5 +57,8 @@ class Business extends Model
 		
 		elseif($this->inspection_count == 4)
 			return 'Business has complied to all requirements.'; //all requirements must be complied
+
+		elseif($this->inspection_count == 5)
+			return 'Expired business permit. For renewal';
 	}
 }

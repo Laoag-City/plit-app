@@ -56,7 +56,10 @@ class BusinessService
 			$business_requirement->save();
 		}
 
-		foreach($validated['supporting_images'] as $image)
+		if(isset($validated['supporting_images']))
+			app(ImageUploadService::class, ['uploads' => $validated['supporting_images'], 'business_id' => $business->business_id]);
+
+		/*foreach($validated['supporting_images'] as $image)
 		{
 			$image_upload = new ImageUpload;
 			//save the image
@@ -71,7 +74,7 @@ class BusinessService
 			$image_upload->save();
 
 			//to-do: accessing image metadata to extract gps location
-		}
+		}*/
 
 		return $business;
 	}
@@ -216,7 +219,53 @@ class BusinessService
 
 	public function saveBusinessInspectionChecklist($validated, Business $business)
 	{
-		dd($validated, $business);
+		/*
+			1. Save form data
+			2. evaluate inspection status from updated data
+		*/
+
+		foreach($validated['requirement'] as $key => $val)
+		{
+			//$current_inspection_status = $business->getInspectionStatus();
+			$business_requirement = $business->businessRequirements->where('requirement_id', $key)->first();
+//dd($validated, $business_requirement);
+			if($business_requirement->requirement->has_dynamic_params && isset($val['parameter']))
+				$business_requirement->requirement_params_value = $val['parameter'];
+
+			if(isset($val['complied']))
+				$business_requirement->complied = true;
+
+			$business_requirement->save();
+		}
+
+		if(Gate::allows('pld-personnel-action-only'))
+		{
+			if(isset($validated['inspection_status']))
+				$business->inspection_status = (int)$validated['inspection_status'];
+
+			if(isset($validated['supporting_images']))
+				app(ImageUploadService::class, ['uploads' => $validated['supporting_images'], 'business_id' => $business->business_id]);
+
+			$business->inspection_date = $validated['initial_inspection_date'];
+			$business->re_inspection_date = $validated['reinspection_date'];
+			$business->due_date = $validated['due_date'];
+
+			$business->save();
+		}
+
+		if($validated['remarks'] != null)
+		{
+			$remark = Remark::firstOrNew([
+				'office_id' => request()->user()->office->office_id,
+				'business_id' => $business->business_id, 
+				'inspection_count' => (int)$validated['inspection_status']
+			]);
+
+			$remark->remarks = $validated['remarks'];
+			$remark->save();
+
+			last here
+		}
 	}
 }
 

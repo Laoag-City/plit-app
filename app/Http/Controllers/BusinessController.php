@@ -61,7 +61,9 @@ class BusinessController extends Controller
 		//validate BIN first...
 		app(ValidateBinRequest::class);
 
-		$business = Business::where('id_no', $request->bin)->first();
+		$business = Business::where('id_no', $request->bin)
+						->with(['businessRequirements', 'businessRequirements.requirement'])
+						->first();
 
 		//then validate the inspection checklist
 		$request = app(SaveInspectionChecklistRequest::class, ['business' => $business]);
