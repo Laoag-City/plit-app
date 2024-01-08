@@ -18,10 +18,12 @@ use Illuminate\Support\Facades\Gate;
 class BusinessService
 {
 	protected $request;
+	protected $image_upload_service;
 
-	public function __construct(Request $request)
+	public function __construct(Request $request, ImageUploadService $image_upload_service)
 	{
 		$this->request = $request;
+		$this->image_upload_service = $image_upload_service;
 	}
 
 	public function add($validated)
@@ -57,7 +59,7 @@ class BusinessService
 		}
 
 		if(isset($validated['supporting_images']))
-			app(ImageUploadService::class, ['uploads' => $validated['supporting_images'], 'business_id' => $business->business_id]);
+			$this->image_upload_service->saveImageUploads($validated['supporting_images'], $business->business_id);
 
 		/*foreach($validated['supporting_images'] as $image)
 		{
@@ -219,11 +221,6 @@ class BusinessService
 
 	public function saveBusinessInspectionChecklist($validated, Business $business)
 	{
-		/*
-			1. Save form data
-			2. evaluate inspection status from updated data
-		*/
-
 		foreach($validated['requirement'] as $key => $val)
 		{
 			//$current_inspection_status = $business->getInspectionStatus();
@@ -244,7 +241,7 @@ class BusinessService
 				$business->inspection_status = (int)$validated['inspection_status'];
 
 			if(isset($validated['supporting_images']))
-				app(ImageUploadService::class, ['uploads' => $validated['supporting_images'], 'business_id' => $business->business_id]);
+				$this->image_upload_service->saveImageUploads($validated['supporting_images'], $business->business_id);
 
 			$business->inspection_date = $validated['initial_inspection_date'];
 			$business->re_inspection_date = $validated['reinspection_date'];
@@ -263,9 +260,14 @@ class BusinessService
 
 			$remark->remarks = $validated['remarks'];
 			$remark->save();
-
-			last here
 		}
+	}
+
+	public function isBusinessFullyComplied(Business $business)
+	{
+		$business->businessRequirements()->contains(function($item, $key) {
+			return $item->complied == false;
+		});
 	}
 }
 
