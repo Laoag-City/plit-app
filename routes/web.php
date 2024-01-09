@@ -27,19 +27,20 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/', HomeController::class);
 
     Route::get('/new-business', [BusinessController::class, 'showAddNewBusiness'])
-            ->name('new-business')
+            ->name('new_business')
             ->middleware('can:pld-personnel-action-only');
     Route::post('/new-business', [BusinessController::class, 'addNewBusiness'])->middleware('can:pld-personnel-action-only');
 
     Route::get('/home', HomeController::class)->name('home');
 
     Route::get('/businesses', [BusinessController::class, 'getBusinesses'])->name('businesses');
+    Route::get('/businesses/{business}', [BusinessController::class, 'getBusinesses'])->name('business_info');
     Route::get('/businesses/{business}/images/{image_upload}', [ImageUploadController::class, 'showImage'])
             ->name('image')
             ->scopeBindings();
 
     Route::get('/checklist', [BusinessController::class, 'getChecklist'])->name('checklist');
-    Route::post('/checklist', [BusinessController::class, 'saveChecklist'])->name('save-checklist');
+    Route::post('/checklist', [BusinessController::class, 'saveChecklist'])->name('save_checklist');
 
     Route::post('/logout', [AuthenticationController::class, 'logOut']);
 });

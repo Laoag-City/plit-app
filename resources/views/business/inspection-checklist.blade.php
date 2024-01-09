@@ -41,7 +41,7 @@
 					<h4>Status: {{ $business->getInspectionStatus() }}</h4>
 				</div>
 
-				<form action="{{ url()->current() }}" method="POST" class="col-span-1 lg:col-span-3" enctype="multipart/form-data" x-data="checklist">
+				<form action="{{ route('save_checklist') }}" method="POST" class="col-span-1 lg:col-span-3" enctype="multipart/form-data" x-data="checklist">
 					@csrf
 					<input type="hidden" name="bin" value="{{ request()->bin }}" />
 

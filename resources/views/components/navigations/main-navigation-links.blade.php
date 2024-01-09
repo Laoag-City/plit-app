@@ -4,7 +4,7 @@
 
 		<ul>
 			@can('pld-personnel-action-only')
-				<li><a href="{{ route('new-business') }}">Add New Business</a></li>
+				<li><a href="{{ route('new_business') }}">Add New Business</a></li>
 			@endcan
 			<li><a href="{{ route('checklist') }}">Inspection Checklist</a></li>
 			<li><a href="{{ route('businesses') }}">Businesses</a></li>
