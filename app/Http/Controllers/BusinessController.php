@@ -68,6 +68,11 @@ class BusinessController extends Controller
 		//then validate the inspection checklist
 		$request = app(SaveInspectionChecklistRequest::class, ['business' => $business]);
 		
+		//save the checklist information
 		$this->business_service->saveBusinessInspectionChecklist($request->validated(), $business);
+		//then check if it is already complied
+		$this->business_service->isBusinessFullyComplied($business);
+
+		return back();
 	}
 }

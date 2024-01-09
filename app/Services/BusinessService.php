@@ -265,9 +265,17 @@ class BusinessService
 
 	public function isBusinessFullyComplied(Business $business)
 	{
-		$business->businessRequirements()->contains(function($item, $key) {
+		$complied = !$business->businessRequirements->contains(function($item, $key) {
 			return $item->complied == false;
 		});
+
+		if($complied)
+		{
+			$business->inspection_status = 4;
+			$business->save();
+		}
+
+		return $complied;
 	}
 }
 
