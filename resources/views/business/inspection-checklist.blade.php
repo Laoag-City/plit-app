@@ -29,17 +29,10 @@
 			</form>
 
 			@if($business)
-				<div class="col-span-1 lg:col-span-2 text-justify">
-					<h3>{{ $business->name }}</h3>
-					<h4>{{ $business->owner->name }}</h4>
-					<h4>{{ $business->address->brgy }}</h4>
-					<h4>{{ $business->location_specifics }}</h4>
-				</div>
-
-				<div class="col-span-1 lg:col-span-1 text-justify lg:text-right">
-					<h3>BIN: {{ $business->id_no }}</h3>
-					<h4>Status: {{ $business->getInspectionStatus() }}</h4>
-				</div>
+				<x-displays.business-data-view
+					:business="$business"
+					class="col-span-1 lg:col-span-3"
+				/>
 
 				<form action="{{ route('save_checklist') }}" method="POST" class="col-span-1 lg:col-span-3" enctype="multipart/form-data" x-data="checklist">
 					@csrf
@@ -299,54 +292,11 @@
 					</div>
 				</form>
 
-				<div class="col-span-1 lg:col-span-3 mt-6 lg:px-12 text-left">
-					<h3 class="">Other Info:</h3>
-
-					<x-displays.collapse>
-						Remarks from other offices
-
-						<x-slot:content>
-							@if($remarks->isNotEmpty())
-								@php
-									$remarks_initial = $remarks->where('inspection_count', '<', 2);
-									$remarks_reinspect = $remarks->where('inspection_count', '==', 2);
-								@endphp
-
-								@if($remarks_initial->isNotEmpty())
-									<p>Initial Inspection Remarks</p>
-									<ul>
-										@foreach($remarks_initial as $remark)
-											<li><b>{{ $remarks->office->name }}</b> - {{ $remarks->name }}</li>
-										@endforeach
-									</ul>
-								@endif
-
-								@if($remarks_reinspect->isNotEmpty())
-									<p>Re-inspection Remarks</p>
-									<ul>
-										@foreach($remarks_initial as $remark)
-											<li><b>{{ $remarks->office->name }}</b> - {{ $remarks->name }}</li>
-										@endforeach
-									</ul>
-								@endif
-							@else
-								No remarks yet.
-							@endif
-						</x-slot>
-					</x-displays.collapse>
-
-					<x-displays.collapse>
-						Uploaded Images
-
-						<x-slot:content>
-							@if($image_uploads->isNotEmpty())
-								<x-displays.carousel :images="$image_uploads"/>
-							@else
-								No images yet.
-							@endif
-						</x-slot>
-					</x-displays.collapse>
-				</div>
+				<x-displays.business-remarks-and-images
+					:remarks="$remarks"
+					:image-uploads="$image_uploads"
+					class="col-span-1 lg:col-span-3 mt-6 lg:px-12 text-left"
+				/>
 			@elseif(request()->bin)
 				<h3 class="col-span-1 lg:col-span-3">No results found.</h3>
 			@endif

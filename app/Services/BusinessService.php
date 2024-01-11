@@ -225,7 +225,7 @@ class BusinessService
 		{
 			//$current_inspection_status = $business->getInspectionStatus();
 			$business_requirement = $business->businessRequirements->where('requirement_id', $key)->first();
-//dd($validated, $business_requirement);
+			//dd($validated, $business_requirement);
 			if($business_requirement->requirement->has_dynamic_params && isset($val['parameter']))
 				$business_requirement->requirement_params_value = $val['parameter'];
 

@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/home', HomeController::class)->name('home');
 
     Route::get('/businesses', [BusinessController::class, 'getBusinesses'])->name('businesses');
-    Route::get('/businesses/{business}', [BusinessController::class, 'getBusinesses'])->name('business_info');
+    Route::get('/businesses/{business}', [BusinessController::class, 'getBusinessInfo'])->name('business_info');
     Route::get('/businesses/{business}/images/{image_upload}', [ImageUploadController::class, 'showImage'])
             ->name('image')
             ->scopeBindings();

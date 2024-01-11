@@ -51,6 +51,19 @@ class BusinessController extends Controller
 		]);
 	}
 
+	public function getBusinessInfo(Business $business) : View
+	{
+		return view('business.business-info', [
+			'business' => $business->load([
+										'businessRequirements', 
+										'businessRequirements.requirement',
+										'imageUploads',
+										'remarks',
+										'remarks.office'
+			])
+		]);
+	}
+
 	public function getChecklist() : View
 	{
 		return view('business.inspection-checklist', $this->business_service->retrieveInfoForChecklist());
