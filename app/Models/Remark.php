@@ -10,6 +10,7 @@ class Remark extends Model
 	use HasFactory;
 
 	protected $primaryKey = 'remark_id';
+	protected $fillable = ['office_id', 'business_id', 'inspection_count'];
 
 	public function office()
 	{

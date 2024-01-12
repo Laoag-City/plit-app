@@ -21,7 +21,7 @@
 						<p>Initial Inspection Remarks</p>
 						<ul>
 							@foreach($remarks_initial as $remark)
-								<li><b>{{ $remarks->office->name }}</b> - {{ $remarks->name }}</li>
+								<li><b>{{ $remark->office->name }}</b> - {{ $remark->remarks }}</li>
 							@endforeach
 						</ul>
 					@endif
@@ -30,7 +30,7 @@
 						<p>Re-inspection Remarks</p>
 						<ul>
 							@foreach($remarks_initial as $remark)
-								<li><b>{{ $remarks->office->name }}</b> - {{ $remarks->name }}</li>
+								<li><b>{{ $remark->office->name }}</b> - {{ $remark->remarks }}</li>
 							@endforeach
 						</ul>
 					@endif

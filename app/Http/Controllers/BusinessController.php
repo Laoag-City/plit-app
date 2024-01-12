@@ -86,6 +86,6 @@ class BusinessController extends Controller
 		//then check if it is already complied
 		$this->business_service->isBusinessFullyComplied($business);
 
-		return back();
+		return back()->with('success', true);
 	}
 }

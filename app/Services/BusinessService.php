@@ -108,9 +108,11 @@ class BusinessService
 				//requirements
 				$mandatory_business_requirements = BusinessRequirement::where('business_id', '=', $business->business_id)
 																		->orderBy('requirement_id', 'asc')
-																		->with(['requirement' => function(Builder $query){
+																		->withWhereHas('requirement', function(Builder $query){
 																			$query->where('mandatory', '=', true);
-																		}, 'requirement.office'])->get();
+																		})
+																		->with('requirement.office')
+																		->get();
 
 				$other_offices_other_requirements = BusinessRequirement::where('business_id', '=', $business->business_id)
 																		->withWhereHas('requirement', function(Builder $query){
@@ -221,6 +223,7 @@ class BusinessService
 
 	public function saveBusinessInspectionChecklist($validated, Business $business)
 	{
+		//mandatory requirements
 		foreach($validated['requirement'] as $key => $val)
 		{
 			//$current_inspection_status = $business->getInspectionStatus();
@@ -235,10 +238,32 @@ class BusinessService
 			$business_requirement->save();
 		}
 
+		//other requirement of user's office
+		if($validated['other_requirement'] != null)
+		{
+			$requirement = new Requirement;
+
+			$requirement->office_id = request()->user()->office->office_id;
+			$requirement->requirement = $validated['other_requirement'];
+			$requirement->mandatory = false;
+			$requirement->has_dynamic_params = false;
+
+			$requirement->save();
+
+			$business_requirement = new BusinessRequirement;
+
+			$business_requirement->business_id = $business->business_id;
+			$business_requirement->requirement_id = $requirement->requirement_id;
+			$business_requirement->requirement_params_value = null;
+			$business_requirement->complied = isset($validated['other_requirement_complied']) ? true : false;
+
+			$business_requirement->save();
+		}
+
 		if(Gate::allows('pld-personnel-action-only'))
 		{
 			if(isset($validated['inspection_status']))
-				$business->inspection_status = (int)$validated['inspection_status'];
+				$business->inspection_count = (int)$validated['inspection_status'];
 
 			if(isset($validated['supporting_images']))
 				$this->image_upload_service->saveImageUploads($validated['supporting_images'], $business->business_id);
@@ -255,7 +280,7 @@ class BusinessService
 			$remark = Remark::firstOrNew([
 				'office_id' => request()->user()->office->office_id,
 				'business_id' => $business->business_id, 
-				'inspection_count' => (int)$validated['inspection_status']
+				'inspection_count' => $validated['inspection_status'] ?? 0
 			]);
 
 			$remark->remarks = $validated['remarks'];

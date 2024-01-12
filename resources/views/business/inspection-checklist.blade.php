@@ -9,6 +9,10 @@
             <x-displays.alert class="alert-error">
                 <b>There are errors in the form you submitted.</b>
             </x-displays.alert>
+		@elseif(session('success'))
+			<x-displays.alert class="alert-success">
+				<b>Inspection Checklist successfully updated!</b>
+			</x-displays.alert>
         @endif
 
 		<div class="grid grid-cols-1 lg:grid-cols-3 mt-8">
