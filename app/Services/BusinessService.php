@@ -223,42 +223,87 @@ class BusinessService
 
 	public function saveBusinessInspectionChecklist($validated, Business $business)
 	{
-		//mandatory requirements
-		foreach($validated['requirement'] as $key => $val)
+		//update mandatory requirements
+		if(isset($validated['requirement']))
 		{
-			//$current_inspection_status = $business->getInspectionStatus();
-			$business_requirement = $business->businessRequirements->where('requirement_id', $key)->first();
-			//dd($validated, $business_requirement);
-			if($business_requirement->requirement->has_dynamic_params && isset($val['parameter']))
-				$business_requirement->requirement_params_value = $val['parameter'];
+			$business_requirement = $business->businessRequirements->where('requirement.office_id', 1)->where('requirement.mandatory', true);
 
-			if(isset($val['complied']))
-				$business_requirement->complied = true;
+			foreach($business_requirement as $bus_req)
+			{
+				if(isset($validated['requirement'][$bus_req->requirement_id]))
+				{
+					if($bus_req->requirement->has_dynamic_params && isset($validated['requirement'][$bus_req->requirement_id]['parameter']))
+						$bus_req->requirement_params_value = $validated['requirement'][$bus_req->requirement_id]['parameter'];
+					else
+						$bus_req->requirement_params_value = null;
 
-			$business_requirement->save();
+					if(isset($validated['requirement'][$bus_req->requirement_id]['complied']))
+						$bus_req->complied = true;
+					else
+						$bus_req->complied = false;
+				}
+
+				else
+				{
+					$bus_req->requirement_params_value = null;
+					$bus_req->complied = false;
+				}
+
+				$bus_req->save();
+			}
+		}
+		//////////////////
+
+		//update other requirement of user's office
+		$other_requirement = BusinessRequirement::where('business_id', '=', $business->business_id)
+													->withWhereHas('requirement', function(Builder $query){
+														$query->where([
+															['mandatory', '=', false],
+															['office_id', '=', Auth::user()->office_id]
+														]);
+													})->first();
+
+		if($other_requirement != null)
+		{
+			$requirement = $other_requirement->requirement;
+
+			if($validated['other_requirement'] != null)
+			{
+				//update
+				$requirement->requirement = $validated['other_requirement'];
+				$requirement->save();
+				
+				$other_requirement->complied = isset($validated['other_requirement_complied']) ? true : false;
+				$other_requirement->save();
+			}
+
+			else
+				//delete
+				$requirement->delete();
 		}
 
-		//other requirement of user's office
-		if($validated['other_requirement'] != null)
+		//create
+		elseif($validated['other_requirement'] != null)
 		{
-			$requirement = new Requirement;
+			$other_requirement = new Requirement;
 
-			$requirement->office_id = request()->user()->office->office_id;
-			$requirement->requirement = $validated['other_requirement'];
-			$requirement->mandatory = false;
-			$requirement->has_dynamic_params = false;
+			$other_requirement->office_id = Auth::user()->office_id;
+			$other_requirement->requirement = $validated['other_requirement'];
+			$other_requirement->mandatory = false;
+			$other_requirement->has_dynamic_params = false;
 
-			$requirement->save();
+			$other_requirement->save();
 
 			$business_requirement = new BusinessRequirement;
 
 			$business_requirement->business_id = $business->business_id;
-			$business_requirement->requirement_id = $requirement->requirement_id;
+			$business_requirement->requirement_id = $other_requirement->requirement_id;
 			$business_requirement->requirement_params_value = null;
 			$business_requirement->complied = isset($validated['other_requirement_complied']) ? true : false;
 
 			$business_requirement->save();
 		}
+		//////////////////
 
 		if(Gate::allows('pld-personnel-action-only'))
 		{
