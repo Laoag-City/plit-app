@@ -248,12 +248,19 @@
 						@endcan
 
 						{{-- next row --}}
+						@php
+							$inspection_date = $business->inspection_date ? $business->inspection_date->toDateString() : null;
+							$re_inspection_date = $business->re_inspection_date ? $business->re_inspection_date->toDateString() : null;
+							$due_date = $business->due_date ? $business->due_date->toDateString() : null;
+						@endphp
+
+
 						<x-forms.text-field
 							label="Initial Inspection Date"
 							placeholder="Initial Inspection Date"
 							name="initial_inspection_date"
 							type="date"
-							:value="old('initial_inspection_date') ? old('initial_inspection_date') : $business->inspection_date"
+							:value="old('initial_inspection_date') ? old('initial_inspection_date') : $inspection_date"
 							:error="$errors->first('initial_inspection_date')"
 							:readonly="!Gate::allows('pld-personnel-action-only')"
 						/>
@@ -263,7 +270,7 @@
 							placeholder="Re-inspection Date"
 							name="reinspection_date"
 							type="date"
-							:value="old('reinspection_date') ? old('reinspection_date') : $business->re_inspection_date"
+							:value="old('reinspection_date') ? old('reinspection_date') : $re_inspection_date"
 							:error="$errors->first('reinspection_date')"
 							:readonly="!Gate::allows('pld-personnel-action-only')"
 						/>
@@ -273,7 +280,7 @@
 							placeholder="Due Date"
 							name="due_date"
 							type="date"
-							:value="old('due_date') ? old('due_date') : $business->due_date"
+							:value="old('due_date') ? old('due_date') : $due_date"
 							:error="$errors->first('due_date')"
 							:readonly="!Gate::allows('pld-personnel-action-only')"
 						/>

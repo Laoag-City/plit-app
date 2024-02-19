@@ -10,6 +10,11 @@ class Business extends Model
 	use HasFactory;
 
 	protected $primaryKey = 'business_id';
+	protected $casts = [
+		'inspection_date' => 'datetime:Carbon',
+		're_inspection_date' => 'datetime:Carbon',
+		'due_date' => 'datetime:Carbon'
+	];
 
 	public function businessRequirements()
 	{
