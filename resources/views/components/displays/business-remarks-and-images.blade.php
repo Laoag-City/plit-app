@@ -12,28 +12,9 @@
 
 			<x-slot:content>
 				@if($remarks->isNotEmpty())
-					@php
-						$remarks_initial = $remarks->where('inspection_count', '<', 2);
-						$remarks_reinspect = $remarks->where('inspection_count', '==', 2);
-					@endphp
-
-					@if($remarks_initial->isNotEmpty())
-						<p>Initial Inspection Remarks</p>
-						<ul>
-							@foreach($remarks_initial as $remark)
-								<li><b>{{ $remark->office->name }}</b> - {{ $remark->remarks }}</li>
-							@endforeach
-						</ul>
-					@endif
-
-					@if($remarks_reinspect->isNotEmpty())
-						<p>Re-inspection Remarks</p>
-						<ul>
-							@foreach($remarks_initial as $remark)
-								<li><b>{{ $remark->office->name }}</b> - {{ $remark->remarks }}</li>
-							@endforeach
-						</ul>
-					@endif
+					@foreach($remarks as $remark)
+						<li><b>{{ $remark->office->name }}</b> - {{ $remark->remarks }}</li>
+					@endforeach
 				@else
 					No remarks yet.
 				@endif

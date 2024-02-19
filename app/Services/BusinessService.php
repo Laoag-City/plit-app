@@ -140,6 +140,7 @@ class BusinessService
 								->with(['office'])
 								->get();
 
+				/*
 				//get the remarks of the user's office...
 				if($business->inspection_count == 0 || $business->inspection_count == 1)
 					$operation = '<';
@@ -150,6 +151,14 @@ class BusinessService
 												->where('office_id', '==', Auth::user()->office->office_id)
 												->first()
 												->remarks ?? null;
+				*/
+
+				//use a simpler remarks by not being tied to a business' inspection count
+				//get the remarks of the user's office...
+				$user_office_remarks = $remarks->where('office_id', '==', Auth::user()->office->office_id)
+											->first()
+											->remarks ?? null;
+				
 
 				//then, the remarks of other offices
 				$remarks = $remarks->where('office_id', '!=', Auth::user()->office->office_id);
@@ -320,17 +329,20 @@ class BusinessService
 			$business->save();
 		}
 
+		$remark = Remark::firstOrNew([
+			'office_id' => request()->user()->office->office_id,
+			'business_id' => $business->business_id, 
+			//'inspection_count' => $validated['inspection_status'] ?? 0
+		]);
+
 		if($validated['remarks'] != null)
 		{
-			$remark = Remark::firstOrNew([
-				'office_id' => request()->user()->office->office_id,
-				'business_id' => $business->business_id, 
-				'inspection_count' => $validated['inspection_status'] ?? 0
-			]);
-
 			$remark->remarks = $validated['remarks'];
 			$remark->save();
 		}
+
+		elseif($validated['remarks'] == null && $remark->remarks != null)
+			$remark->delete();
 	}
 
 	public function isBusinessFullyComplied(Business $business)

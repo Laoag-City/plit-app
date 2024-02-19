@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('office_id');
             $table->unsignedBigInteger('business_id');
             $table->string('remarks');
-            $table->unsignedTinyInteger('inspection_count');
+            $table->unsignedTinyInteger('inspection_count')->nullable();
             $table->timestamps();
 
             $table->foreign('office_id')
