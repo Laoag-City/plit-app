@@ -235,7 +235,7 @@ class BusinessService
 		//update mandatory requirements
 		if(isset($validated['requirement']))
 		{
-			$business_requirement = $business->businessRequirements->where('requirement.office_id', 1)->where('requirement.mandatory', true);
+			$business_requirement = $business->businessRequirements->where('requirement.office_id', Auth::user()->office_id)->where('requirement.mandatory', true);
 
 			foreach($business_requirement as $bus_req)
 			{
@@ -345,17 +345,26 @@ class BusinessService
 			$remark->delete();
 	}
 
-	public function isBusinessFullyComplied(Business $business)
+	public function isBusinessFullyComplied(Business $business, $inspection_status_was_previously_set = null)
 	{
 		$complied = !$business->businessRequirements->contains(function($item, $key) {
 			return $item->complied == false;
 		});
 
 		if($complied)
+			$business->inspection_count = 4;
+
+		//If business has complied but a requirement is unchecked by a non-PLD user, 
+		//making it not complied. Smart guess the inspection status.
+		elseif(!$complied && $business->inspection_count == 4 && $inspection_status_was_previously_set === false)
 		{
-			$business->inspection_status = 4;
-			$business->save();
+			if($business->re_inspection_date != null)
+				$business->inspection_count = 2;
+			else
+				$business->inspection_count = 1;
 		}
+
+		$business->save();
 
 		return $complied;
 	}

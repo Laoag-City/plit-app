@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Business;
 use App\Models\ImageUpload;
 use App\Models\Requirement;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 
 class SaveInspectionChecklistRequest extends FormRequest
@@ -42,7 +43,7 @@ class SaveInspectionChecklistRequest extends FormRequest
 		//fields with authorization checks
 		if(Gate::allows('pld-personnel-action-only'))
 		{
-			$inspection_status_rules = 'bail|nullable|in:1,2,3';
+			$inspection_status_rules = 'bail|sometimes|in:1,2,3';
 
 			$initial_inspection_date_rules = 'bail|nullable|date';
 
@@ -87,8 +88,10 @@ class SaveInspectionChecklistRequest extends FormRequest
 	{
 		return [
 			function (Validator $validator) use($request) {
+				$requirement_is_array = is_array($request->requirement);
+
 				//check each requirements if user is authorized to it
-				if(is_array($request->requirement))
+				if($requirement_is_array)
 					foreach($request->requirement as $key => $value)
 					{
 						$requirement = Requirement::find($key);
@@ -104,8 +107,36 @@ class SaveInspectionChecklistRequest extends FormRequest
 					}
 
 				if(Gate::allows('pld-personnel-action-only'))
+				{
 					if($request->reinspection_date != null && $request->initial_inspection_date == null)
 						$validator->errors()->add('reinspection_date', 'Reinspection Date field requires the Initial Inspection Date field to be present.');
+
+					//if business has complied to all requirements but user unchecked a requirement, make inspection status a required field
+					if($this->business->inspection_count == 4)
+					{
+						$user_office_requirements = $this->business->businessRequirements->where('requirement.office_id', Auth::user()->office_id)->where('requirement.mandatory', true);
+						$inspection_status_is_not_set = !isset($request->inspection_status);
+
+						if($requirement_is_array)
+						{
+							foreach($user_office_requirements as $requirement)
+							{
+								$requirement_is_not_complied = !isset($request->requirement[$requirement->requirement_id]['complied']);
+
+								if($requirement_is_not_complied && $inspection_status_is_not_set)
+								{
+									$validator->errors()->add('inspection_status', 'The Inspection Status field is required.');
+									break;
+								}
+							}
+						}
+
+						elseif(!$requirement_is_array && $user_office_requirements->count() > 0 && $inspection_status_is_not_set)
+							$validator->errors()->add('inspection_status', 'The Inspection Status field is required.');
+
+						//dd($request->all(), $request->requirement, $user_office_requirements);
+					}
+				}
 			}
 		];
 	}

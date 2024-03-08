@@ -283,6 +283,7 @@
 							:value="old('due_date') ? old('due_date') : $due_date"
 							:error="$errors->first('due_date')"
 							:readonly="!Gate::allows('pld-personnel-action-only')"
+							:required="true"
 						/>
 						
 						<x-forms.text-field
@@ -330,8 +331,11 @@
 
 					inspection_status: {{ Js::from($inspection_status_value ?? '') }},
 
+					inspection_status_is_required: false,
+
 					inspection_status_bind: {
 						['x-model']: 'inspection_status',
+						['x-bind:required']: 'inspection_status_is_required',
 						['x-on:change'](){
 							//console.log(this.inspection_status);
 						}
@@ -381,6 +385,10 @@
 
 					init(){
 						this.checkIfAllComplied();
+
+						//if business has initially complied to all requirements, make inspection status required
+						if(this.all_complied)
+							this.inspection_status_is_required = true;
 						
 						//console.log('mandatory', this.mandatory_requirements);
 						//console.log('other office', this.other_offices_other_requirements);

@@ -5,7 +5,8 @@
 	'value',
 	'placeholder' => '',
 	'error' => '',
-	'readonly' => false
+	'readonly' => false,
+	'required' => false
 ])
 
 <div {{ $attributes->class('form-control') }}>
@@ -23,6 +24,7 @@
 			placeholder="{{ $placeholder }}"
 			class="input input-bordered w-full {{ !$error ?: 'input-error' }}"
 			{{ $readonly ? 'readonly' : '' }}
+			{{ $required ? 'required' : '' }}
 		/>
 	</div>
 
