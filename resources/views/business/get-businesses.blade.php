@@ -6,7 +6,7 @@
 
     	<div class="divider"></div>
 
-		<x-displays.table class="table-xs sm:table-md mb-24">
+		<x-displays.table class="table-xs sm:table-md mb-32">
 			<x-slot:head>
 				<tr>
 					<th>Business ID Number</th>
@@ -32,6 +32,8 @@
 
 								<li><a href="{{ route('business_info', ['business' => $business]) }}">Business Info</a></li>
 								<li><a href="{{ route('checklist', ['bin' => $business->id_no]) }}">Inspection Checklist</a></li>
+								<li><a href="{{ route('edit_business', ['business' => $business]) }}">Edit Business</a></li>
+								<li><a href="{{ route('image_manager', ['business' => $business]) }}">Manage Images</a></li>
 							</x-actions.dropdown-menu>
 						</td>
 					</tr>

@@ -5,6 +5,8 @@
 		<h2>Business Info</h2>
 		<div class="divider"></div>
 
+		<x-navigations.business-pages-links :business="$business"></x-navigations.business-pages-links>
+
 		<div class="grid grid-cols-1 lg:grid-cols-3 mt-8">
 			<x-displays.business-data-view
 				:business="$business"
