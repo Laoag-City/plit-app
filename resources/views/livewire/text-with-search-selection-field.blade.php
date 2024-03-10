@@ -1,4 +1,4 @@
-<div class="form-control" x-data="textWithSearchSelectionField">
+<div class="form-control {{ $rootElClass }}" x-data="textWithSearchSelectionField">
 	<!--label-->
 	<label class="label">
 		<span class="label-text font-bold">

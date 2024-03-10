@@ -64,6 +64,19 @@ class BusinessController extends Controller
 		]);
 	}
 
+	public function showEditBusiness(Business $business) : View
+	{
+		return view('business.edit-business', [
+			'business' => $business,
+			'addresses' => (new Address)->transformForSelectField()
+		]);
+	}
+
+	public function editBusiness() : RedirectResponse
+	{
+		return back()->with('');
+	}
+
 	public function getChecklist() : View
 	{
 		return view('business.inspection-checklist', $this->business_service->retrieveInfoForChecklist());

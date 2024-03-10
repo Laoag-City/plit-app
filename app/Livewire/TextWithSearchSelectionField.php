@@ -15,6 +15,7 @@ class TextWithSearchSelectionField extends Component
 	public $placeholder = '';
 	public $readOnly;
 	public $error = '';
+	public $rootElClass = '';
 
 	public $buttonText;
 	public $dropdownLabelId;

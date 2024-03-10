@@ -18,7 +18,7 @@
 			<li>
 				<a href="{{ route('edit_business', ['business' => $business]) }}" 
 					class="{{ $current_url != route('edit_business', ['business' => $business]) ?: 'active' }}">
-					Edit Business
+					Edit Business Info
 				</a>
 			</li>
 			<li>
@@ -47,7 +47,7 @@
 			<li>
 				<a href="{{ route('edit_business', ['business' => $business]) }}" 
 					class="{{ $current_url != route('edit_business', ['business' => $business]) ?: 'active' }}">
-					Edit Business
+					Edit Business Info
 				</a>
 			</li>
 			<li>
