@@ -5,6 +5,8 @@
 		<h2>Inspection Checklist</h2>
 		<div class="divider"></div>
 
+		<x-navigations.business-pages-links :business="$business"></x-navigations.business-pages-links>
+
         @if($errors->any())
             <x-displays.alert class="alert-error">
                 <b>There are errors in the form you submitted.</b>

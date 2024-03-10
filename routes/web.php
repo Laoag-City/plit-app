@@ -35,9 +35,14 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/businesses', [BusinessController::class, 'getBusinesses'])->name('businesses');
     Route::get('/businesses/{business}', [BusinessController::class, 'getBusinessInfo'])->name('business_info');
-    Route::get('/businesses/{business}edit', [BusinessController::class, 'showEditBusiness'])->name('edit_business');
-    Route::put('/businesses/{business}edit', [BusinessController::class, 'editBusiness']);
-    Route::get('/businesses/{business}/image-manager', [ImageUploadController::class, 'showImageManager'])->name('image_manager');
+    Route::get('/businesses/{business}edit', [BusinessController::class, 'showEditBusiness'])
+            ->name('edit_business')
+            ->middleware('can:pld-personnel-action-only');
+    Route::put('/businesses/{business}edit', [BusinessController::class, 'editBusiness'])
+            ->middleware('can:pld-personnel-action-only');
+    Route::get('/businesses/{business}/image-manager', [ImageUploadController::class, 'showImageManager'])
+            ->name('image_manager')
+            ->middleware('can:pld-personnel-action-only');
     Route::get('/businesses/{business}/images/{image_upload}', [ImageUploadController::class, 'showImage'])
             ->name('image')
             ->scopeBindings();
