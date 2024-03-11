@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddNewBusinessRequest;
+use App\Http\Requests\EditBusinessRequest;
 use App\Http\Requests\ValidateBinRequest;
 use App\Http\Requests\SaveInspectionChecklistRequest;
 use App\Models\Address;
@@ -72,9 +73,11 @@ class BusinessController extends Controller
 		]);
 	}
 
-	public function editBusiness() : RedirectResponse
+	public function editBusiness(Business $business, EditBusinessRequest $request) : RedirectResponse
 	{
-		return back()->with('');
+		$this->business_service->edit($business, $request->validated());
+
+		return back()->with('success', 'Business Info updated successfully.');
 	}
 
 	public function getChecklist() : View

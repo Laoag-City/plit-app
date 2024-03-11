@@ -18,7 +18,8 @@ class ImageUploadController extends Controller
     public function showImageManager(Business $business) : View
     {
         return view('image-upload.image-manager', [
-            'business' => $business
+            'business' => $business,
+            'images' => $business->imageUploads
         ]);
     }
 }
