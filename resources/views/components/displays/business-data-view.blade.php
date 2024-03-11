@@ -3,7 +3,7 @@
 	'showDates' => false
 ])
 
-<div {{ $attributes->class('grid grid-cols-subgrid') }}>
+<div {{ $attributes->class('grid grid-cols-subgrid prose') }}>
 	<div class="col-span-1 lg:col-span-2 text-justify" >
 		<h3>{{ $business->name }}</h3>
 		<h4>{{ $business->owner->name }}</h4>

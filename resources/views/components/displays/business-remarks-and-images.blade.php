@@ -3,7 +3,7 @@
 	'imageUploads' => app('App\Models\ImageUpload')
 ])
 
-<div {{ $attributes->class('grid grid-cols-subgrid') }}>
+<div {{ $attributes->class('grid grid-cols-subgrid prose') }}>
 	<div class="col-span-full">
 		<h3 class="">Other Info:</h3>
 

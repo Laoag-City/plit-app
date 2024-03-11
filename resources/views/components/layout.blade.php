@@ -63,7 +63,24 @@
         
         <div class="container mx-auto">
             <div @class(['grid grid-cols-1 gap-3 p-6 my-2 bg-neutral-content rounded-lg shadow-lg' => auth()->check()])>
-                {{ $slot }}
+                @auth
+                    @switch(url()->current())
+                        @case(url(''))
+                        @case(route('home'))
+                            @break
+                        @default
+                            <div class="max-w-none prose">
+                                <h2>{{ $title }}</h2>
+                                <div class="divider"></div>
+                            </div>
+                    @endswitch
+
+                    {{ $slot }}
+                @endauth
+
+                @guest
+                    {{ $slot }}
+                @endguest
             </div>
         </div>
 

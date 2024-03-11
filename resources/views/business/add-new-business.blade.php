@@ -1,10 +1,7 @@
 <x-layout>
     <x-slot:title>Add New Business</x-slot>
 
-    <form action="{{ url()->current() }}" method="POST" class="max-w-none prose" enctype="multipart/form-data">
-        <h2>Add New Business</h2>
-        <div class="divider"></div>
-
+    <form action="{{ url()->current() }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         @if($errors->any())
