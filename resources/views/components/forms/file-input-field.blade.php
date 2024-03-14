@@ -5,7 +5,8 @@
 	'camera' => '',
 	'error' => '',
 	'multiple' => false,
-	'disabled' => false
+	'disabled' => false,
+	'jsBind' => '{}'
 ])
 
 <div {{ $attributes->class('form-control') }}>
@@ -23,6 +24,7 @@
 			{{ $multiple ? 'multiple' : '' }}
 			{{ $disabled ? 'disabled' : '' }}
 			class="file-input file-input-bordered w-full {{ !$error ?: 'file-input-error' }}"
+			x-bind="{{ $jsBind }}"
 		/>
 	</div>
 </div>

@@ -28,6 +28,38 @@ class ImageUploadService
 
 		return true;
 	}
+
+	public function updateImageUploads($business, $request)
+	{
+		$image_uploads = $business->imageUploads;
+
+		if(isset($request['supporting_images']))
+			foreach($request['supporting_images'] as $key => $image)
+			{
+				$image_upload = $image_uploads->where('image_upload_id', $key)->first();
+
+				if(isset($image['new']))
+				{
+					Storage::delete($image_upload->image_path);
+
+					$path = Storage::putFile($image_upload->getImageUploadDirectory($business->business_id), $image['new']);
+
+					$image_upload->office_id = request()->user()->office_id;
+					$image_upload->image_path = $path;
+
+					$image_upload->save();
+				}
+
+				elseif(isset($image['remove']))
+				{
+					Storage::delete($image_upload->image_path);
+					$image_upload->delete();
+				}
+			}
+
+		if(isset($request['additional_images']))
+			$this->saveImageUploads($request['additional_images'], $business->business_id);
+	}
 }
 
 ?>

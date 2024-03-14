@@ -79,7 +79,7 @@ class SaveInspectionChecklistRequest extends FormRequest
 			
 			'remarks' => 'bail|nullable|string|max:150',
 			
-			'supporting_images' => 'bail|nullable|array|max:' . $remaining_image_uploads,
+			'supporting_images' => 'bail|sometimes|array|max:' . $remaining_image_uploads,
 			'supporting_images.*' => 'bail|image|max:1280'
 		];
 	}
