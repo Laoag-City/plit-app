@@ -6,6 +6,7 @@
 
         <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.css" rel="stylesheet" type="text/css" />
         <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
         {{-- For production use, uncomment code below and remove link and script tag above --}}
         {{--@vite('resources/css/app.css')--}}
@@ -25,7 +26,7 @@
                             </label>
 
                             <div class="px-2 mx-2 text-xl font-bold">
-                                <a class="transition ease-in-out delay-75 hover:text-secondary-focus duration-500" href="{{ route('home') }}">PLIT - APP</a>
+                                <a class="transition ease-in-out delay-75 hover:text-red-700 duration-500" href="{{ route('home') }}">PLIT - APP</a>
                             </div>
                         </div>
 
