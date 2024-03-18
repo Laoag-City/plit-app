@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('id_no')->unique();
             $table->string('name');
             $table->string('location_specifics')->nullable();
+            $table->string('coordinates')->nullable();
             $table->unsignedTinyInteger('inspection_count')->default(0);
             $table->date('inspection_date')->nullable();
             $table->date('re_inspection_date')->nullable();
