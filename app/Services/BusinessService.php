@@ -44,6 +44,7 @@ class BusinessService
 		$business->id_no = $validated['business_id_number'];
 		$business->name = $validated['business_name'];
 		$business->location_specifics = $validated['other_location_info'];
+		$business->coordinates = $validated['coordinates'];
 
 		$business->save();
 
@@ -95,6 +96,7 @@ class BusinessService
 		$business->id_no = $validated['business_id_number'];
 		$business->name = $validated['business_name'];
 		$business->location_specifics = $validated['other_location_info'];
+		$business->coordinates = $validated['coordinates'];
 
 		$business->save();
 	}

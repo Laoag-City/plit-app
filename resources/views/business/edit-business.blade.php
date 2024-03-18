@@ -67,6 +67,13 @@
 				:error="$errors->first('other_location_info')"
 			/>
 
+			<x-forms.map
+				class="lg:col-span-3"
+				:label="'Tag business location (coordinates)'"
+				:current-coordinates="$business->coordinates"
+				:error="$errors->first('coordinates')"
+            />
+
 			<div class="lg:col-start-2 mt-4 mb-4">
 				<x-actions.button
 					text="Edit Business Info"

@@ -304,11 +304,22 @@
 				</div>
 			</form>
 
+			<div class="divider lg:col-span-3"></div> 
+
 			<x-displays.business-remarks-and-images
 				:remarks="$remarks"
 				:image-uploads="$image_uploads"
 				class="col-span-1 lg:col-span-3 mt-6 lg:px-12 text-left"
 			/>
+
+			@if($business->coordinates)
+				<x-forms.map
+					class="lg:col-span-3 mt-4"
+					:label="'Business location'"
+					:current-coordinates="$business->coordinates"
+					:view-only="true"
+				/>
+			@endif
 		@elseif(request()->bin)
 			<h3 class="col-span-1 lg:col-span-3">No results found.</h3>
 		@endif

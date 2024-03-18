@@ -38,7 +38,12 @@ class EditBusinessRequest extends FormRequest
 			'owner_name' => 'bail|required|string|max:200',
 			'owner_name_selection_id' => 'bail|nullable|exists:owners,owner_id',
 			'barangay' => 'bail|required|exists:addresses,address_id',
-			'other_location_info' => 'bail|nullable|string:max:200'
+			'other_location_info' => 'bail|nullable|string:max:200',
+            'coordinates' => [
+				'bail',
+				'nullable',
+				'regex:/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/'
+			],
 		];
     }
 
@@ -61,5 +66,12 @@ class EditBusinessRequest extends FormRequest
 			];
 
 		return $rules;
+	}
+
+    public function messages(): array
+	{
+		return [
+			'coordinates.regex' => 'Invalid coordinates. Please try again.'
+		];
 	}
 }

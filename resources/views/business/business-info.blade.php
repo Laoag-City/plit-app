@@ -58,5 +58,14 @@
 			:image-uploads="$business->imageUploads"
 			class="col-span-1 lg:col-span-3 mt-6 lg:px-12 text-left"
 		/>
+
+		@if($business->coordinates)
+			<x-forms.map
+				class="lg:col-span-3 mt-4"
+				:label="'Business location'"
+				:current-coordinates="$business->coordinates"
+				:view-only="true"
+			/>
+		@endif
 	</div>
 </x-layout>

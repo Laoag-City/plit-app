@@ -39,7 +39,7 @@
 		</li>
 		<li>
 			<a href="{{ route('checklist', ['bin' => $business->id_no]) }}" 
-				class="{{ $current_url != route('checklist', ['bin' => $business->id_no]) ?: 'active' }}">
+				class="{{ $current_url != route('checklist') ?: 'active' }}">
 				Inspection Checklist
 			</a>
 		</li>

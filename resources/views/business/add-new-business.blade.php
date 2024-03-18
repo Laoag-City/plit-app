@@ -66,6 +66,8 @@
 
             <x-forms.map
                 class="lg:col-span-2"
+                :label="'Tag business location (coordinates)'"
+                :error="$errors->first('coordinates')"
             />
 
             <div class="lg:col-span-2 mt-5">
