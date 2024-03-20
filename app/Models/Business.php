@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PhpOffice\PhpSpreadsheet\Calculation\TextData\Search;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Business extends Model
+class Business extends Model implements Searchable
 {
 	use HasFactory;
 
@@ -65,5 +68,10 @@ class Business extends Model
 
 		elseif($this->inspection_count == 5)
 			return 'Expired business permit. For renewal';
+	}
+
+	public function getSearchResult(): SearchResult
+	{
+		return new SearchResult($this, $this->name);
 	}
 }

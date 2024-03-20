@@ -37,16 +37,10 @@ class BusinessController extends Controller
 		return redirect()->route('checklist', ['bin' => $business->id_no]);
 	}
 
-	public function getBusinesses(Request $request) : View
+	public function getBusinesses() : View
 	{
 		$businesses = new Business;
 		
-		if($request->search_by != null || $request->search != null)
-			Validator::make($request->all(), [
-				'search_by' => 'bail|required_with:search|in:business_name,business_id_no,owner_name,brgy',
-				'search' => 'bail|required_with:search_by|string'
-			])->validate();
-
 		return view('business.get-businesses', [
 			'businesses' => $businesses->paginate(100)
 		]);

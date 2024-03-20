@@ -1,4 +1,4 @@
-<li>
+<li class="z-10">
 	<details>
 		<summary>Permits and Licenses</summary>
 
@@ -23,10 +23,23 @@
 					Businesses
 				</a>
 			</li>
+			<li>
+				<a href="{{ route('owners') }}" 
+					class="{{ $current_url != route('owners') ?: 'active' }}">
+					Owners
+				</a>
+			</li>
 		</ul>
 	</details>
 </li>
 
 <li>
 	<a>My Account</a>
+</li>
+
+<li>
+	<form action="{{ route('search') }}" method="GET" class="join gap-0 p-0">
+		<input type="text" placeholder="Search records" name="keyword" value="{{ request()->keyword }}" class="input join-item input-sm input-bordered w-auto hover:bg-white focus:bg-white" required minlength="3"/>
+		<button type="submit" class="join-item btn btn-outline btn-sm btn-secondary">Search</button>
+	</form>
 </li>

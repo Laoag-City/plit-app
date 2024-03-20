@@ -10,6 +10,8 @@
 			class="col-span-1 lg:col-span-3"
 		/>
 
+		<div class="divider col-span-1 lg:col-span-3"></div>
+
 		<div class="col-span-1 lg:col-span-3">
 			<x-displays.table class="table-xs sm:table-lg table-fixed text-center mt-0">
 				<x-slot:head>
