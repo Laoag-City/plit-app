@@ -34,7 +34,9 @@
 </li>
 
 <li>
-	<a>My Account</a>
+	<a href="{{ route('my_account') }}">
+		My Account
+	</a>
 </li>
 
 <li>
