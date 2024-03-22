@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class EditMyAccountRequest extends FormRequest
+class EditUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,16 +23,18 @@ class EditMyAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => 'bail|required|string|min:6|max:100',
+            'office' => 'bail|required|exists:offices,office_id',
             'username' => [
                 'bail',
                 'required',
                 'string',
                 'min:3',
                 'max:25',
-                Rule::unique('users', 'username')->ignore(request()->user()->user_id, 'user_id')
+                Rule::unique('users', 'username')->ignore(request()->user->user_id, 'user_id')
             ],
-            'old_password' => 'bail|nullable|required_with:new_password|current_password',
-            'new_password' => 'bail|nullable|string|min:6|max:15|confirmed'
+            'change_password' => 'bail|nullable|string|min:6|max:15|confirmed',
+            'user_level' => 'bail|required|boolean'
         ];
     }
 }

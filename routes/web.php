@@ -76,6 +76,17 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('/my-account', [UserController::class, 'showMyAccount'])->name('my_account');
 
 	Route::put('/my-account', [UserController::class, 'editMyAccount']);
+	
+	Route::middleware(['can:is-admin'])->group(function(){
+		Route::get('user-dashboard', [UserController::class, 'showUserDashboard'])->name('user_dashboard');
+
+		Route::post('new-user', [UserController::class, 'addNewUser'])->name('new_user');
+
+		Route::get('user-dashboard/{user}', [UserController::class, 'showEditUser'])->name('edit_user');
+
+		Route::put('user-dashboard/{user}', [UserController::class, 'editUser']);
+	});
+	
 
 	Route::get('/search', [SearchController::class, 'getSearchResults'])->name('search');
 

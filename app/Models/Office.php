@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Interfaces\ForSelectFields;
 
-class Office extends Model
+class Office extends Model implements ForSelectFields
 {
 	use HasFactory;
 
@@ -29,5 +30,16 @@ class Office extends Model
 	public function remarks()
 	{
 		return $this->hasMany(Remark::class, 'office_id', 'office_id');
+	}
+
+	public function transformForSelectField() : array
+	{
+		return $this->all()
+					->transform(function($item, $key){
+						return [
+							'value' => $item->office_id,
+							'name' => $item->name
+						];
+					})->toArray();
 	}
 }

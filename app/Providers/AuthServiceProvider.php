@@ -29,6 +29,10 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
         });
 
+        Gate::define('is-admin', function(User $user){
+            return (bool)$user->admin;
+        });
+
         Gate::define('owns-requirement', function(User $user, Requirement $requirement){
             return $user->office_id == $requirement->office_id;
         });

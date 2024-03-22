@@ -39,7 +39,14 @@
                         <div class="navbar-end hidden lg:flex">
                             <ul class="menu menu-horizontal">
                                 <li>
-                                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout_form').submit();">Log Out</a>
+                                    @can('is-admin')
+                                        <li>
+                                            <a href="{{ route('user_dashboard') }}">User Management</a>
+                                        </li>
+                                    @endcan
+                                    <li>
+                                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout_form').submit();">Log Out</a>
+                                    </li>
                                 </li>
                             </ul>
                         </div>
@@ -51,7 +58,14 @@
                     <ul class="menu p-4 w-80 min-h-full bg-base-200">
                         <x-navigations.main-navigation-links></x-navigations.main-navigation-links>
                         <li>
-                            <a href="#" onclick="event.preventDefault(); document.getElementById('logout_form').submit();">Log Out</a>
+                            @can('is-admin')
+                                <li>
+                                    <a href="{{ route('user_dashboard') }}">User Management</a>
+                                </li>
+                            @endcan
+                            <li>
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('logout_form').submit();">Log Out</a>
+                            </li>
                         </li>
                     </ul>
                 </div>
