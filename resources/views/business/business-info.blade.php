@@ -4,6 +4,23 @@
 	<x-navigations.business-pages-links :business="$business"></x-navigations.business-pages-links>
 
 	<div class="grid grid-cols-1 lg:grid-cols-3 mt-8">
+		@can('is_admin')
+			<div class="col-span-1 lg:col-span-3 text-right">
+				<button type="button" class="btn btn-error btn-sm btn-outline" onclick="openModalRemoveBusiness({{ $business->business_id }})">
+					Remove Business
+				</button>
+			</div>
+
+			<x-displays.modal
+				modal-id="RemoveBusiness"
+				header="Remove Business"
+				content="Are you sure you want to remove the business?"
+				method="DELETE"
+				:form-link-suffix="url('businesses')"
+				form-button-text="Remove"
+			/>
+		@endcan
+
 		<x-displays.business-data-view
 			:business="$business"
 			:show-dates="true"

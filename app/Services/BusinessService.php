@@ -388,6 +388,12 @@ class BusinessService
 
 		return $complied;
 	}
+
+	public function removeBusinessAndImages(Business $business)
+	{
+		Storage::deleteDirectory((new ImageUpload)->getImageUploadDirectory($business->business_id));
+		$business->delete();
+	}
 }
 
 ?>

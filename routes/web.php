@@ -40,6 +40,10 @@ Route::middleware(['auth'])->group(function(){
 
 	Route::get('/businesses/{business}', [BusinessController::class, 'getBusinessInfo'])->name('business_info');
 
+	Route::delete('/businesses/{business}', [BusinessController::class, 'removeBusiness'])
+		->middleware(['can:is-admin'])
+		->name('business_info');
+
 	Route::get('/businesses/{business}/edit', [BusinessController::class, 'showEditBusiness'])
 		->name('edit_business')
 		->middleware('can:pld-personnel-action-only');
@@ -66,6 +70,10 @@ Route::middleware(['auth'])->group(function(){
 
 	Route::get('/owners/{owner}', [OwnerController::class, 'getOwnerInfo'])->name('owner_info');
 
+	Route::delete('/owners/{owner}', [OwnerController::class, 'removeOwner'])
+		->middleware(['can:is-admin'])
+		->name('owner_info');
+
 	Route::get('/owners/{owner}/edit', [OwnerController::class, 'showEditOwner'])
 		->name('edit_owner')
 		->middleware('can:pld-personnel-action-only');
@@ -85,6 +93,8 @@ Route::middleware(['auth'])->group(function(){
 		Route::get('user-dashboard/{user}', [UserController::class, 'showEditUser'])->name('edit_user');
 
 		Route::put('user-dashboard/{user}', [UserController::class, 'editUser']);
+	
+		Route::delete('user-dashboard/{user}', [UserController::class, 'removeUser'])->name('remove_user');
 	});
 	
 

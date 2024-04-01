@@ -12,7 +12,6 @@ use App\Services\BusinessService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class BusinessController extends Controller
 {
@@ -57,6 +56,12 @@ class BusinessController extends Controller
 										'remarks.office'
 			])
 		]);
+	}
+
+	public function removeBusiness(Business $business)
+	{
+		$this->business_service->removeBusinessAndImages($business);
+		return redirect()->route('businesses');
 	}
 
 	public function showEditBusiness(Business $business) : View

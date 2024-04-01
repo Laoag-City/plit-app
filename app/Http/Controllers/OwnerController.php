@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EditOwnerRequest;
 use App\Models\Owner;
+use App\Services\BusinessService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Services\OwnerService;
@@ -46,5 +47,16 @@ class OwnerController extends Controller
 		$this->owner_service->edit($owner, $request->validated());
 
 		return back()->with('success', 'Owner Info updated successfully.');
+	}
+
+	public function removeOwner(BusinessService $business_service, Owner $owner)
+	{
+		$businesses = $owner->businesses;
+
+		foreach($businesses as $business)
+			$business_service->removeBusinessAndImages($business);
+
+		$owner->delete();
+		return redirect()->route('owners');
 	}
 }

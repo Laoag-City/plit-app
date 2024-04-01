@@ -61,4 +61,10 @@ class UserController extends Controller
 
         return back()->with('success', 'User info updated successfully.');
     }
+
+    public function removeUser(User $user)
+    {
+        $user->delete();
+        return back();
+    }
 }

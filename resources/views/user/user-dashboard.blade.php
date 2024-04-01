@@ -109,7 +109,7 @@
 									<x-slot:label>Options</x-slot>
 			
 									<li><a href="{{ route('edit_user', ['user' => $user]) }}">Edit</a></li>
-									<li><a href="">Remove</a></li>
+									<li><button onclick="openModalRemoveModal({{ $user->user_id }})">Remove</button></li>
 								</x-actions.dropdown-menu>
 							</td>
 						</tr>
@@ -118,4 +118,13 @@
 			</x-displays.table>
 		</div>
 	</div>
+
+	<x-displays.modal
+		modal-id="RemoveModal"
+		header="Remove User"
+		content="Are you sure you want to remove the user account?"
+		method="DELETE"
+		:form-link-suffix="url()->current()"
+		form-button-text="Remove"
+	/>
 </x-layout>

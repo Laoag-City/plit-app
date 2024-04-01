@@ -3,7 +3,7 @@
 	'paginate' => false
 ])
 
-<x-displays.table class="table-xs sm:table-md mb-32">
+<x-displays.table class="table-xs sm:table-md mb-36">
 	<x-slot:head>
 		<tr>
 			<th>Business ID No.</th>
@@ -33,12 +33,24 @@
 							<li><a href="{{ route('edit_business', ['business' => $business]) }}">Edit Business</a></li>
 							<li><a href="{{ route('image_manager', ['business' => $business]) }}">Manage Images</a></li>
 						@endcan
+						@can('is_admin')
+							<li><button onclick="openModalRemoveBusiness({{ $business->business_id }})">Remove</button></li>
+						@endcan
 					</x-actions.dropdown-menu>
 				</td>
 			</tr>
 		@endforeach
 	</x-slot:body>
 </x-displays.table>
+
+<x-displays.modal
+	modal-id="RemoveBusiness"
+	header="Remove Business"
+	content="Are you sure you want to remove the business?"
+	method="DELETE"
+	:form-link-suffix="url('businesses')"
+	form-button-text="Remove"
+/>
 
 @if($paginate)
 	{{ $businesses->onEachSide(1)->links() }}
