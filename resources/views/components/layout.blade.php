@@ -4,12 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.css" rel="stylesheet" type="text/css" />
-        <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+        {{-- For development use, use code below and comment vite code below --}}
+        {{--<link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.css" rel="stylesheet" type="text/css" />--}}
+        {{--<script src="https://cdn.tailwindcss.com?plugins=typography"></script>--}}
+        {{--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>--}}
 
-        {{-- For production use, uncomment code below and remove link and script tag above --}}
-        {{--@vite('resources/css/app.css')--}}
+        {{-- For production use, use code below and comment link and script tags above --}}
+        @vite('resources/css/app.css')
 
         <title>PLIT - APP | {{ $title ?? "" }}</title>
     </head>
