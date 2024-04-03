@@ -26,6 +26,8 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->timestamps();
 
+            $table->index('name');
+
             $table->foreign('owner_id')
                     ->references('owner_id')
                     ->on('owners')
