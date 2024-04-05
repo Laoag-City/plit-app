@@ -9,37 +9,51 @@
 
 				<x-displays.stat
 					title="No inspection records"
-					:value="$no_inspections"
+					:value="$stats['no_inspections']"
+					:value-is-link="true"
+					:url="route('stats-view', ['view' => 'no_inspections'])"
 				/>
 
 				<x-displays.stat
 					title="For Closure of Business"
-					:value="$for_closures"
+					:value="$stats['for_closures']"
+					:value-is-link="true"
+					:url="route('stats-view', ['view' => 'for_closures'])"
 				/>
 
 				<x-displays.stat
 					title="Complied Businesses"
-					:value="$complied"
+					:value="$stats['complied']"
+					:value-is-link="true"
+					:url="route('stats-view', ['view' => 'complied'])"
 				/>
 
 				<x-displays.stat
 					title="Expired Registration"
-					:value="$expired"
+					:value="$stats['expired']"
+					:value-is-link="true"
+					:url="route('stats-view', ['view' => 'expired'])"
 				/>
 
 				<x-displays.stat
 					title="Inspections Today"
-					:value="$inspection_today"
+					:value="$stats['inspection_today']"
+					:value-is-link="true"
+					:url="route('stats-view', ['view' => 'inspection_today'])"
 				/>
 
 				<x-displays.stat
 					title="Re-inspections Today"
-					:value="$re_inspection_today"
+					:value="$stats['re_inspection_today']"
+					:value-is-link="true"
+					:url="route('stats-view', ['view' => 're_inspection_today'])"
 				/>
 
 				<x-displays.stat
 					title="Inspections Past Due Date"
-					:value="$due_from_today"
+					:value="$stats['due_from_today']"
+					:value-is-link="true"
+					:url="route('stats-view', ['view' => 'due_from_today'])"
 				/>
 			</div>
 		</div>

@@ -4,7 +4,7 @@
 
 		<ul>
 			@can('pld-personnel-action-only')
-				<li>
+				<li class="hidden">
 					<a href="{{ route('new_business') }}" 
 						class="{{ $current_url != route('new_business') ?: 'active' }}">
 						Add New Business

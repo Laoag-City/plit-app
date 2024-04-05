@@ -1,6 +1,12 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
+const leafletFiles = [
+    'layers-2x.png',
+    'layers.png',
+    'marker-icon.png'
+];
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -14,4 +20,16 @@ export default defineConfig({
             host: 'localhost',
         },
     }, 
+    //https://stackoverflow.com/questions/69614671/vite-without-hash-in-filename
+    build: {
+        rollupOptions: {
+          output: {
+           assetFileNames: function (file) {
+            return leafletFiles.includes(file.name)
+              ? `assets/[name].[ext]`
+              : `assets/[name]-[hash].[ext]`;
+            },
+          }
+        }
+      }
 });
