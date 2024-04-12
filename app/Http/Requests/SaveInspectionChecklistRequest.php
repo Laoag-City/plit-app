@@ -35,6 +35,7 @@ class SaveInspectionChecklistRequest extends FormRequest
 	public function rules(Request $request): array
 	{
 		$inspection_status_rules = '';
+		$coordinates_rules = '';
 		$initial_inspection_date_rules = '';
 		$reinspection_date_rules = '';
 		$due_date_rules = '';
@@ -44,6 +45,12 @@ class SaveInspectionChecklistRequest extends FormRequest
 		if(Gate::allows('pld-personnel-action-only'))
 		{
 			$inspection_status_rules = 'bail|sometimes|in:1,2,3';
+
+			$coordinates_rules = [
+				'bail',
+				'nullable',
+				'regex:/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/'
+			];
 
 			$initial_inspection_date_rules = 'bail|nullable|date';
 
@@ -71,6 +78,8 @@ class SaveInspectionChecklistRequest extends FormRequest
 			'other_requirement_complied' => 'sometimes|bail|accepted',
 
 			'inspection_status' => $inspection_status_rules,
+
+			'coordinates' => $coordinates_rules,
 
 			'initial_inspection_date' => $initial_inspection_date_rules,
 			'reinspection_date' => $reinspection_date_rules,

@@ -339,6 +339,9 @@ class BusinessService
 			if(isset($validated['inspection_status']))
 				$business->inspection_count = (int)$validated['inspection_status'];
 
+			if(isset($validated['coordinates']))
+				$business->coordinates = $validated['coordinates'];
+
 			if(isset($validated['supporting_images']))
 				$this->image_upload_service->saveImageUploads($validated['supporting_images'], $business->business_id);
 

@@ -36,12 +36,12 @@ class StatisticsService
 			$stats_collection->put('expired', $businesses->where('inspection_count', 5)->$method());
 
 		if(in_array('inspection_today', $infos) || empty($infos))
-			$stats_collection->put('inspection_today', $businesses->where('inspection_date', $now)
+			$stats_collection->put('inspection_today', $businesses->where('inspection_date', '<=', $now)
 								->whereIn('inspection_count', [1, 2])
 								->$method());
 
 		if(in_array('re_inspection_today', $infos) || empty($infos))
-			$stats_collection->put('re_inspection_today', $businesses->where('re_inspection_date', $now)
+			$stats_collection->put('re_inspection_today', $businesses->where('re_inspection_date', '<=', $now)
 								->whereIn('inspection_count', [1, 2])
 								->$method());
 
