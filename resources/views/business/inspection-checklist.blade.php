@@ -16,8 +16,14 @@
 	@endif
 
 	<div class="grid grid-cols-1 lg:grid-cols-3 mt-8">
+		<x-actions.button
+				text="Scan Business Permit QR Code"
+				class="btn-secondary btn-outline col-span-1 lg:col-start-2"
+		/>
+
+		<div class="divider col-span-1 lg:col-start-2">OR</div>
+
 		<form action="{{ url()->current() }}" method="GET" class="join justify-center col-span-1 lg:col-start-2 mb-5">
-			
 			<x-forms.text-field
 				placeholder="Business ID Number"
 				name="bin"
@@ -352,7 +358,7 @@
 
 					inspection_status_is_required: false,
 
-					business_coordinates: {{ Js::from($business->coordinates) }},
+					business_coordinates: {{ Js::from($business->coordinates ?? null) }},
 
 					user_is_mobile: false,
 

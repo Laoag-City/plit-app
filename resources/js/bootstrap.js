@@ -7,10 +7,12 @@
 import axios from 'axios';
 import _ from 'lodash';
 import L from 'leaflet';
+import {Html5QrcodeScanner} from "html5-qrcode";
 
 window.axios = axios;
 window._ = _;
 window.L = L;
+window.Html5QrcodeScanner = Html5QrcodeScanner;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
