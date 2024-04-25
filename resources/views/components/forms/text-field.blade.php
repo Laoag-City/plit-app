@@ -18,6 +18,7 @@
 	
 	<div class="{{ !$error ?: 'tooltip tooltip-error' }}" data-tip="{{ $error }}">
 		<input 
+			id="{{ 'text_field_' . $name }}"
 			type="{{ $type }}" 
 			name="{{ $name }}" 
 			value="{{ $value }}" 

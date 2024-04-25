@@ -119,9 +119,9 @@ class BusinessService
 		$other_offices_other_req_for_js = [];
 		$other_req_for_js = [];
 
-		if($this->request->bin)
+		if($this->request->bin_search)
 		{
-			$business = Business::where('id_no', $this->request->bin)->first();
+			$business = Business::where('id_no', $this->request->bin_search)->first();
 
 			if($business != null)
 			{

@@ -16,17 +16,17 @@
 	@endif
 
 	<div class="grid grid-cols-1 lg:grid-cols-3 mt-8">
-		<x-actions.button
-				text="Scan Business Permit QR Code"
-				class="btn-secondary btn-outline col-span-1 lg:col-start-2"
-		/>
+		<div class="col-span-1 lg:col-start-2">
+			<b class="join-item">Scan Business Permit QR Code to search</b>
+			<div id="reader" width="600px" class="join-item"></div>
+		</div>
 
-		<div class="divider col-span-1 lg:col-start-2">OR</div>
+		<div class="divider col-span-1 lg:col-start-2"><b>OR</b></div>
 
-		<form action="{{ url()->current() }}" method="GET" class="join justify-center col-span-1 lg:col-start-2 mb-5">
+		<form id="searchBin" action="{{ url()->current() }}" method="GET" class="join justify-center col-span-1 lg:col-start-2 mb-5">
 			<x-forms.text-field
 				placeholder="Business ID Number"
-				name="bin"
+				name="bin_search"
 				:value="old('bin') ? old('bin') : request()->bin"
 				class="join-item"
 				:error="$errors->first('business_id_number')"
@@ -434,6 +434,27 @@
 						});
 					}
 				}));
+			});
+
+			document.addEventListener("DOMContentLoaded", () => {
+				function onScanSuccess(decodedText, decodedResult) {
+					// handle the scanned code as you like, for example:
+					let pattern = /[A-Z]-[0-9]{5,8}-[0-9]{5}/m;
+					let bin = decodedText.match(pattern);
+					
+					document.getElementById('text_field_bin_search').value = bin;
+					document.getElementById('searchBin').submit();
+				}
+				
+				function onScanFailure(error) {
+				}
+				
+				let html5QrcodeScanner = new Html5QrcodeScanner(
+					"reader",
+					{ fps: 30, qrbox: {width: 250, height: 250} },
+					/* verbose= */ false);
+				html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
 			});
 
 			//stackoverflow.com/questions/11381673/detecting-a-mobile-browser
