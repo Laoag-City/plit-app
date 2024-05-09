@@ -4,7 +4,9 @@ import laravel from 'laravel-vite-plugin';
 const leafletFiles = [
     'layers-2x.png',
     'layers.png',
-    'marker-icon.png'
+    'marker-icon.png',
+    'marker-icon-2x.png',
+    'marker-shadow.png'
 ];
 
 export default defineConfig({

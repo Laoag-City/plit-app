@@ -7,6 +7,9 @@
 import axios from 'axios';
 import _ from 'lodash';
 import L from 'leaflet';
+//Since some Leaflet image files can't be automatically imported, import them manually here
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import {Html5QrcodeScanner} from "html5-qrcode";
 
 window.axios = axios;
