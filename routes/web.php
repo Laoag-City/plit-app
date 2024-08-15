@@ -45,12 +45,12 @@ Route::middleware(['auth'])->group(function(){
 		->middleware(['can:is-admin'])
 		->name('business_info');
 
-	/*Route::get('/businesses/{business}/edit', [BusinessController::class, 'showEditBusiness'])
+	Route::get('/businesses/{business}/edit', [BusinessController::class, 'showEditBusiness'])
 		->name('edit_business')
 		->middleware('can:pld-personnel-action-only');
 
 	Route::put('/businesses/{business}/edit', [BusinessController::class, 'editBusiness'])
-		->middleware('can:pld-personnel-action-only');*/
+		->middleware('can:pld-personnel-action-only');
 
 	Route::get('/businesses/{business}/image-manager', [ImageUploadController::class, 'showImageManager'])
 		->name('image_manager')
