@@ -9,12 +9,12 @@
 			</a>
 		</li>
 		@can('pld-personnel-action-only')
-			<li>
+			<!--<li>
 				<a href="{{ route('edit_owner', ['owner' => $owner]) }}" 
 					class="{{ $current_url != route('edit_owner', ['owner' => $owner]) ?: 'active' }}">
 					Edit Owner Info
 				</a>
-			</li>
+			</li>-->
 		@endcan
 	</ul>
 
@@ -26,12 +26,12 @@
 			</a>
 		</li>
 		@can('pld-personnel-action-only')
-			<li>
+			<!--<li>
 				<a href="{{ route('edit_owner', ['owner' => $owner]) }}" 
 					class="{{ $current_url != route('edit_owner', ['owner' => $owner]) ?: 'active' }}">
 					Edit Owner Info
 				</a>
-			</li>
+			</li>-->
 		@endcan
 	</ul>
 </div>
