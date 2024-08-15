@@ -30,7 +30,7 @@
 						<li><a href="{{ route('business_info', ['business' => $business]) }}">Business Info</a></li>
 						<li><a href="{{ route('checklist', ['bin_search' => $business->id_no]) }}">Inspection Checklist</a></li>
 						@can('pld-personnel-action-only')
-							<li><a href="{{ route('edit_business', ['business' => $business]) }}">Edit Business</a></li>
+							<!--<li><a href="{{ route('edit_business', ['business' => $business]) }}">Edit Business</a></li>-->
 							<li><a href="{{ route('image_manager', ['business' => $business]) }}">Manage Images</a></li>
 						@endcan
 						@can('is_admin')
