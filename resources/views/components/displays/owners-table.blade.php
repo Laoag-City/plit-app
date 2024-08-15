@@ -23,7 +23,7 @@
 
 						<li><a href="{{ route('owner_info', ['owner' => $owner]) }}">Owner Info</a></li>
 						@can('pld-personnel-action-only')
-							<li><a href="{{ route('edit_owner', ['owner' => $owner]) }}">Edit Owner</a></li>
+							<!--<li><a href="{{ route('edit_owner', ['owner' => $owner]) }}">Edit Owner</a></li>-->
 						@endcan
 						@can('is_admin')
 							<li><button onclick="openModalRemoveOwner({{ $owner->owner_id }})">Remove</button></li>
